@@ -20,8 +20,16 @@ export function SceneTransformToolbar() {
   ];
 
   return (
-    <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
-      <div className="glass-strong rounded-xl px-1 py-1 flex gap-0.5 shadow-2xl shadow-black/60">
+    <div className="absolute bottom-5 left-5 z-20 pointer-events-auto">
+      <div
+        className="rounded-xl px-1 py-1 flex gap-0.5 shadow-2xl shadow-black/70 border border-white/8"
+        style={{
+          background: "rgba(15, 15, 25, 0.85)",
+          backdropFilter: "blur(24px) saturate(200%)",
+          WebkitBackdropFilter: "blur(24px) saturate(200%)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
+        }}
+      >
         {tools.map(({ mode, label, Icon, shortcut }) => {
           const active = transformMode === mode;
           return (
@@ -33,12 +41,12 @@ export function SceneTransformToolbar() {
                 "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
                 active
                   ? "bg-indigo-500/30 text-indigo-300 border border-indigo-500/40"
-                  : "text-white/50 hover:text-white/90 hover:bg-white/8 border border-transparent",
+                  : "text-white/40 hover:text-white/80 hover:bg-white/6 border border-transparent",
               )}
             >
               <Icon className="w-3.5 h-3.5 shrink-0" />
               <span>{label}</span>
-              <span className="text-[9px] opacity-40 -ml-0.5">{shortcut}</span>
+              <span className="text-[9px] opacity-35 -ml-0.5">{shortcut}</span>
             </button>
           );
         })}

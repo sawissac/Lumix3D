@@ -58,13 +58,14 @@ export type LightingPreset =
   | "silhouette"
   | "custom";
 
-export type BackgroundType = "color" | "gradient" | "transparent" | "image";
+export type BackgroundType = "color" | "gradient" | "radial-gradient" | "transparent" | "image";
 
 export type Background = {
   type: BackgroundType;
   value: string;
   gradientEnd?: string;
   imageUrl?: string;
+  noise?: number;
 };
 
 export type ExtrusionSettings = {

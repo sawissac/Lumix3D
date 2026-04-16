@@ -1,6 +1,7 @@
 "use client";
 
 import { SVGUploader } from "./SVGUploader";
+import { QuickScenes } from "./QuickScenes";
 import { ExtrusionControls } from "./ExtrusionControls";
 import { BackgroundControls } from "./BackgroundControls";
 import { LightingControls } from "./LightingControls";
@@ -38,6 +39,7 @@ export function Sidebar() {
       </div>
 
       <div className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
+        <QuickScenes />
         <SVGUploader />
         <ObjectsList />
         <ShapeInspector />

@@ -12,6 +12,7 @@ import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 import { ThreeEvent, useThree, createPortal } from "@react-three/fiber";
 import { ExtrusionSettings, SvgShape, MaterialSettings } from "@/types";
 import { TransformControls, Edges } from "@react-three/drei";
+import { globalGroupRef } from "../globalGroupRef";
 
 type ShapeMeshesProps = {
   singleShape: THREE.Shape;
@@ -142,19 +143,20 @@ function ShapeMeshes({
           <TransformControls
             object={groupObj}
             mode={transformMode}
+            onChange={() => {
+              if (groupObj) {
+                onTransformChange({
+                  position: [groupObj.position.x, groupObj.position.y, groupObj.position.z],
+                  rotation: [groupObj.rotation.x, groupObj.rotation.y, groupObj.rotation.z],
+                  scale: [groupObj.scale.x, groupObj.scale.y, groupObj.scale.z],
+                });
+              }
+            }}
             onMouseUp={() => {
               if (groupObj) {
                 onTransformChange({
-                  position: [
-                    groupObj.position.x,
-                    groupObj.position.y,
-                    groupObj.position.z,
-                  ],
-                  rotation: [
-                    groupObj.rotation.x,
-                    groupObj.rotation.y,
-                    groupObj.rotation.z,
-                  ],
+                  position: [groupObj.position.x, groupObj.position.y, groupObj.position.z],
+                  rotation: [groupObj.rotation.x, groupObj.rotation.y, groupObj.rotation.z],
                   scale: [groupObj.scale.x, groupObj.scale.y, groupObj.scale.z],
                 });
               }
@@ -252,7 +254,10 @@ export function ExtrudedSVG() {
 
   const content = (
     <group
-      ref={setGlobalGroupObj}
+      ref={(obj) => {
+        setGlobalGroupObj(obj);
+        globalGroupRef.current = obj;
+      }}
       onPointerMissed={(e) => {
         if (e.type === "click") {
           dispatch(setSelectedShapeId("global"));
@@ -295,25 +300,24 @@ export function ExtrudedSVG() {
         <TransformControls
           object={globalGroupObj}
           mode={transformMode}
+          onChange={() => {
+            if (globalGroupObj) {
+              dispatch(
+                setGlobalTransform({
+                  position: [globalGroupObj.position.x, globalGroupObj.position.y, globalGroupObj.position.z],
+                  rotation: [globalGroupObj.rotation.x, globalGroupObj.rotation.y, globalGroupObj.rotation.z],
+                  scale: [globalGroupObj.scale.x, globalGroupObj.scale.y, globalGroupObj.scale.z],
+                }),
+              );
+            }
+          }}
           onMouseUp={() => {
             if (globalGroupObj) {
               dispatch(
                 setGlobalTransform({
-                  position: [
-                    globalGroupObj.position.x,
-                    globalGroupObj.position.y,
-                    globalGroupObj.position.z,
-                  ],
-                  rotation: [
-                    globalGroupObj.rotation.x,
-                    globalGroupObj.rotation.y,
-                    globalGroupObj.rotation.z,
-                  ],
-                  scale: [
-                    globalGroupObj.scale.x,
-                    globalGroupObj.scale.y,
-                    globalGroupObj.scale.z,
-                  ],
+                  position: [globalGroupObj.position.x, globalGroupObj.position.y, globalGroupObj.position.z],
+                  rotation: [globalGroupObj.rotation.x, globalGroupObj.rotation.y, globalGroupObj.rotation.z],
+                  scale: [globalGroupObj.scale.x, globalGroupObj.scale.y, globalGroupObj.scale.z],
                 }),
               );
             }

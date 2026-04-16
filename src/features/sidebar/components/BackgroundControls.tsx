@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SliderWithInput } from "@/components/ui/slider-with-input";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setBackground, setShowGrid } from "@/store/slices/sceneSlice";
 import { BackgroundType } from "@/types";
@@ -67,7 +68,8 @@ export function BackgroundControls() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="color">Solid Color</SelectItem>
-              <SelectItem value="gradient">Gradient</SelectItem>
+              <SelectItem value="gradient">Linear Gradient</SelectItem>
+              <SelectItem value="radial-gradient">Radial Gradient</SelectItem>
               <SelectItem value="image">Image/Texture</SelectItem>
               <SelectItem value="transparent">Transparent</SelectItem>
             </SelectContent>
@@ -107,19 +109,19 @@ export function BackgroundControls() {
           </div>
         )}
 
-        {background.type === "gradient" && (
+        {(background.type === "gradient" || background.type === "radial-gradient") && (
           <>
             <div className="space-y-3">
-              <Label className="text-white/80">Start Color</Label>
+              <Label className="text-white/80">
+                {background.type === "radial-gradient" ? "Center Color" : "Start Color"}
+              </Label>
               <div className="flex gap-3">
                 <div className="relative w-12 h-10 rounded-md overflow-hidden border border-white/10 shadow-sm cursor-pointer">
                   <Input
                     type="color"
                     value={background.value}
                     onChange={(e) =>
-                      dispatch(
-                        setBackground({ ...background, value: e.target.value }),
-                      )
+                      dispatch(setBackground({ ...background, value: e.target.value }))
                     }
                     className="absolute inset-[-10px] w-[200%] h-[200%] cursor-pointer border-0 p-0"
                   />
@@ -128,28 +130,23 @@ export function BackgroundControls() {
                   type="text"
                   value={background.value}
                   onChange={(e) =>
-                    dispatch(
-                      setBackground({ ...background, value: e.target.value }),
-                    )
+                    dispatch(setBackground({ ...background, value: e.target.value }))
                   }
                   className="flex-1 bg-black/20 border-white/10 text-pink-200 font-mono uppercase focus-visible:ring-pink-500"
                 />
               </div>
             </div>
             <div className="space-y-3">
-              <Label className="text-white/80">End Color</Label>
+              <Label className="text-white/80">
+                {background.type === "radial-gradient" ? "Edge Color" : "End Color"}
+              </Label>
               <div className="flex gap-3">
                 <div className="relative w-12 h-10 rounded-md overflow-hidden border border-white/10 shadow-sm cursor-pointer">
                   <Input
                     type="color"
                     value={background.gradientEnd || "#000000"}
                     onChange={(e) =>
-                      dispatch(
-                        setBackground({
-                          ...background,
-                          gradientEnd: e.target.value,
-                        }),
-                      )
+                      dispatch(setBackground({ ...background, gradientEnd: e.target.value }))
                     }
                     className="absolute inset-[-10px] w-[200%] h-[200%] cursor-pointer border-0 p-0"
                   />
@@ -158,12 +155,7 @@ export function BackgroundControls() {
                   type="text"
                   value={background.gradientEnd || "#000000"}
                   onChange={(e) =>
-                    dispatch(
-                      setBackground({
-                        ...background,
-                        gradientEnd: e.target.value,
-                      }),
-                    )
+                    dispatch(setBackground({ ...background, gradientEnd: e.target.value }))
                   }
                   className="flex-1 bg-black/20 border-white/10 text-pink-200 font-mono uppercase focus-visible:ring-pink-500"
                 />
@@ -189,6 +181,21 @@ export function BackgroundControls() {
             <p className="text-xs text-white/50">
               Provide a valid image URL for background, texture, or pattern.
             </p>
+          </div>
+        )}
+
+        {background.type !== "transparent" && (
+          <div className="space-y-2 pt-1 border-t border-white/5">
+            <Label className="text-white/80 text-xs">Noise Intensity</Label>
+            <SliderWithInput
+              value={background.noise ?? 0}
+              onChange={(v) => dispatch(setBackground({ ...background, noise: v }))}
+              min={0}
+              max={1}
+              step={0.01}
+              sliderClassName="**:[[role=slider]]:bg-pink-400 **:[[role=slider]]:border-pink-400"
+              inputClassName="focus-visible:ring-pink-500/50 text-pink-300"
+            />
           </div>
         )}
       </CardContent>
