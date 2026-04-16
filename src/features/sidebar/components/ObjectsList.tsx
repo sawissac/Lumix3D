@@ -1,5 +1,6 @@
 "use client";
 
+import { Trash2 } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -7,7 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setSelectedShapeId, setSvgFocusIndex } from "@/store/slices/sceneSlice";
+import {
+  setSelectedShapeId,
+  setSvgFocusIndex,
+  removeShape,
+} from "@/store/slices/sceneSlice";
 
 export function ObjectsList() {
   const dispatch = useAppDispatch();
@@ -17,9 +22,14 @@ export function ObjectsList() {
   const selectedShapeId = useAppSelector((s) => s.scene.selectedShapeId);
   const svgSelection = useAppSelector((s) => s.scene.svgSelection);
 
-  if (svgShapes.length === 0) return null;
+  const visibleShapes = svgShapes.filter((s) => s.visible !== false);
+  if (visibleShapes.length === 0) return null;
 
-  const mode: "svg" | "3d" | "preview" = isEditMode ? "svg" : is3DMode ? "3d" : "preview";
+  const mode: "svg" | "3d" | "preview" = isEditMode
+    ? "svg"
+    : is3DMode
+      ? "3d"
+      : "preview";
 
   const handleClick = (id: string, index: number) => {
     if (mode === "3d") {
@@ -43,7 +53,7 @@ export function ObjectsList() {
             {mode === "3d" ? "3D Objects" : "SVG Shapes"}
           </CardTitle>
           <span className="text-[10px] text-white/30 font-mono">
-            {svgShapes.length}
+            {visibleShapes.length}
           </span>
         </div>
       </CardHeader>
@@ -53,6 +63,7 @@ export function ObjectsList() {
           style={{ scrollbarWidth: "thin" }}
         >
           {svgShapes.map((shape, index) => {
+            if (shape.visible === false) return null;
             const selected = isSelected(shape.id, index);
             const hasOverride = mode === "3d" && !!shape.shapeExtrusion;
 
@@ -61,7 +72,7 @@ export function ObjectsList() {
                 key={shape.id}
                 onClick={() => handleClick(shape.id, index)}
                 className={[
-                  "flex items-center gap-2 px-3 py-1.5 cursor-pointer transition-colors text-xs",
+                  "group flex items-center gap-2 px-3 py-1.5 cursor-pointer transition-colors text-xs",
                   selected
                     ? "bg-indigo-500/20 text-white"
                     : "text-white/60 hover:bg-white/5 hover:text-white/80",
@@ -87,6 +98,20 @@ export function ObjectsList() {
                 )}
                 {selected && mode !== "preview" && (
                   <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                )}
+
+                {/* Delete button — appears on row hover */}
+                {mode !== "preview" && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      dispatch(removeShape(shape.id));
+                    }}
+                    title="Delete shape"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity ml-auto text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded p-0.5"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
                 )}
               </li>
             );

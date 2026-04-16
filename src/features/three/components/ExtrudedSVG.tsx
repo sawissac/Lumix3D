@@ -266,6 +266,7 @@ export function ExtrudedSVG() {
         {allShapeData.map((data, i) => {
           const shapeData = svgShapes[i];
           const shapeId = shapeData?.id ?? `shape-${i}`;
+          if (shapeData?.visible === false) return null;
           return (
             <ShapeMeshes
               key={shapeId}

@@ -9,8 +9,8 @@ import { ObjectsList } from "./ObjectsList";
 
 export function Sidebar() {
   return (
-    <div className="w-72 h-full bg-background/80 backdrop-blur-xl border-r border-border/50 flex flex-col shadow-2xl z-10">
-      <div className="space-y-1 p-4 border-b border-border/50 shrink-0">
+    <div className="h-full glass-strong border-r border-white/8 flex flex-col z-10 min-w-0">
+      <div className="space-y-1 p-4 border-b border-white/5 shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-md bg-linear-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
             <svg

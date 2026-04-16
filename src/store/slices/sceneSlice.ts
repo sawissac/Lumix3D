@@ -245,6 +245,15 @@ const sceneSlice = createSlice({
         shape.material = { ...shape.material, ...action.payload.material };
       }
     },
+    removeShape: (state, action: PayloadAction<string>) => {
+      const shape = state.svgShapes.find((s) => s.id === action.payload);
+      if (shape) {
+        shape.visible = false;
+      }
+      if (state.selectedShapeId === action.payload) {
+        state.selectedShapeId = null;
+      }
+    },
   },
 });
 
@@ -276,6 +285,7 @@ export const {
   setGlobalTransform,
   setGlobalMaterial,
   updateShapeMaterial,
+  removeShape,
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

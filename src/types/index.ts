@@ -25,6 +25,7 @@ export type SvgShape = {
   fill: string;
   stroke?: string;
   opacity?: number;
+  visible?: boolean;
   shapeExtrusion?: Partial<ExtrusionSettings>;
   material?: Partial<MaterialSettings>;
   position?: [number, number, number];

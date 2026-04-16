@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { SliderWithInput } from "@/components/ui/slider-with-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -57,7 +57,7 @@ export function LightingControls() {
   ];
 
   return (
-    <Card className="border-amber-500/20 bg-amber-500/5">
+    <Card className="glass-card border-amber-500/20">
       <CardHeader className="pb-3 border-b border-white/5">
         <CardTitle className="flex items-center gap-2 text-amber-400">
           <Lightbulb className="h-5 w-5" />
@@ -118,7 +118,7 @@ export function LightingControls() {
             {lights.map((light, index) => (
               <div
                 key={light.id}
-                className="space-y-4 pb-4 bg-black/10 rounded-xl p-4 border border-white/5 relative group"
+                className="space-y-4 pb-4 glass rounded-xl p-4 relative group"
               >
                 <div className="flex items-center justify-between">
                   <Label className="capitalize text-amber-200/90 font-medium flex items-center gap-2">
@@ -137,26 +137,22 @@ export function LightingControls() {
                   )}
                 </div>
 
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-xs text-white/60">Intensity</Label>
-                    <span className="text-xs font-mono bg-black/40 px-2 py-1 rounded-md text-amber-300">
-                      {light.intensity.toFixed(1)}
-                    </span>
-                  </div>
-                  <Slider
-                    value={[light.intensity]}
-                    onValueChange={(value) =>
-                      dispatch(updateLight({ ...light, intensity: value[0] }))
+                <div className="space-y-2">
+                  <Label className="text-xs text-white/60">Intensity</Label>
+                  <SliderWithInput
+                    value={light.intensity}
+                    onChange={(v) =>
+                      dispatch(updateLight({ ...light, intensity: v }))
                     }
                     min={0}
                     max={3}
                     step={0.1}
-                    className="**:[[role=slider]]:bg-amber-400 **:[[role=slider]]:border-amber-400"
+                    sliderClassName="**:[[role=slider]]:bg-amber-400 **:[[role=slider]]:border-amber-400"
+                    inputClassName="focus-visible:ring-amber-500/50 text-amber-300"
                   />
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <Label className="text-xs text-white/60">Color</Label>
                   <div className="flex gap-3">
                     <div className="relative w-12 h-9 rounded-md overflow-hidden border border-white/10 shadow-sm cursor-pointer hover:scale-105 transition-transform">
@@ -186,72 +182,27 @@ export function LightingControls() {
 
                 {light.type !== "ambient" && (
                   <div className="grid grid-cols-3 gap-3 pt-2 border-t border-white/5">
-                    <div className="space-y-2">
-                      <Label className="text-[10px] text-white/50 uppercase tracking-wider">
-                        X Pos
-                      </Label>
-                      <Input
-                        type="number"
-                        value={light.position[0]}
-                        onChange={(e) =>
-                          dispatch(
-                            updateLight({
-                              ...light,
-                              position: [
-                                parseFloat(e.target.value),
-                                light.position[1],
-                                light.position[2],
-                              ],
-                            }),
-                          )
-                        }
-                        className="h-8 bg-black/20 border-white/10 text-xs text-center"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-[10px] text-white/50 uppercase tracking-wider">
-                        Y Pos
-                      </Label>
-                      <Input
-                        type="number"
-                        value={light.position[1]}
-                        onChange={(e) =>
-                          dispatch(
-                            updateLight({
-                              ...light,
-                              position: [
-                                light.position[0],
-                                parseFloat(e.target.value),
-                                light.position[2],
-                              ],
-                            }),
-                          )
-                        }
-                        className="h-8 bg-black/20 border-white/10 text-xs text-center"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-[10px] text-white/50 uppercase tracking-wider">
-                        Z Pos
-                      </Label>
-                      <Input
-                        type="number"
-                        value={light.position[2]}
-                        onChange={(e) =>
-                          dispatch(
-                            updateLight({
-                              ...light,
-                              position: [
-                                light.position[0],
-                                light.position[1],
-                                parseFloat(e.target.value),
-                              ],
-                            }),
-                          )
-                        }
-                        className="h-8 bg-black/20 border-white/10 text-xs text-center"
-                      />
-                    </div>
+                    {(["X", "Y", "Z"] as const).map((axis, ai) => (
+                      <div key={axis} className="space-y-2">
+                        <Label className="text-[10px] text-white/50 uppercase tracking-wider">
+                          {axis} Pos
+                        </Label>
+                        <Input
+                          type="number"
+                          value={light.position[ai]}
+                          onChange={(e) => {
+                            const pos = [...light.position] as [
+                              number,
+                              number,
+                              number,
+                            ];
+                            pos[ai] = parseFloat(e.target.value);
+                            dispatch(updateLight({ ...light, position: pos }));
+                          }}
+                          className="h-8 bg-black/20 border-white/10 text-xs text-center"
+                        />
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
