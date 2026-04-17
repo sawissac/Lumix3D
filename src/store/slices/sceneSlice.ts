@@ -328,11 +328,25 @@ const sceneSlice = createSlice({
       }
       state.selectedShapeId =
         state.selectedShapeIds.length === 1 ? state.selectedShapeIds[0] : null;
+
+      // Auto-enable translate mode when shapes are selected
+      if (state.selectedShapeIds.length > 0) {
+        state.transformMode = "translate";
+      } else {
+        state.transformMode = null;
+      }
     },
     setSelectedShapeIds: (state, action: PayloadAction<string[]>) => {
       state.selectedShapeIds = action.payload;
       state.selectedShapeId =
         state.selectedShapeIds.length === 1 ? state.selectedShapeIds[0] : null;
+
+      // Auto-enable translate mode when shapes are selected
+      if (state.selectedShapeIds.length > 0) {
+        state.transformMode = "translate";
+      } else {
+        state.transformMode = null;
+      }
     },
     clearSelection: (state) => {
       state.selectedShapeIds = [];
@@ -377,6 +391,7 @@ const sceneSlice = createSlice({
       if (group) {
         state.selectedShapeIds = [...group.shapeIds];
         state.selectedShapeId = null;
+        state.transformMode = "translate";
       }
     },
     setBoxSelecting: (state, action: PayloadAction<boolean>) => {
@@ -389,6 +404,11 @@ const sceneSlice = createSlice({
         .map((s) => s.id);
       state.selectedShapeId =
         state.selectedShapeIds.length === 1 ? state.selectedShapeIds[0] : null;
+
+      // Auto-enable translate mode when shapes are selected
+      if (state.selectedShapeIds.length > 0) {
+        state.transformMode = "translate";
+      }
     },
     ungroupSelected: (state) => {
       const groupsToRemove: string[] = [];

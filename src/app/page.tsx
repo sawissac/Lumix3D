@@ -8,6 +8,7 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from "@/components/ui/resizable";
+import { ParticleBackground } from "@/components/ParticleBackground";
 
 const Canvas3D = dynamic(
   () =>
@@ -79,35 +80,68 @@ export default function Home() {
             {isEditMode ? (
               <SVGEditor />
             ) : !is3DMode ? (
-              <div className="h-full flex items-center justify-center relative z-10">
-                <div className="text-center space-y-6 p-8 glass-strong rounded-2xl shadow-2xl max-w-xl">
-                  <div className="w-16 h-16 rounded-2xl bg-linear-to-tr from-indigo-500 to-purple-500 flex items-center justify-center mx-auto shadow-lg shadow-indigo-500/20 mb-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-8 h-8 text-white"
-                    >
-                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                      <line x1="12" y1="22.08" x2="12" y2="12" />
-                    </svg>
+              <div className="h-full w-full flex items-center justify-center relative z-10 px-6">
+                <ParticleBackground />
+                <div className="relative group max-w-2xl w-full">
+                  {/* Subtle ambient glow behind the card */}
+                  <div className="absolute -inset-1 bg-linear-to-r from-indigo-500/10 via-purple-500/10 to-indigo-500/10 rounded-[2.5rem] blur-xl opacity-50 group-hover:opacity-70 transition duration-1000 pointer-events-none" />
+
+                  <div className="relative flex flex-col items-center text-center p-10 sm:p-16 bg-background/30 backdrop-blur-3xl border border-white/5 shadow-2xl rounded-[2.5rem] overflow-hidden">
+                    {/* Decorative top reflection line */}
+                    <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+                    {/* Decorative bottom reflection line */}
+                    <div className="absolute bottom-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/5 to-transparent" />
+
+                    <div className="relative w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 shadow-inner shadow-white/5 backdrop-blur-md">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="w-8 h-8 text-foreground/80"
+                      >
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                        <line x1="12" y1="22.08" x2="12" y2="12" />
+                      </svg>
+                    </div>
+
+                    <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-6 text-foreground">
+                      Lumix
+                      <span className="text-transparent bg-clip-text bg-linear-to-r from-indigo-400 to-purple-400">
+                        3D
+                      </span>
+                    </h1>
+
+                    <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-lg mx-auto mb-12 font-light">
+                      Upload an SVG file from the sidebar to begin creating your
+                      3D masterpiece. Experiment with extrusion settings and
+                      cinematic lighting presets.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 pt-8 border-t border-white/5 w-full justify-center">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground/60">
+                          Developer
+                        </span>
+                        <span className="text-sm font-medium text-foreground/80">
+                          Saw Issac
+                        </span>
+                      </div>
+                      <div className="hidden sm:block w-1 h-1 rounded-full bg-white/10" />
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground/60">
+                          Studio
+                        </span>
+                        <span className="text-sm font-medium text-foreground/80">
+                          Waux Studio
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <h2 className="text-4xl font-bold tracking-tight">
-                    Welcome to{" "}
-                    <span className="bg-clip-text text-transparent bg-linear-to-r from-indigo-400 to-purple-400">
-                      Lumix3D
-                    </span>
-                  </h2>
-                  <p className="text-muted-foreground text-lg leading-relaxed">
-                    Upload an SVG file from the sidebar to begin creating your
-                    3D masterpiece. Experiment with extrusion settings and
-                    cinematic lighting presets.
-                  </p>
                 </div>
               </div>
             ) : (

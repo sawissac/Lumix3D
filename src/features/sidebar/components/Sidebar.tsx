@@ -10,7 +10,7 @@ import { ShapeInspector } from "./ShapeInspector";
 import { ObjectsList } from "./ObjectsList";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { resetScene } from "@/store/slices/sceneSlice";
-import { FilePlus } from "lucide-react";
+import { FilePlus, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Sidebar() {
@@ -50,7 +50,7 @@ export function Sidebar() {
               className="h-7 w-7 text-white/50 hover:text-white/90 hover:bg-white/10"
               onClick={() => dispatch(resetScene())}
             >
-              <FilePlus className="h-4 w-4" />
+              <Trash className="h-4 w-4" />
             </Button>
           )}
         </div>

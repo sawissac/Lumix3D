@@ -12,7 +12,7 @@ import * as THREE from "three";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 import { ThreeEvent, useThree, createPortal } from "@react-three/fiber";
 import { ExtrusionSettings, SvgShape, MaterialSettings } from "@/types";
-import { TransformControls, Edges } from "@react-three/drei";
+import { TransformControls } from "@react-three/drei";
 import { globalGroupRef } from "../globalGroupRef";
 import { shapeObjectRegistry } from "../shapeObjectRegistry";
 
@@ -159,14 +159,9 @@ function ShapeMeshes({
             transmission={materialSettings.transmission}
             ior={materialSettings.ior}
             clearcoat={materialSettings.clearcoat}
-            emissive={
-              isSelected ? "#fbbf24" : materialSettings.emissive || "#000000"
-            }
-            emissiveIntensity={
-              isSelected ? 0.3 : materialSettings.emissiveIntensity || 0
-            }
+            emissive={materialSettings.emissive || "#000000"}
+            emissiveIntensity={materialSettings.emissiveIntensity || 0}
           />
-          {isSelected && <Edges linewidth={3} color="#fbbf24" threshold={15} />}
         </mesh>
       </group>
     </group>
@@ -429,15 +424,9 @@ export function ExtrudedSVG() {
             selectedShapeIds.forEach((id) => {
               const shape = svgShapes.find((s) => s.id === id);
               if (shape) {
-                const pos = new THREE.Vector3(
-                  ...(shape.position ?? [0, 0, 0]),
-                );
-                const eul = new THREE.Euler(
-                  ...(shape.rotation ?? [0, 0, 0]),
-                );
-                const scl = new THREE.Vector3(
-                  ...(shape.scale ?? [1, 1, 1]),
-                );
+                const pos = new THREE.Vector3(...(shape.position ?? [0, 0, 0]));
+                const eul = new THREE.Euler(...(shape.rotation ?? [0, 0, 0]));
+                const scl = new THREE.Vector3(...(shape.scale ?? [1, 1, 1]));
                 const quat = new THREE.Quaternion().setFromEuler(eul);
                 shapeMatrices.set(
                   id,
