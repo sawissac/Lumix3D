@@ -153,7 +153,7 @@ export function EffectControls() {
                     dispatch(setGroundSettings({ metalness: v }))
                   }
                   min={0}
-                  max={1}
+                  max={5}
                   step={0.01}
                   sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
                   inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"

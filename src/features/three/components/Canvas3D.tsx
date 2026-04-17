@@ -153,7 +153,7 @@ export function Canvas3D() {
         />
       )}
       <Canvas
-        camera={{ position: [0, 0, 50], fov: 50 }}
+        camera={{ position: [0, 0, 100], fov: 50 }}
         style={{ background: "transparent" }}
         gl={{ alpha: true }}
         shadows={{ type: THREE.PCFShadowMap }}
@@ -163,7 +163,6 @@ export function Canvas3D() {
         <TransformTracker />
         {showGrid && (
           <Grid
-            args={[100, 100]}
             position={[0, 0, -20]}
             rotation={[Math.PI / 2, 0, 0]}
             cellSize={1}
@@ -172,8 +171,10 @@ export function Canvas3D() {
             sectionSize={5}
             sectionThickness={1}
             sectionColor="#9d4b4b"
-            fadeDistance={100}
+            fadeDistance={200}
             fadeStrength={1}
+            infiniteGrid
+            followCamera
           />
         )}
 
@@ -181,24 +182,22 @@ export function Canvas3D() {
           <ContactShadows
             position={ground.position}
             opacity={ground.metalness}
-            scale={100}
+            scale={400}
             blur={ground.roughness * 10}
             far={20}
             color={ground.color}
-            resolution={512}
+            resolution={2048}
           />
         )}
 
-        {bloom.enabled && (
-          <EffectComposer>
-            <Bloom
-              luminanceThreshold={bloom.luminanceThreshold}
-              mipmapBlur
-              luminanceSmoothing={bloom.luminanceSmoothing}
-              intensity={bloom.intensity}
-            />
-          </EffectComposer>
-        )}
+        <EffectComposer enabled={bloom.enabled}>
+          <Bloom
+            luminanceThreshold={bloom.luminanceThreshold}
+            mipmapBlur
+            luminanceSmoothing={bloom.luminanceSmoothing}
+            intensity={bloom.enabled ? bloom.intensity : 0}
+          />
+        </EffectComposer>
         <OrbitControls
           ref={orbitControlsRef}
           makeDefault
