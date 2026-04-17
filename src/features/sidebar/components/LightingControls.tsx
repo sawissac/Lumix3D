@@ -21,8 +21,8 @@ import {
   setLightingPreset,
 } from "@/store/slices/sceneSlice";
 import {
-  lightingPresets,
-  presetDescriptions,
+  SIDEBAR_PRESET_DESCRIPTIONS,
+  SIDEBAR_LIGHTING_PRESETS,
 } from "../constants/lightingPresets";
 import { LightingPreset } from "@/types";
 
@@ -36,25 +36,11 @@ export function LightingControls() {
 
   const handlePresetChange = (preset: LightingPreset) => {
     dispatch(setLightingPreset(preset));
-    const presetLights = lightingPresets[preset];
+    const presetLights = SIDEBAR_LIGHTING_PRESETS[preset];
     if (presetLights.length > 0) {
       dispatch(setLights(presetLights));
     }
   };
-
-  const presetOptions: LightingPreset[] = [
-    "three-point",
-    "high-key",
-    "low-key",
-    "soft",
-    "hard",
-    "backlighting",
-    "side-lighting",
-    "frontal",
-    "underlighting",
-    "top-lighting",
-    "silhouette",
-  ];
 
   return (
     <Card className="glass-card border-amber-500/20">
@@ -86,23 +72,23 @@ export function LightingControls() {
             <div className="space-y-3">
               <Label className="text-white/80">Lighting Preset</Label>
               <div className="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
-                {presetOptions.map((preset) => (
+                {Object.keys(SIDEBAR_LIGHTING_PRESETS).map((key) => (
                   <Button
-                    key={preset}
-                    variant={currentPreset === preset ? "default" : "outline"}
-                    onClick={() => handlePresetChange(preset)}
+                    key={key}
+                    variant={currentPreset === key ? "default" : "outline"}
+                    onClick={() => handlePresetChange(key as LightingPreset)}
                     className={`justify-start text-left h-auto py-3 transition-all ${
-                      currentPreset === preset
+                      currentPreset === key
                         ? "bg-amber-500/20 text-amber-300 border-amber-500/50 hover:bg-amber-500/30"
                         : "bg-black/20 text-white/70 border-white/10 hover:bg-white/10 hover:text-white"
                     }`}
                   >
                     <div>
                       <div className="font-medium capitalize mb-1">
-                        {preset.replace("-", " ")}
+                        {key.replace("-", " ")}
                       </div>
                       <div className="text-xs opacity-70 leading-relaxed whitespace-normal wrap-break-word">
-                        {presetDescriptions[preset]}
+                        {SIDEBAR_PRESET_DESCRIPTIONS[key as LightingPreset]}
                       </div>
                     </div>
                   </Button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Wand2 } from "lucide-react";
+import { Wand2, Zap, Star, MessageCircle, PawPrint } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -25,9 +25,19 @@ import {
   setSvgFocusIndex,
   setEditMode,
 } from "@/store/slices/sceneSlice";
-import { demoScenes, DemoScene } from "../constants/demoScenes";
-import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
+import { SIDEBAR_DEMO_SCENES, DemoScene } from "../constants/demoScenes";
+import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 import { SvgShape } from "@/types";
+
+const SCENE_ICONS: Record<
+  string,
+  React.ComponentType<{ className?: string }>
+> = {
+  bolt: Zap,
+  star: Star,
+  chat: MessageCircle,
+  paw: PawPrint,
+};
 
 function loadDemoScene(scene: DemoScene) {
   const loader = new SVGLoader();
@@ -85,23 +95,28 @@ export function QuickScenes() {
         </CardTitle>
         <CardDescription>One-click 3D app icon demos</CardDescription>
       </CardHeader>
-      <CardContent className="pt-4">
+      <CardContent className="pt-3 pb-3">
         <div className="grid grid-cols-4 gap-2">
-          {demoScenes.map((scene) => (
-            <button
-              key={scene.id}
-              onClick={() => handleLoad(scene)}
-              className="group flex flex-col items-center gap-1.5 focus:outline-none"
-            >
-              <div
-                className="w-full aspect-square rounded-xl shadow-md group-hover:scale-110 group-hover:shadow-lg group-focus-visible:ring-2 group-focus-visible:ring-white/40 transition-all duration-200 border border-white/10"
-                style={{ background: scene.color }}
-              />
-              <span className="text-[10px] text-white/50 group-hover:text-white/80 transition-colors">
-                {scene.name}
-              </span>
-            </button>
-          ))}
+          {SIDEBAR_DEMO_SCENES.map((scene: DemoScene) => {
+            const Icon = SCENE_ICONS[scene.id];
+            return (
+              <button
+                key={scene.id}
+                onClick={() => handleLoad(scene)}
+                className="group flex flex-col items-center gap-1 focus:outline-none"
+              >
+                <div
+                  className="w-full aspect-square rounded-lg shadow-md group-hover:scale-105 group-hover:shadow-lg group-focus-visible:ring-2 group-focus-visible:ring-white/40 transition-all duration-200 border border-white/10 flex items-center justify-center"
+                  style={{ background: scene.color }}
+                >
+                  {Icon && <Icon className="w-5 h-5 text-white/90" />}
+                </div>
+                <span className="text-[9px] text-white/50 group-hover:text-white/80 transition-colors">
+                  {scene.name}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </CardContent>
     </Card>

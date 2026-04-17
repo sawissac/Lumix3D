@@ -1,4 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lumix3D
+
+A powerful 3D SVG extrusion and manipulation tool built with Next.js, Three.js, and React Three Fiber.
+
+## Features
+
+### 3D Object Selection & Transformation
+- **Click to Select**: Click any 3D object to select it
+- **Multi-Selection**: Hold `Ctrl` (Windows/Linux) or `Cmd` (Mac) and click to select multiple objects
+- **Visual Feedback**: Selected objects show yellow edges and a subtle amber glow
+- **Transform Modes**:
+  - **Move (G)**: Translate objects in 3D space
+  - **Rotate (R)**: Rotate objects around their center
+  - **Scale (S)**: Scale objects uniformly or per-axis
+- **Keyboard Shortcuts**:
+  - `G` - Toggle Move mode
+  - `R` - Toggle Rotate mode
+  - `S` - Toggle Scale mode
+  - `ESC` - Deselect all objects
+- **Axis Locking**: Lock rotation on specific axes (X, Y, Z)
+
+### Object Grouping
+- **Create Groups**: Select 2 or more objects and click "Create Group" to group them together
+- **Named Groups**: Give custom names to your groups for easy organization
+- **Group Transform**: Select a group to transform all objects within it simultaneously
+- **Ungroup**: Break apart groups to manipulate objects individually
+- **Group Management**: View all groups in the bottom-left panel with object counts
+- **Persistent Groups**: Groups maintain their structure throughout your session
 
 ## Getting Started
 

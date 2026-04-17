@@ -8,6 +8,9 @@ import {
   LightingPreset,
   SvgSelectionInfo,
   MaterialSettings,
+  BloomSettings,
+  GroundSettings,
+  ObjectGroup,
 } from "@/types";
 
 const initialState: AppState = {
@@ -58,14 +61,42 @@ const initialState: AppState = {
       enabled: true,
     },
   ],
+  bloom: {
+    enabled: false,
+    intensity: 1.5,
+    luminanceThreshold: 0.9,
+    luminanceSmoothing: 0.025,
+  },
+  ground: {
+    enabled: true,
+    color: "#202020",
+    metalness: 1.0,
+    roughness: 0.37,
+    position: [0, -18, 0],
+  },
   currentPreset: "custom",
   is3DMode: false,
   isEditMode: false,
   showGrid: true,
   selectedShapeId: null,
+  selectedShapeIds: [],
+  groups: [],
   svgSelection: null,
   svgFocusIndex: null,
   transformMode: null,
+  rotationLock: {
+    x: false,
+    y: false,
+    z: false,
+  },
+  orbitControlsLock: {
+    rotate: false,
+    pan: false,
+    zoom: false,
+    rotateX: false,
+    rotateY: false,
+    rotateZ: false,
+  },
 };
 
 const sceneSlice = createSlice({
@@ -254,6 +285,114 @@ const sceneSlice = createSlice({
         state.selectedShapeId = null;
       }
     },
+    setBloomSettings: (
+      state,
+      action: PayloadAction<Partial<BloomSettings>>,
+    ) => {
+      state.bloom = { ...state.bloom, ...action.payload };
+    },
+    setGroundSettings: (
+      state,
+      action: PayloadAction<Partial<GroundSettings>>,
+    ) => {
+      state.ground = { ...state.ground, ...action.payload };
+    },
+    toggleRotationLock: (state, action: PayloadAction<"x" | "y" | "z">) => {
+      const axis = action.payload;
+      state.rotationLock[axis] = !state.rotationLock[axis];
+    },
+    toggleOrbitControlsLock: (
+      state,
+      action: PayloadAction<
+        "rotate" | "pan" | "zoom" | "rotateX" | "rotateY" | "rotateZ"
+      >,
+    ) => {
+      const control = action.payload;
+      state.orbitControlsLock[control] = !state.orbitControlsLock[control];
+    },
+    toggleShapeSelection: (
+      state,
+      action: PayloadAction<{ id: string; additive: boolean }>,
+    ) => {
+      const { id, additive } = action.payload;
+      if (additive) {
+        const index = state.selectedShapeIds.indexOf(id);
+        if (index > -1) {
+          state.selectedShapeIds.splice(index, 1);
+        } else {
+          state.selectedShapeIds.push(id);
+        }
+      } else {
+        state.selectedShapeIds = [id];
+      }
+      state.selectedShapeId =
+        state.selectedShapeIds.length === 1 ? state.selectedShapeIds[0] : null;
+    },
+    setSelectedShapeIds: (state, action: PayloadAction<string[]>) => {
+      state.selectedShapeIds = action.payload;
+      state.selectedShapeId =
+        state.selectedShapeIds.length === 1 ? state.selectedShapeIds[0] : null;
+    },
+    clearSelection: (state) => {
+      state.selectedShapeIds = [];
+      state.selectedShapeId = null;
+      state.transformMode = null;
+    },
+    createGroup: (state, action: PayloadAction<{ name: string }>) => {
+      if (state.selectedShapeIds.length < 2) return;
+      const newGroup: ObjectGroup = {
+        id: `group-${Date.now()}`,
+        name: action.payload.name,
+        shapeIds: [...state.selectedShapeIds],
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+      };
+      state.groups.push(newGroup);
+      state.selectedShapeIds = [];
+      state.selectedShapeId = null;
+    },
+    deleteGroup: (state, action: PayloadAction<string>) => {
+      state.groups = state.groups.filter((g) => g.id !== action.payload);
+    },
+    updateGroupTransform: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        position?: [number, number, number];
+        rotation?: [number, number, number];
+        scale?: [number, number, number];
+      }>,
+    ) => {
+      const group = state.groups.find((g) => g.id === action.payload.id);
+      if (group) {
+        if (action.payload.position) group.position = action.payload.position;
+        if (action.payload.rotation) group.rotation = action.payload.rotation;
+        if (action.payload.scale) group.scale = action.payload.scale;
+      }
+    },
+    selectGroup: (state, action: PayloadAction<string>) => {
+      const group = state.groups.find((g) => g.id === action.payload);
+      if (group) {
+        state.selectedShapeIds = [...group.shapeIds];
+        state.selectedShapeId = null;
+      }
+    },
+    ungroupSelected: (state) => {
+      const groupsToRemove: string[] = [];
+      for (const group of state.groups) {
+        const hasAllShapes = group.shapeIds.every((id) =>
+          state.selectedShapeIds.includes(id),
+        );
+        if (
+          hasAllShapes &&
+          group.shapeIds.length === state.selectedShapeIds.length
+        ) {
+          groupsToRemove.push(group.id);
+        }
+      }
+      state.groups = state.groups.filter((g) => !groupsToRemove.includes(g.id));
+    },
   },
 });
 
@@ -286,6 +425,18 @@ export const {
   setGlobalMaterial,
   updateShapeMaterial,
   removeShape,
+  setBloomSettings,
+  setGroundSettings,
+  toggleRotationLock,
+  toggleOrbitControlsLock,
+  toggleShapeSelection,
+  setSelectedShapeIds,
+  clearSelection,
+  createGroup,
+  deleteGroup,
+  updateGroupTransform,
+  selectGroup,
+  ungroupSelected,
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

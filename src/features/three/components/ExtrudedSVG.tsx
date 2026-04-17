@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  setSelectedShapeId,
+  toggleShapeSelection,
   updateShapeTransform,
   setGlobalTransform,
+  clearSelection,
 } from "@/store/slices/sceneSlice";
 import * as THREE from "three";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
@@ -22,6 +23,7 @@ type ShapeMeshesProps = {
   globalMaterial: MaterialSettings;
   isSelected: boolean;
   transformMode: "translate" | "rotate" | "scale" | null;
+  rotationLock: { x: boolean; y: boolean; z: boolean };
   onSelect: () => void;
   onTransformChange: (transform: {
     position?: [number, number, number];
@@ -38,6 +40,7 @@ function ShapeMeshes({
   globalMaterial,
   isSelected,
   transformMode,
+  rotationLock,
   onSelect,
   onTransformChange,
 }: ShapeMeshesProps) {
@@ -90,8 +93,15 @@ function ShapeMeshes({
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    onSelect();
+    const isAdditive = e.nativeEvent.ctrlKey || e.nativeEvent.metaKey;
+    if (isAdditive) {
+      onSelect();
+    } else {
+      onSelect();
+    }
   };
+
+  const didInitPositionRef = useRef(false);
 
   // Sync group transform with store on mount or prop change
   useEffect(() => {
@@ -99,7 +109,6 @@ function ShapeMeshes({
       if (shapeData?.position) {
         groupObj.position.set(...shapeData.position);
       } else {
-        // Fallback to default center if not positioned yet
         groupObj.position.copy(defaultCenter);
       }
 
@@ -111,6 +120,17 @@ function ShapeMeshes({
       }
     }
   }, [shapeData, groupObj, defaultCenter]);
+
+  // Seed the store with the visual default center so multi-select math
+  // doesn't see undefined position (which would collapse everything to origin).
+  useEffect(() => {
+    if (shapeData && !shapeData.position && !didInitPositionRef.current) {
+      didInitPositionRef.current = true;
+      onTransformChange({
+        position: [defaultCenter.x, defaultCenter.y, defaultCenter.z],
+      });
+    }
+  }, [shapeData, defaultCenter, onTransformChange]);
 
   const content = (
     <group ref={setGroupObj} onClick={handleClick}>
@@ -124,10 +144,14 @@ function ShapeMeshes({
             transmission={materialSettings.transmission}
             ior={materialSettings.ior}
             clearcoat={materialSettings.clearcoat}
-            emissive={materialSettings.emissive || "#000000"}
-            emissiveIntensity={materialSettings.emissiveIntensity || 0}
+            emissive={
+              isSelected ? "#fbbf24" : materialSettings.emissive || "#000000"
+            }
+            emissiveIntensity={
+              isSelected ? 0.3 : materialSettings.emissiveIntensity || 0
+            }
           />
-          {isSelected && <Edges linewidth={2} color="#fbbf24" threshold={15} />}
+          {isSelected && <Edges linewidth={3} color="#fbbf24" threshold={15} />}
         </mesh>
       </group>
     </group>
@@ -143,11 +167,22 @@ function ShapeMeshes({
           <TransformControls
             object={groupObj}
             mode={transformMode}
+            showX={transformMode === "rotate" ? !rotationLock.x : true}
+            showY={transformMode === "rotate" ? !rotationLock.y : true}
+            showZ={transformMode === "rotate" ? !rotationLock.z : true}
             onChange={() => {
               if (groupObj) {
                 onTransformChange({
-                  position: [groupObj.position.x, groupObj.position.y, groupObj.position.z],
-                  rotation: [groupObj.rotation.x, groupObj.rotation.y, groupObj.rotation.z],
+                  position: [
+                    groupObj.position.x,
+                    groupObj.position.y,
+                    groupObj.position.z,
+                  ],
+                  rotation: [
+                    groupObj.rotation.x,
+                    groupObj.rotation.y,
+                    groupObj.rotation.z,
+                  ],
                   scale: [groupObj.scale.x, groupObj.scale.y, groupObj.scale.z],
                 });
               }
@@ -155,8 +190,16 @@ function ShapeMeshes({
             onMouseUp={() => {
               if (groupObj) {
                 onTransformChange({
-                  position: [groupObj.position.x, groupObj.position.y, groupObj.position.z],
-                  rotation: [groupObj.rotation.x, groupObj.rotation.y, groupObj.rotation.z],
+                  position: [
+                    groupObj.position.x,
+                    groupObj.position.y,
+                    groupObj.position.z,
+                  ],
+                  rotation: [
+                    groupObj.rotation.x,
+                    groupObj.rotation.y,
+                    groupObj.rotation.z,
+                  ],
                   scale: [groupObj.scale.x, groupObj.scale.y, groupObj.scale.z],
                 });
               }
@@ -177,10 +220,14 @@ export function ExtrudedSVG() {
   const selectedShapeId = useAppSelector(
     (state) => state.scene.selectedShapeId,
   );
+  const selectedShapeIds = useAppSelector(
+    (state) => state.scene.selectedShapeIds,
+  );
   const transformMode = useAppSelector((state) => state.scene.transformMode);
   const globalTransform = useAppSelector(
     (state) => state.scene.globalTransform,
   );
+  const rotationLock = useAppSelector((state) => state.scene.rotationLock);
 
   const { allShapeData, globalCenter, svgScale } = useMemo(() => {
     if (!svgFile)
@@ -234,6 +281,16 @@ export function ExtrudedSVG() {
     null,
   );
 
+  const [multiSelectGroupObj, setMultiSelectGroupObj] =
+    useState<THREE.Group | null>(null);
+
+  const multiSelectInitialStateRef = useRef<{
+    groupInverseMatrix: THREE.Matrix4;
+    shapeMatrices: Map<string, THREE.Matrix4>;
+  } | null>(null);
+
+  const isDraggingMultiRef = useRef(false);
+
   // Sync global transform
   useEffect(() => {
     if (globalGroupObj) {
@@ -249,6 +306,33 @@ export function ExtrudedSVG() {
     }
   }, [globalTransform, globalGroupObj]);
 
+  useEffect(() => {
+    if (
+      multiSelectGroupObj &&
+      selectedShapeIds.length > 1 &&
+      !isDraggingMultiRef.current
+    ) {
+      const positions = selectedShapeIds
+        .map((id) => {
+          const shape = svgShapes.find((s) => s.id === id);
+          return shape?.position;
+        })
+        .filter((p): p is [number, number, number] => p !== undefined);
+
+      if (positions.length > 0) {
+        const avgX =
+          positions.reduce((sum, p) => sum + p[0], 0) / positions.length;
+        const avgY =
+          positions.reduce((sum, p) => sum + p[1], 0) / positions.length;
+        const avgZ =
+          positions.reduce((sum, p) => sum + p[2], 0) / positions.length;
+        multiSelectGroupObj.position.set(avgX, avgY, avgZ);
+        multiSelectGroupObj.rotation.set(0, 0, 0);
+        multiSelectGroupObj.scale.set(1, 1, 1);
+      }
+    }
+  }, [selectedShapeIds, svgShapes, multiSelectGroupObj]);
+
   if (!svgFile || svgShapes.length === 0 || allShapeData.length === 0)
     return null;
 
@@ -260,7 +344,11 @@ export function ExtrudedSVG() {
       }}
       onPointerMissed={(e) => {
         if (e.type === "click") {
-          dispatch(setSelectedShapeId("global"));
+          const nativeEvent = e as unknown as PointerEvent;
+          const isAdditive = nativeEvent.ctrlKey || nativeEvent.metaKey;
+          if (!isAdditive) {
+            dispatch(clearSelection());
+          }
         }
       }}
     >
@@ -272,6 +360,7 @@ export function ExtrudedSVG() {
           const shapeData = svgShapes[i];
           const shapeId = shapeData?.id ?? `shape-${i}`;
           if (shapeData?.visible === false) return null;
+          const isSelected = selectedShapeIds.includes(shapeId);
           return (
             <ShapeMeshes
               key={shapeId}
@@ -280,15 +369,23 @@ export function ExtrudedSVG() {
               shapeData={shapeData}
               globalExtrusion={extrusion}
               globalMaterial={globalMaterial}
-              isSelected={selectedShapeId === shapeId}
-              transformMode={transformMode}
-              onSelect={() => dispatch(setSelectedShapeId(shapeId))}
+              isSelected={isSelected}
+              transformMode={selectedShapeIds.length > 1 ? null : transformMode}
+              rotationLock={rotationLock}
+              onSelect={() => {
+                const event = window.event as MouseEvent;
+                const isAdditive = event?.ctrlKey || event?.metaKey;
+                dispatch(
+                  toggleShapeSelection({ id: shapeId, additive: isAdditive }),
+                );
+              }}
               onTransformChange={(transform) => {
                 dispatch(updateShapeTransform({ id: shapeId, ...transform }));
               }}
             />
           );
         })}
+        <group ref={setMultiSelectGroupObj} />
       </group>
     </group>
   );
@@ -296,17 +393,112 @@ export function ExtrudedSVG() {
   return (
     <>
       {content}
+      {selectedShapeIds.length > 1 && transformMode && multiSelectGroupObj && (
+        <TransformControls
+          object={multiSelectGroupObj}
+          mode={transformMode}
+          showX={transformMode === "rotate" ? !rotationLock.x : true}
+          showY={transformMode === "rotate" ? !rotationLock.y : true}
+          showZ={transformMode === "rotate" ? !rotationLock.z : true}
+          onMouseDown={() => {
+            isDraggingMultiRef.current = true;
+            if (!multiSelectGroupObj) return;
+
+            multiSelectGroupObj.updateMatrix();
+            const groupInverseMatrix = multiSelectGroupObj.matrix
+              .clone()
+              .invert();
+
+            const shapeMatrices = new Map<string, THREE.Matrix4>();
+            selectedShapeIds.forEach((id) => {
+              const shape = svgShapes.find((s) => s.id === id);
+              if (shape) {
+                const pos = new THREE.Vector3(
+                  ...(shape.position ?? [0, 0, 0]),
+                );
+                const eul = new THREE.Euler(
+                  ...(shape.rotation ?? [0, 0, 0]),
+                );
+                const scl = new THREE.Vector3(
+                  ...(shape.scale ?? [1, 1, 1]),
+                );
+                const quat = new THREE.Quaternion().setFromEuler(eul);
+                shapeMatrices.set(
+                  id,
+                  new THREE.Matrix4().compose(pos, quat, scl),
+                );
+              }
+            });
+
+            multiSelectInitialStateRef.current = {
+              groupInverseMatrix,
+              shapeMatrices,
+            };
+          }}
+          onObjectChange={() => {
+            if (!multiSelectGroupObj || !multiSelectInitialStateRef.current)
+              return;
+
+            multiSelectGroupObj.updateMatrix();
+            const initial = multiSelectInitialStateRef.current;
+
+            const delta = new THREE.Matrix4().multiplyMatrices(
+              multiSelectGroupObj.matrix,
+              initial.groupInverseMatrix,
+            );
+
+            selectedShapeIds.forEach((id) => {
+              const initM = initial.shapeMatrices.get(id);
+              if (!initM) return;
+
+              const newM = new THREE.Matrix4().multiplyMatrices(delta, initM);
+              const pos = new THREE.Vector3();
+              const quat = new THREE.Quaternion();
+              const scl = new THREE.Vector3();
+              newM.decompose(pos, quat, scl);
+              const eul = new THREE.Euler().setFromQuaternion(quat);
+
+              dispatch(
+                updateShapeTransform({
+                  id,
+                  position: [pos.x, pos.y, pos.z],
+                  rotation: [eul.x, eul.y, eul.z],
+                  scale: [scl.x, scl.y, scl.z],
+                }),
+              );
+            });
+          }}
+          onMouseUp={() => {
+            isDraggingMultiRef.current = false;
+          }}
+        />
+      )}
       {selectedShapeId === "global" && transformMode && globalGroupObj && (
         <TransformControls
           object={globalGroupObj}
           mode={transformMode}
+          showX={transformMode === "rotate" ? !rotationLock.x : true}
+          showY={transformMode === "rotate" ? !rotationLock.y : true}
+          showZ={transformMode === "rotate" ? !rotationLock.z : true}
           onChange={() => {
             if (globalGroupObj) {
               dispatch(
                 setGlobalTransform({
-                  position: [globalGroupObj.position.x, globalGroupObj.position.y, globalGroupObj.position.z],
-                  rotation: [globalGroupObj.rotation.x, globalGroupObj.rotation.y, globalGroupObj.rotation.z],
-                  scale: [globalGroupObj.scale.x, globalGroupObj.scale.y, globalGroupObj.scale.z],
+                  position: [
+                    globalGroupObj.position.x,
+                    globalGroupObj.position.y,
+                    globalGroupObj.position.z,
+                  ],
+                  rotation: [
+                    globalGroupObj.rotation.x,
+                    globalGroupObj.rotation.y,
+                    globalGroupObj.rotation.z,
+                  ],
+                  scale: [
+                    globalGroupObj.scale.x,
+                    globalGroupObj.scale.y,
+                    globalGroupObj.scale.z,
+                  ],
                 }),
               );
             }
@@ -315,9 +507,21 @@ export function ExtrudedSVG() {
             if (globalGroupObj) {
               dispatch(
                 setGlobalTransform({
-                  position: [globalGroupObj.position.x, globalGroupObj.position.y, globalGroupObj.position.z],
-                  rotation: [globalGroupObj.rotation.x, globalGroupObj.rotation.y, globalGroupObj.rotation.z],
-                  scale: [globalGroupObj.scale.x, globalGroupObj.scale.y, globalGroupObj.scale.z],
+                  position: [
+                    globalGroupObj.position.x,
+                    globalGroupObj.position.y,
+                    globalGroupObj.position.z,
+                  ],
+                  rotation: [
+                    globalGroupObj.rotation.x,
+                    globalGroupObj.rotation.y,
+                    globalGroupObj.rotation.z,
+                  ],
+                  scale: [
+                    globalGroupObj.scale.x,
+                    globalGroupObj.scale.y,
+                    globalGroupObj.scale.z,
+                  ],
                 }),
               );
             }

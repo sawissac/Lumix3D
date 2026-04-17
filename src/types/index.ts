@@ -58,7 +58,12 @@ export type LightingPreset =
   | "silhouette"
   | "custom";
 
-export type BackgroundType = "color" | "gradient" | "radial-gradient" | "transparent" | "image";
+export type BackgroundType =
+  | "color"
+  | "gradient"
+  | "radial-gradient"
+  | "transparent"
+  | "image";
 
 export type Background = {
   type: BackgroundType;
@@ -91,6 +96,45 @@ export type GlobalTransform = {
   scale: [number, number, number];
 };
 
+export type GroundSettings = {
+  enabled: boolean;
+  color: string;
+  metalness: number;
+  roughness: number;
+  position: [number, number, number];
+};
+
+export type BloomSettings = {
+  enabled: boolean;
+  intensity: number;
+  luminanceThreshold: number;
+  luminanceSmoothing: number;
+};
+
+export type RotationLock = {
+  x: boolean;
+  y: boolean;
+  z: boolean;
+};
+
+export type OrbitControlsLock = {
+  rotate: boolean;
+  pan: boolean;
+  zoom: boolean;
+  rotateX: boolean;
+  rotateY: boolean;
+  rotateZ: boolean;
+};
+
+export type ObjectGroup = {
+  id: string;
+  name: string;
+  shapeIds: string[];
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+  scale?: [number, number, number];
+};
+
 export type AppState = {
   svgShapes: SvgShape[];
   svgFile: string | null;
@@ -100,11 +144,17 @@ export type AppState = {
   background: Background;
   lights: Light[];
   currentPreset: LightingPreset;
+  bloom: BloomSettings;
+  ground: GroundSettings;
   is3DMode: boolean;
   isEditMode: boolean;
   showGrid: boolean;
   selectedShapeId: string | "global" | null;
+  selectedShapeIds: string[];
+  groups: ObjectGroup[];
   svgSelection: SvgSelectionInfo | null;
   svgFocusIndex: number | null;
   transformMode: "translate" | "rotate" | "scale" | null;
+  rotationLock: RotationLock;
+  orbitControlsLock: OrbitControlsLock;
 };

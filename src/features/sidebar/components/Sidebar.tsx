@@ -4,6 +4,7 @@ import { SVGUploader } from "./SVGUploader";
 import { QuickScenes } from "./QuickScenes";
 import { ExtrusionControls } from "./ExtrusionControls";
 import { BackgroundControls } from "./BackgroundControls";
+import { EffectControls } from "./EffectControls";
 import { LightingControls } from "./LightingControls";
 import { ShapeInspector } from "./ShapeInspector";
 import { ObjectsList } from "./ObjectsList";
@@ -45,6 +46,7 @@ export function Sidebar() {
         <ShapeInspector />
         <ExtrusionControls />
         <BackgroundControls />
+        <EffectControls />
         <LightingControls />
       </div>
     </div>
