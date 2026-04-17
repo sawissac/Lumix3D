@@ -1,8 +1,12 @@
 "use client";
 
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Sidebar } from "@/features/sidebar/components/Sidebar";
-import { useAppSelector } from "@/store/hooks";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { setSvgFile, setSvgShapes } from "@/store/slices/sceneSlice";
+import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
+import { SvgShape } from "@/types";
 import {
   ResizablePanelGroup,
   ResizablePanel,
@@ -54,6 +58,65 @@ const SceneTransformToolbar = dynamic(
 export default function Home() {
   const is3DMode = useAppSelector((state) => state.scene.is3DMode);
   const isEditMode = useAppSelector((state) => state.scene.isEditMode);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      // Don't intercept if user is typing in an input/textarea
+      const target = e.target as HTMLElement;
+      if (target?.tagName === "INPUT" || target?.tagName === "TEXTAREA") return;
+
+      const pastedText = e.clipboardData?.getData("text");
+      // Check if it looks like an SVG
+      if (pastedText && pastedText.trim().toLowerCase().startsWith("<svg")) {
+        try {
+          const loader = new SVGLoader();
+          const svgData = loader.parse(pastedText);
+
+          let shapeCount = 0;
+          const shapes: SvgShape[] = [];
+
+          svgData.paths.forEach((path) => {
+            const subShapes = SVGLoader.createShapes(path);
+            subShapes.forEach(() => {
+              shapes.push({
+                id: `shape-${shapeCount}`,
+                path: pastedText,
+                fill: path.color?.getStyle() || "#cccccc",
+                stroke: path.userData?.style?.stroke || undefined,
+                opacity: 1,
+              });
+              shapeCount++;
+            });
+          });
+
+          dispatch(setSvgFile(pastedText));
+          dispatch(setSvgShapes(shapes));
+          
+          e.preventDefault(); // Prevent further handling since we captured the SVG
+        } catch (error) {
+          console.error("Error parsing pasted SVG:", error);
+        }
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Disable ctrl/cmd + s, p, and o natively to prevent browser popups
+      if (e.ctrlKey || e.metaKey) {
+        const key = e.key.toLowerCase();
+        if (["s", "p", "o", "g"].includes(key)) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    window.addEventListener("paste", handlePaste);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("paste", handlePaste);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [dispatch]);
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-background">

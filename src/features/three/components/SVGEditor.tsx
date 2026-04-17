@@ -6,8 +6,9 @@ import { setSvgFile, setSvgShapes, setEditMode, set3DMode, setSvgSelection, clea
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { SvgShape } from '@/types';
 import { Button } from '@/components/ui/button';
-import { Trash2, Ungroup, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { Trash2, Ungroup, ZoomIn, ZoomOut, RotateCcw, PenTool } from 'lucide-react';
 import type { Canvas as FabricCanvas, FabricObject } from 'fabric';
+import { preprocessSVGForThree } from '@/features/three/utils/svgPreprocess';
 
 type SelectionProps = {
   fill: string;
@@ -75,7 +76,7 @@ export function SVGEditor() {
       const width = containerEl.clientWidth || 800;
       const height = containerEl.clientHeight || 600;
 
-      const canvas = new Canvas(canvasEl, { width, height, backgroundColor: '#1a1a1a' });
+      const canvas = new Canvas(canvasEl, { width, height, backgroundColor: 'transparent' });
       fabricRef.current = canvas;
 
       const { objects, options } = await loadSVGFromString(svgFile);
@@ -183,8 +184,10 @@ export function SVGEditor() {
     fabricRef.current.backgroundColor = '';
     const svgOutput = fabricRef.current.toSVG();
     fabricRef.current.backgroundColor = prevBg as string;
+    // Store the raw Fabric SVG for re-editing in the 2D canvas
     dispatch(setSvgFile(svgOutput));
 
+    // Parse shapes from raw SVG for the store
     try {
       const loader = new SVGLoader();
       const svgData = loader.parse(svgOutput);
@@ -205,7 +208,44 @@ export function SVGEditor() {
 
   const handleCancel = () => dispatch(setEditMode(false));
 
-  const handleConvertTo3D = () => { handleApply(); dispatch(set3DMode(true)); };
+  const handleConvertTo3D = async () => {
+    if (!fabricRef.current) return;
+    const prevBg = fabricRef.current.backgroundColor;
+    fabricRef.current.backgroundColor = '';
+    const svgOutput = fabricRef.current.toSVG();
+    fabricRef.current.backgroundColor = prevBg as string;
+
+    // Store raw SVG (Fabric can re-edit it later)
+    dispatch(setSvgFile(svgOutput));
+
+    // Preprocess: convert strokes → fills so Three.js extracts correct geometry
+    let processedSvg = svgOutput;
+    try {
+      const result = await preprocessSVGForThree(svgOutput);
+      processedSvg = result.svgString;
+    } catch {
+      // fall back to raw if preprocessing fails
+    }
+
+    // Extract shape colour metadata from the preprocessed SVG
+    try {
+      const loader = new SVGLoader();
+      const svgData = loader.parse(processedSvg);
+      const shapes: SvgShape[] = svgData.paths.map((path, i) => ({
+        id: `shape-${i}`,
+        path: processedSvg,
+        fill: path.color?.getStyle() || '#cccccc',
+        stroke: path.userData?.style?.stroke || undefined,
+        opacity: 1,
+      }));
+      dispatch(setSvgShapes(shapes));
+    } catch {
+      // shapes will be re-parsed on 3D convert
+    }
+
+    dispatch(setEditMode(false));
+    dispatch(set3DMode(true));
+  };
 
   const handleDeleteSelected = () => {
     const canvas = fabricRef.current;
@@ -244,88 +284,126 @@ export function SVGEditor() {
   };
 
   return (
-    <div className="h-full flex flex-col">
-      {/* Toolbar */}
-      <div className="flex items-center gap-2 px-4 py-2 border-b bg-background shrink-0 flex-wrap">
-        <span className="text-sm font-medium mr-1">SVG Editor</span>
+    <div className="h-full flex flex-col relative bg-background/80 backdrop-blur-xl">
+      {/* Ambient glowing blobs behind the editor */}
+      <div className="absolute top-0 left-[-10%] w-96 h-96 rounded-full bg-indigo-500/20 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-[-10%] w-96 h-96 rounded-full bg-fuchsia-500/20 blur-[120px] pointer-events-none" />
+      
+      {/* Compact Toolbar */}
+      <div className="flex items-center gap-2 px-3 py-1.5 border-b border-white/5 bg-black/40 backdrop-blur-3xl shrink-0 flex-wrap relative z-10 shadow-lg">
+        <div className="flex items-center gap-1.5 mr-2">
+          <div className="p-1 bg-linear-to-br from-indigo-500 to-purple-500 rounded-md shadow-sm shadow-indigo-500/20">
+             <PenTool className="w-3.5 h-3.5 text-white" />
+          </div>
+          <span className="text-sm font-semibold bg-clip-text text-transparent bg-linear-to-r from-indigo-400 to-purple-400 tracking-tight">
+            Canvas
+          </span>
+        </div>
 
-        <Button size="sm" variant="outline" onClick={() => handleZoom(0.1)} title="Zoom In">
-          <ZoomIn className="h-4 w-4" />
-        </Button>
-        <Button size="sm" variant="outline" onClick={() => handleZoom(-0.1)} title="Zoom Out">
-          <ZoomOut className="h-4 w-4" />
-        </Button>
-        <Button size="sm" variant="outline" onClick={handleResetView} title="Reset View">
-          <RotateCcw className="h-4 w-4" />
-        </Button>
-        <Button size="sm" variant="outline" onClick={handleUngroup} title="Ungroup">
-          <Ungroup className="h-4 w-4" />
-        </Button>
-        <Button size="sm" variant="outline" onClick={handleDeleteSelected} title="Delete Selected">
-          <Trash2 className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center bg-white/5 rounded p-0.5 border border-white/10 shadow-inner">
+          <Button size="sm" variant="ghost" className="h-6 w-6 p-0 text-white/70 hover:text-white hover:bg-white/10 transition-colors" onClick={() => handleZoom(0.1)} title="Zoom In">
+            <ZoomIn className="h-3.5 w-3.5" />
+          </Button>
+          <div className="w-px h-3 bg-white/10 mx-0.5" />
+          <Button size="sm" variant="ghost" className="h-6 w-6 p-0 text-white/70 hover:text-white hover:bg-white/10 transition-colors" onClick={() => handleZoom(-0.1)} title="Zoom Out">
+            <ZoomOut className="h-3.5 w-3.5" />
+          </Button>
+          <div className="w-px h-3 bg-white/10 mx-0.5" />
+          <Button size="sm" variant="ghost" className="h-6 w-6 p-0 text-white/70 hover:text-white hover:bg-white/10 transition-colors" onClick={handleResetView} title="Reset View">
+            <RotateCcw className="h-3.5 w-3.5" />
+          </Button>
+        </div>
 
-        {/* Fill / Stroke controls — visible when something is selected */}
+        <div className="flex items-center bg-white/5 rounded p-0.5 border border-white/10 shadow-inner">
+          <Button size="sm" variant="ghost" className="h-6 w-6 p-0 text-white/70 hover:text-white hover:bg-white/10 transition-colors" onClick={handleUngroup} title="Ungroup">
+            <Ungroup className="h-3.5 w-3.5" />
+          </Button>
+          <div className="w-px h-3 bg-white/10 mx-0.5" />
+          <Button size="sm" variant="ghost" className="h-6 w-6 p-0 text-red-400 hover:text-red-300 hover:bg-red-500/20 transition-colors" onClick={handleDeleteSelected} title="Delete Selected">
+            <Trash2 className="h-3.5 w-3.5" />
+          </Button>
+        </div>
+
+        {/* Fill / Stroke controls */}
         {sel && (
-          <>
-            <div className="w-px h-6 bg-border mx-1" />
-            <span className="text-xs text-muted-foreground font-mono px-1">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 ml-0 sm:ml-2 px-2 py-1 bg-indigo-500/10 rounded-md border border-indigo-500/20 shadow-inner">
+            <span className="text-[10px] text-indigo-300/80 font-mono tracking-wider font-medium sm:mr-1 uppercase leading-none">
               {(() => {
                 const canvas = fabricRef.current;
                 if (!canvas) return null;
                 const selected = canvas.getActiveObjects();
                 if (selected.length === 1) {
                   const idx = canvas.getObjects().indexOf(selected[0]);
-                  return `Shape ${idx + 1} of ${canvas.getObjects().length}`;
+                  return `Shape ${idx + 1}/${canvas.getObjects().length}`;
                 }
                 return `${selected.length} shapes`;
               })()}
             </span>
 
-            <label className="flex items-center gap-1.5 text-sm">
-              Fill
-              <input
-                type="color"
-                value={sel.fill}
-                onChange={(e) => applyToSelection({ fill: e.target.value })}
-                className="w-7 h-7 rounded cursor-pointer border border-border bg-transparent p-0.5"
-              />
-            </label>
+            <div className="flex items-center gap-3">
+              <label className="flex items-center gap-1.5 text-xs text-white/90">
+                <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium leading-none">Fill</span>
+                <div className="relative w-5 h-5 rounded-full overflow-hidden border border-white/20 shadow-sm transition-transform hover:scale-110 cursor-pointer focus-within:ring-1 focus-within:ring-indigo-500 focus-within:ring-offset-1 focus-within:ring-offset-background">
+                  <input
+                    type="color"
+                    value={sel.fill}
+                    onChange={(e) => applyToSelection({ fill: e.target.value })}
+                    className="absolute inset-[-50%] w-[200%] h-[200%] cursor-pointer m-0 p-0 outline-none"
+                  />
+                </div>
+              </label>
 
-            <label className="flex items-center gap-1.5 text-sm">
-              Stroke
-              <input
-                type="color"
-                value={sel.stroke}
-                onChange={(e) => applyToSelection({ stroke: e.target.value })}
-                className="w-7 h-7 rounded cursor-pointer border border-border bg-transparent p-0.5"
-              />
-            </label>
+              <label className="flex items-center gap-1.5 text-xs text-white/90">
+                <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium leading-none">Stroke</span>
+                <div className="relative w-5 h-5 rounded-full overflow-hidden border border-white/20 shadow-sm transition-transform hover:scale-110 cursor-pointer focus-within:ring-1 focus-within:ring-indigo-500 focus-within:ring-offset-1 focus-within:ring-offset-background">
+                  <input
+                    type="color"
+                    value={sel.stroke}
+                    onChange={(e) => applyToSelection({ stroke: e.target.value })}
+                    className="absolute inset-[-50%] w-[200%] h-[200%] cursor-pointer m-0 p-0 outline-none"
+                  />
+                </div>
+              </label>
 
-            <label className="flex items-center gap-1.5 text-sm">
-              Width
-              <input
-                type="number"
-                min={0}
-                max={50}
-                step={0.5}
-                value={sel.strokeWidth}
-                onChange={(e) => applyToSelection({ strokeWidth: parseFloat(e.target.value) || 0 })}
-                className="w-14 h-7 rounded border border-border bg-background px-1.5 text-sm"
-              />
-            </label>
-          </>
+              <label className="flex items-center gap-1.5 text-xs text-white/90">
+                <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium leading-none">Width</span>
+                <input
+                  type="number"
+                  min={0}
+                  max={50}
+                  step={0.5}
+                  value={sel.strokeWidth}
+                  onChange={(e) => applyToSelection({ strokeWidth: parseFloat(e.target.value) || 0 })}
+                  className="w-12 h-6 rounded border border-white/10 bg-black/40 px-1.5 text-xs font-mono focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-muted-foreground text-center"
+                />
+              </label>
+            </div>
+          </div>
         )}
 
-        <div className="ml-auto flex gap-2">
-          <Button size="sm" variant="outline" onClick={handleCancel}>Cancel</Button>
-          <Button size="sm" variant="outline" onClick={handleApply}>Save Changes</Button>
-          <Button size="sm" onClick={handleConvertTo3D}>Convert to 3D</Button>
+        <div className="ml-auto flex gap-1.5 mt-2 w-full sm:w-auto sm:mt-0 justify-end">
+          <Button size="sm" variant="ghost" className="h-7 px-2 text-xs text-white/70 hover:text-white hover:bg-white/5" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button size="sm" variant="outline" className="h-7 px-2 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-white shadow-sm" onClick={handleApply}>
+            Save
+          </Button>
+          <Button size="sm" className="h-7 px-3 text-xs bg-linear-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-md shadow-indigo-500/25 border-0 hover:shadow-indigo-500/40 transition-all font-medium tracking-wide" onClick={handleConvertTo3D}>
+            To 3D
+          </Button>
         </div>
       </div>
 
-      <div ref={containerRef} className="flex-1 overflow-hidden">
-        <canvas ref={canvasRef} />
+      <div className="flex-1 overflow-hidden relative z-10 w-full h-full flex items-center justify-center p-4">
+        <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)", backgroundSize: "24px 24px" }} />
+        <div ref={containerRef} className="rounded-lg shadow-black/50 shadow-2xl overflow-hidden relative w-full h-full ring-1 ring-white/10" style={{
+            backgroundColor: "#6b7280", /* Tailwind gray-500 */
+            backgroundImage: "linear-gradient(45deg, #9ca3af 25%, transparent 25%), linear-gradient(-45deg, #9ca3af 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #9ca3af 75%), linear-gradient(-45deg, transparent 75%, #9ca3af 75%)", /* Tailwind gray-400 */
+            backgroundSize: "24px 24px",
+            backgroundPosition: "0 0, 0 12px, 12px -12px, -12px 0px"
+        }}>
+          <canvas ref={canvasRef} />
+        </div>
       </div>
     </div>
   );

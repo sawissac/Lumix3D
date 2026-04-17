@@ -24,7 +24,7 @@ export function ParticleBackground() {
         fpsLimit: 60,
         particles: {
           color: {
-            value: ["#ffffff", "#cbd5e1", "#818cf8"],
+            value: ["#818cf8", "#c084fc", "#e879f9", "#38bdf8", "#f472b6", "#a78bfa"],
           },
           move: {
             direction: "none",
@@ -39,12 +39,12 @@ export function ParticleBackground() {
           number: {
             density: {
               enable: true,
-              area: 1000,
+              area: 800,
             },
-            value: 40,
+            value: 120,
           },
           opacity: {
-            value: { min: 0.1, max: 0.3 },
+            value: { min: 0.2, max: 0.6 },
             animation: {
               enable: true,
               speed: 0.2,

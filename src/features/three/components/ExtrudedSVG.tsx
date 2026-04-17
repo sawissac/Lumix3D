@@ -15,6 +15,7 @@ import { ExtrusionSettings, SvgShape, MaterialSettings } from "@/types";
 import { TransformControls } from "@react-three/drei";
 import { globalGroupRef } from "../globalGroupRef";
 import { shapeObjectRegistry } from "../shapeObjectRegistry";
+import { preprocessSVGForThree } from "../utils/svgPreprocess";
 
 type ShapeMeshesProps = {
   shapeId: string;
@@ -239,8 +240,28 @@ export function ExtrudedSVG() {
   );
   const rotationLock = useAppSelector((state) => state.scene.rotationLock);
 
+  // Preprocessed SVG (strokes converted to fills so Three.js can extrude them)
+  const [processedSvg, setProcessedSvg] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!svgFile) {
+      setProcessedSvg(null);
+      return;
+    }
+    let cancelled = false;
+    preprocessSVGForThree(svgFile)
+      .then(({ svgString }) => {
+        if (!cancelled) setProcessedSvg(svgString);
+      })
+      .catch(() => {
+        if (!cancelled) setProcessedSvg(svgFile); // fallback to original
+      });
+    return () => { cancelled = true; };
+  }, [svgFile]);
+
   const { allShapeData, globalCenter, svgScale } = useMemo(() => {
-    if (!svgFile)
+    const src = processedSvg ?? svgFile;
+    if (!src)
       return {
         allShapeData: [],
         globalCenter: new THREE.Vector3(),
@@ -248,7 +269,7 @@ export function ExtrudedSVG() {
       };
     try {
       const loader = new SVGLoader();
-      const parsed = loader.parse(svgFile);
+      const parsed = loader.parse(src);
 
       const allShapeData: { shape: THREE.Shape; colorHex: string }[] = [];
       const box = new THREE.Box3();
@@ -285,7 +306,7 @@ export function ExtrudedSVG() {
         svgScale: 1,
       };
     }
-  }, [svgFile]);
+  }, [processedSvg, svgFile]);
 
   const [globalGroupObj, setGlobalGroupObj] = useState<THREE.Group | null>(
     null,
