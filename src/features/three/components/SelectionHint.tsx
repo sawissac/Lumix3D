@@ -13,6 +13,9 @@ type HintRow = {
 const HINTS: HintRow[] = [
   { keys: ["Click"], label: "Select" },
   { keys: ["Ctrl", "Click"], label: "Multi-select" },
+  { keys: ["A"], label: "Select all" },
+  { keys: ["Alt", "A"], label: "Deselect all" },
+  { keys: ["B"], label: "Box select" },
   { keys: ["G"], label: "Move" },
   { keys: ["R"], label: "Rotate" },
   { keys: ["S"], label: "Scale" },

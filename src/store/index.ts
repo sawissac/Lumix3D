@@ -1,11 +1,31 @@
-import { configureStore } from '@reduxjs/toolkit';
-import sceneReducer from './slices/sceneSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import {
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import sceneReducer from "./slices/sceneSlice";
+import { persistConfig, persistReducer } from "./persistConfig";
+
+const persistedReducer = persistReducer(persistConfig, sceneReducer);
 
 export const store = configureStore({
   reducer: {
-    scene: sceneReducer,
+    scene: persistedReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

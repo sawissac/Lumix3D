@@ -97,6 +97,7 @@ const initialState: AppState = {
     rotateY: false,
     rotateZ: false,
   },
+  isBoxSelecting: false,
 };
 
 const sceneSlice = createSlice({
@@ -378,6 +379,17 @@ const sceneSlice = createSlice({
         state.selectedShapeId = null;
       }
     },
+    setBoxSelecting: (state, action: PayloadAction<boolean>) => {
+      state.isBoxSelecting = action.payload;
+    },
+    resetScene: () => initialState,
+    selectAllShapes: (state) => {
+      state.selectedShapeIds = state.svgShapes
+        .filter((s) => s.visible !== false)
+        .map((s) => s.id);
+      state.selectedShapeId =
+        state.selectedShapeIds.length === 1 ? state.selectedShapeIds[0] : null;
+    },
     ungroupSelected: (state) => {
       const groupsToRemove: string[] = [];
       for (const group of state.groups) {
@@ -437,6 +449,9 @@ export const {
   updateGroupTransform,
   selectGroup,
   ungroupSelected,
+  setBoxSelecting,
+  resetScene,
+  selectAllShapes,
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

@@ -157,4 +157,5 @@ export type AppState = {
   transformMode: "translate" | "rotate" | "scale" | null;
   rotationLock: RotationLock;
   orbitControlsLock: OrbitControlsLock;
+  isBoxSelecting: boolean;
 };

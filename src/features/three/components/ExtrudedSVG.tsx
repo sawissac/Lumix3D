@@ -14,8 +14,10 @@ import { ThreeEvent, useThree, createPortal } from "@react-three/fiber";
 import { ExtrusionSettings, SvgShape, MaterialSettings } from "@/types";
 import { TransformControls, Edges } from "@react-three/drei";
 import { globalGroupRef } from "../globalGroupRef";
+import { shapeObjectRegistry } from "../shapeObjectRegistry";
 
 type ShapeMeshesProps = {
+  shapeId: string;
   singleShape: THREE.Shape;
   colorHex: string;
   shapeData: SvgShape | undefined;
@@ -33,6 +35,7 @@ type ShapeMeshesProps = {
 };
 
 function ShapeMeshes({
+  shapeId,
   singleShape,
   colorHex,
   shapeData,
@@ -77,6 +80,18 @@ function ShapeMeshes({
       geometry.dispose();
     };
   }, [geometry]);
+
+  // Register/unregister group with the shape registry so box-select can
+  // read world positions without traversing the scene graph.
+  useEffect(() => {
+    if (!groupObj) return;
+    shapeObjectRegistry.set(shapeId, groupObj);
+    return () => {
+      if (shapeObjectRegistry.get(shapeId) === groupObj) {
+        shapeObjectRegistry.delete(shapeId);
+      }
+    };
+  }, [groupObj, shapeId]);
 
   const defaultCenter = useMemo(() => {
     const box = new THREE.Box3();
@@ -364,6 +379,7 @@ export function ExtrudedSVG() {
           return (
             <ShapeMeshes
               key={shapeId}
+              shapeId={shapeId}
               singleShape={data.shape}
               colorHex={data.colorHex}
               shapeData={shapeData}

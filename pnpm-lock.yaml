@@ -47,6 +47,9 @@ importers:
       fabric:
         specifier: ^7.2.0
         version: 7.2.0
+      localforage:
+        specifier: ^1.10.0
+        version: 1.10.0
       lucide-react:
         specifier: ^1.8.0
         version: 1.8.0(react@19.2.4)
@@ -65,6 +68,9 @@ importers:
       react-resizable-panels:
         specifier: ^4.10.0
         version: 4.10.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      redux-persist:
+        specifier: ^6.0.0
+        version: 6.0.0(react@19.2.4)(redux@5.0.1)
       shadcn:
         specifier: ^4.2.0
         version: 4.2.0(@types/node@20.19.39)(typescript@5.9.3)
@@ -2570,6 +2576,9 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
+  lie@3.1.1:
+    resolution: {integrity: sha512-RiNhHysUjhrDQntfYSfY4MU24coXXdEOgw9WGcKHNeEwffDYbF//u87M1EWaMGzuFoSbqW0C9C6lEEhDOAswfw==}
+
   lie@3.3.0:
     resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
 
@@ -2645,6 +2654,9 @@ packages:
 
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
+
+  localforage@1.10.0:
+    resolution: {integrity: sha512-14/H1aX7hzBBmmh7sGPd+AOMkkIrHM3Z1PAyGgZigA1H1p5O5ANnMyWzvpAETtG68/dC4pC0ncy3+PPGzXZHPg==}
 
   locate-path@6.0.0:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
@@ -3113,6 +3125,15 @@ packages:
   recast@0.23.11:
     resolution: {integrity: sha512-YTUo+Flmw4ZXiWfQKGcwwc11KnoRAYgzAE2E7mXKCjSviTKShtxBsN6YUUBB2gtaBzKzeKunxhUwNHQuRryhWA==}
     engines: {node: '>= 4'}
+
+  redux-persist@6.0.0:
+    resolution: {integrity: sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==}
+    peerDependencies:
+      react: '>=16'
+      redux: '>4.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   redux-thunk@3.1.0:
     resolution: {integrity: sha512-NW2r5T6ksUKXCabzhL9z+h206HQw/NJkcLm1GPImRQ8IzfXwRGqjVhKJGauHirT0DAuyy6hjdnMZaRoAcy0Klw==}
@@ -6406,6 +6427,10 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
+  lie@3.1.1:
+    dependencies:
+      immediate: 3.0.6
+
   lie@3.3.0:
     dependencies:
       immediate: 3.0.6
@@ -6460,6 +6485,10 @@ snapshots:
       lightningcss-win32-x64-msvc: 1.32.0
 
   lines-and-columns@1.2.4: {}
+
+  localforage@1.10.0:
+    dependencies:
+      lie: 3.1.1
 
   locate-path@6.0.0:
     dependencies:
@@ -6946,6 +6975,12 @@ snapshots:
       source-map: 0.6.1
       tiny-invariant: 1.3.3
       tslib: 2.8.1
+
+  redux-persist@6.0.0(react@19.2.4)(redux@5.0.1):
+    dependencies:
+      redux: 5.0.1
+    optionalDependencies:
+      react: 19.2.4
 
   redux-thunk@3.1.0(redux@5.0.1):
     dependencies:

@@ -1,11 +1,16 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Grid, ContactShadows } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
-import { setTransformMode, clearSelection } from "@/store/slices/sceneSlice";
+import {
+  setTransformMode,
+  clearSelection,
+  selectAllShapes,
+  setBoxSelecting,
+} from "@/store/slices/sceneSlice";
 import { ExtrudedSVG } from "./ExtrudedSVG";
 import { SceneLights } from "./SceneLights";
 import { RotationLockToolbar } from "./RotationLockToolbar";
@@ -15,6 +20,8 @@ import { GroupManager } from "./GroupManager";
 import * as THREE from "three";
 import { globalGroupRef } from "../globalGroupRef";
 import { liveTransform } from "../liveTransform";
+import { cameraRef, canvasElementRef } from "../shapeObjectRegistry";
+import { BoxSelectOverlay } from "./BoxSelectOverlay";
 
 // Runs inside <Canvas> — writes the live group transform every frame
 function TransformTracker() {
@@ -25,6 +32,22 @@ function TransformTracker() {
     liveTransform.rotation = [o.rotation.x, o.rotation.y, o.rotation.z];
     liveTransform.scale = [o.scale.x, o.scale.y, o.scale.z];
   });
+  return null;
+}
+
+// Captures the active camera and canvas element for the box-select overlay,
+// which lives outside the R3F tree and can't use hooks to reach them.
+function CanvasRefsCapture() {
+  const { camera, gl } = useThree();
+  useEffect(() => {
+    cameraRef.current = camera;
+    canvasElementRef.current = gl.domElement;
+    return () => {
+      if (cameraRef.current === camera) cameraRef.current = null;
+      if (canvasElementRef.current === gl.domElement)
+        canvasElementRef.current = null;
+    };
+  }, [camera, gl]);
   return null;
 }
 
@@ -42,6 +65,8 @@ export function Canvas3D() {
   const orbitControlsLock = useAppSelector(
     (state) => state.scene.orbitControlsLock,
   );
+  const isBoxSelecting = useAppSelector((state) => state.scene.isBoxSelecting);
+  const svgShapes = useAppSelector((state) => state.scene.svgShapes);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const orbitControlsRef = useRef<any>(null);
@@ -73,12 +98,41 @@ export function Canvas3D() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedShapeIds.length === 0) return;
-
       const target = e.target as HTMLElement;
       if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
 
-      switch (e.key.toLowerCase()) {
+      const key = e.key.toLowerCase();
+
+      // Selection shortcuts — available even with no current selection.
+      if (key === "a") {
+        if (svgShapes.length === 0) return;
+        e.preventDefault();
+        if (e.altKey) {
+          dispatch(clearSelection());
+        } else {
+          dispatch(selectAllShapes());
+        }
+        return;
+      }
+      if (key === "b") {
+        if (svgShapes.length === 0) return;
+        e.preventDefault();
+        dispatch(setBoxSelecting(!isBoxSelecting));
+        return;
+      }
+      if (key === "escape") {
+        e.preventDefault();
+        if (isBoxSelecting) {
+          dispatch(setBoxSelecting(false));
+        } else {
+          dispatch(clearSelection());
+        }
+        return;
+      }
+
+      // Transform shortcuts — require a selection.
+      if (selectedShapeIds.length === 0) return;
+      switch (key) {
         case "g":
           e.preventDefault();
           dispatch(
@@ -99,16 +153,18 @@ export function Canvas3D() {
             setTransformMode(transformMode === "scale" ? null : "scale"),
           );
           break;
-        case "escape":
-          e.preventDefault();
-          dispatch(clearSelection());
-          break;
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [dispatch, selectedShapeIds, transformMode]);
+  }, [
+    dispatch,
+    selectedShapeIds,
+    transformMode,
+    isBoxSelecting,
+    svgShapes.length,
+  ]);
 
   const getBackgroundStyle = (): React.CSSProperties => {
     switch (background.type) {
@@ -161,6 +217,7 @@ export function Canvas3D() {
         <SceneLights />
         <ExtrudedSVG />
         <TransformTracker />
+        <CanvasRefsCapture />
         {showGrid && (
           <Grid
             position={[0, 0, -20]}
@@ -207,6 +264,7 @@ export function Canvas3D() {
           zoomSpeed={0.4}
         />
       </Canvas>
+      <BoxSelectOverlay />
       <SelectionHint />
       <GroupManager />
       <RotationLockToolbar />
