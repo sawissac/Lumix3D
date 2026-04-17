@@ -10,7 +10,7 @@ import { ShapeInspector } from "./ShapeInspector";
 import { ObjectsList } from "./ObjectsList";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { resetScene } from "@/store/slices/sceneSlice";
-import { FilePlus, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Sidebar() {
