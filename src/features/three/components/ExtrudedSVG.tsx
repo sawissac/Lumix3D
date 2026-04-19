@@ -10,12 +10,33 @@ import {
 } from "@/store/slices/sceneSlice";
 import * as THREE from "three";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
-import { ThreeEvent, useThree, createPortal } from "@react-three/fiber";
+import { ThreeEvent, useThree, useFrame, createPortal } from "@react-three/fiber";
 import { ExtrusionSettings, SvgShape, MaterialSettings } from "@/types";
 import { TransformControls } from "@react-three/drei";
 import { globalGroupRef } from "../globalGroupRef";
 import { shapeObjectRegistry } from "../shapeObjectRegistry";
 import { preprocessSVGForThree } from "../utils/svgPreprocess";
+
+type LoadedTextures = {
+  map: THREE.Texture | null;
+  normalMap: THREE.Texture | null;
+  roughnessMap: THREE.Texture | null;
+  metalnessMap: THREE.Texture | null;
+  displacementMap: THREE.Texture | null;
+  aoMap: THREE.Texture | null;
+  emissiveMap: THREE.Texture | null;
+  alphaMap: THREE.Texture | null;
+  lightMap: THREE.Texture | null;
+  displacementScale: number;
+  aoMapIntensity: number;
+  normalScale: number;
+};
+
+const NULL_TEXTURES: LoadedTextures = {
+  map: null, normalMap: null, roughnessMap: null, metalnessMap: null,
+  displacementMap: null, aoMap: null, emissiveMap: null, alphaMap: null, lightMap: null,
+  displacementScale: 0.1, aoMapIntensity: 1, normalScale: 1,
+};
 
 type ShapeMeshesProps = {
   shapeId: string;
@@ -24,6 +45,7 @@ type ShapeMeshesProps = {
   shapeData: SvgShape | undefined;
   globalExtrusion: ExtrusionSettings;
   globalMaterial: MaterialSettings;
+  loadedTextures: LoadedTextures;
   isSelected: boolean;
   transformMode: "translate" | "rotate" | "scale" | null;
   rotationLock: { x: boolean; y: boolean; z: boolean };
@@ -42,6 +64,7 @@ function ShapeMeshes({
   shapeData,
   globalExtrusion,
   globalMaterial,
+  loadedTextures,
   isSelected,
   transformMode,
   rotationLock,
@@ -50,6 +73,8 @@ function ShapeMeshes({
 }: ShapeMeshesProps) {
   const { scene } = useThree();
   const [groupObj, setGroupObj] = useState<THREE.Group | null>(null);
+  const matRef = useRef<THREE.MeshPhysicalMaterial>(null);
+  const texApplied = useRef(false);
 
   const shapeExtrusion = shapeData?.shapeExtrusion;
   const extrusion = useMemo(
@@ -68,10 +93,40 @@ function ShapeMeshes({
     [globalMaterial, shapeData],
   );
 
+  // Reset applied flag whenever textures change so useFrame re-applies them
+  useEffect(() => {
+    texApplied.current = false;
+  }, [loadedTextures]);
+
+  // Apply inside the R3F render loop — matRef is guaranteed populated here
+  useFrame(() => {
+    const mat = matRef.current;
+    if (!mat || texApplied.current) return;
+    texApplied.current = true;
+    mat.map = loadedTextures.map;
+    mat.normalMap = loadedTextures.normalMap;
+    if (mat.normalMap) mat.normalScale.set(loadedTextures.normalScale, loadedTextures.normalScale);
+    mat.roughnessMap = loadedTextures.roughnessMap;
+    mat.metalnessMap = loadedTextures.metalnessMap;
+    mat.displacementMap = loadedTextures.displacementMap;
+    mat.displacementScale = loadedTextures.displacementMap ? loadedTextures.displacementScale : 0;
+    mat.aoMap = loadedTextures.aoMap;
+    mat.aoMapIntensity = loadedTextures.aoMap ? loadedTextures.aoMapIntensity : 0;
+    mat.emissiveMap = loadedTextures.emissiveMap;
+    mat.alphaMap = loadedTextures.alphaMap;
+    mat.transparent = !!loadedTextures.alphaMap;
+    mat.lightMap = loadedTextures.lightMap;
+    mat.needsUpdate = true;
+  });
+
   const geometry = useMemo(() => {
     const geom = new THREE.ExtrudeGeometry(singleShape, extrusion);
     geom.scale(1, -1, 1); // Flip Y to match 3D coordinate system
     geom.computeVertexNormals(); // Fix lighting normals
+    // aoMap and lightMap require a second UV channel
+    if (geom.attributes.uv) {
+      geom.setAttribute("uv2", geom.attributes.uv);
+    }
     return geom;
   }, [singleShape, extrusion]);
 
@@ -108,6 +163,11 @@ function ShapeMeshes({
   const color = shapeData?.fill || colorHex || "#cccccc";
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
+    // Disable interactions in embed mode (iframe)
+    const isEmbedMode =
+      typeof window !== "undefined" && window.self !== window.top;
+    if (isEmbedMode) return;
+
     e.stopPropagation();
     const isAdditive = e.nativeEvent.ctrlKey || e.nativeEvent.metaKey;
     if (isAdditive) {
@@ -153,6 +213,7 @@ function ShapeMeshes({
       <group position={[-defaultCenter.x, -defaultCenter.y, -defaultCenter.z]}>
         <mesh geometry={geometry} castShadow receiveShadow>
           <meshPhysicalMaterial
+            ref={matRef}
             color={color}
             side={THREE.DoubleSide}
             roughness={materialSettings.roughness}
@@ -228,6 +289,56 @@ export function ExtrudedSVG() {
   const svgShapes = useAppSelector((state) => state.scene.svgShapes);
   const extrusion = useAppSelector((state) => state.scene.extrusion);
   const globalMaterial = useAppSelector((state) => state.scene.globalMaterial);
+  const globalTexture = useAppSelector((state) => state.scene.globalTexture);
+
+  const [loadedTextures, setLoadedTextures] = useState<LoadedTextures>(NULL_TEXTURES);
+
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    let cancelled = false;
+    const loadOne = (url: string | null | undefined): Promise<THREE.Texture | null> => {
+      if (!url) return Promise.resolve(null);
+      const scale = globalTexture.repeat ?? 1;
+      const repeat = 1 / scale;
+      return new Promise((resolve) => {
+        loader.load(url, (tex) => {
+          tex.wrapS = THREE.RepeatWrapping;
+          tex.wrapT = THREE.RepeatWrapping;
+          tex.repeat.set(repeat, repeat);
+          tex.needsUpdate = true;
+          resolve(tex);
+        }, undefined, () => resolve(null));
+      });
+    };
+    Promise.all([
+      loadOne(globalTexture.map),
+      loadOne(globalTexture.normalMap),
+      loadOne(globalTexture.roughnessMap),
+      loadOne(globalTexture.metalnessMap),
+      loadOne(globalTexture.displacementMap),
+      loadOne(globalTexture.aoMap),
+      loadOne(globalTexture.emissiveMap),
+      loadOne(globalTexture.alphaMap),
+      loadOne(globalTexture.lightMap),
+    ]).then(([map, normalMap, roughnessMap, metalnessMap, displacementMap, aoMap, emissiveMap, alphaMap, lightMap]) => {
+      if (!cancelled) {
+        setLoadedTextures({
+          map, normalMap, roughnessMap, metalnessMap,
+          displacementMap, aoMap, emissiveMap, alphaMap, lightMap,
+          displacementScale: globalTexture.displacementScale ?? 0.1,
+          aoMapIntensity: globalTexture.aoMapIntensity ?? 1,
+          normalScale: globalTexture.normalScale ?? 1,
+        });
+      }
+    });
+    return () => { cancelled = true; };
+  }, [
+    globalTexture.map, globalTexture.normalMap, globalTexture.roughnessMap,
+    globalTexture.metalnessMap, globalTexture.displacementMap, globalTexture.aoMap,
+    globalTexture.emissiveMap, globalTexture.alphaMap, globalTexture.lightMap,
+    globalTexture.displacementScale, globalTexture.aoMapIntensity, globalTexture.normalScale,
+    globalTexture.repeat,
+  ]);
   const selectedShapeId = useAppSelector(
     (state) => state.scene.selectedShapeId,
   );
@@ -244,19 +355,22 @@ export function ExtrudedSVG() {
   const [processedSvg, setProcessedSvg] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!svgFile) {
-      setProcessedSvg(null);
-      return;
-    }
     let cancelled = false;
-    preprocessSVGForThree(svgFile)
-      .then(({ svgString }) => {
+    (async () => {
+      if (!svgFile) {
+        if (!cancelled) setProcessedSvg(null);
+        return;
+      }
+      try {
+        const { svgString } = await preprocessSVGForThree(svgFile);
         if (!cancelled) setProcessedSvg(svgString);
-      })
-      .catch(() => {
+      } catch {
         if (!cancelled) setProcessedSvg(svgFile); // fallback to original
-      });
-    return () => { cancelled = true; };
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [svgFile]);
 
   const { allShapeData, globalCenter, svgScale } = useMemo(() => {
@@ -401,6 +515,7 @@ export function ExtrudedSVG() {
               shapeData={shapeData}
               globalExtrusion={extrusion}
               globalMaterial={globalMaterial}
+              loadedTextures={loadedTextures}
               isSelected={isSelected}
               transformMode={selectedShapeIds.length > 1 ? null : transformMode}
               rotationLock={rotationLock}

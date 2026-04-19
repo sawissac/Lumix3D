@@ -19,6 +19,7 @@ const persistConfig = {
     "showGrid",
     "groups",
     "is3DMode",
+    "globalTexture",
   ],
 };
 

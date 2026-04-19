@@ -2,7 +2,7 @@
 
 import { Lock, Unlock, RotateCw, Move, ZoomIn } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { toggleOrbitControlsLock } from "@/store/slices/sceneSlice";
+import { toggleOrbitControlsLock, setExclusiveOrbitControlsAxis } from "@/store/slices/sceneSlice";
 import { cn } from "@/lib/utils";
 
 export function OrbitControlsLockToolbar() {
@@ -80,8 +80,8 @@ export function OrbitControlsLockToolbar() {
               return (
                 <button
                   key={axis}
-                  onClick={() => dispatch(toggleOrbitControlsLock(axis))}
-                  title={`${isLocked ? "Unlock" : "Lock"} ${axisLabel} rotation`}
+                  onClick={() => dispatch(setExclusiveOrbitControlsAxis(axis))}
+                  title={!isLocked && ["rotateX", "rotateY", "rotateZ"].every(a => a === axis || orbitControlsLock[a as keyof typeof orbitControlsLock]) ? "Reset all rotation axes" : `Rotate only on ${axisLabel}`}
                   className={cn(
                     "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
                     isLocked

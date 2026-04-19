@@ -17,10 +17,15 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   updateShapeColor,
   updateShapeExtrusion,
+  updateShapesExtrusion,
   resetShapeExtrusion,
+  resetShapesExtrusion,
   setSelectedShapeId,
   setTransformMode,
   updateShapeMaterial,
+  updateShapesMaterial,
+  resetShapeMaterial,
+  resetShapesMaterial,
   setGlobalMaterial,
   setGlobalTransform,
   removeShape,
@@ -94,29 +99,34 @@ function SVGInspector() {
 function ThreeDInspector() {
   const dispatch = useAppDispatch();
   const selectedShapeId = useAppSelector((s) => s.scene.selectedShapeId);
+  const selectedShapeIds = useAppSelector((s) => s.scene.selectedShapeIds);
   const svgShapes = useAppSelector((s) => s.scene.svgShapes);
   const globalExtrusion = useAppSelector((s) => s.scene.extrusion);
   const globalMaterial = useAppSelector((s) => s.scene.globalMaterial);
   const transformMode = useAppSelector((s) => s.scene.transformMode);
 
   const isGlobal = selectedShapeId === "global";
-  const shape = isGlobal
-    ? undefined
-    : svgShapes.find((s) => s.id === selectedShapeId);
+  const isMulti = selectedShapeIds.length > 1;
+  const firstShape = isMulti ? svgShapes.find((s) => s.id === selectedShapeIds[0]) : (isGlobal ? undefined : svgShapes.find((s) => s.id === selectedShapeId));
+  const shape = isGlobal ? undefined : svgShapes.find((s) => s.id === selectedShapeId);
   const shapeIndex = isGlobal
     ? -1
     : svgShapes.findIndex((s) => s.id === selectedShapeId);
 
-  const resolved: ExtrusionSettings = shape?.shapeExtrusion
-    ? { ...globalExtrusion, ...shape.shapeExtrusion }
+  const resolved: ExtrusionSettings = firstShape?.shapeExtrusion
+    ? { ...globalExtrusion, ...firstShape.shapeExtrusion }
     : { ...globalExtrusion };
 
-  const resolvedMaterial: MaterialSettings = shape?.material
-    ? { ...globalMaterial, ...shape.material }
+  const resolvedMaterial: MaterialSettings = firstShape?.material
+    ? { ...globalMaterial, ...firstShape.material }
     : { ...globalMaterial };
 
-  const hasOverride = !!shape?.shapeExtrusion;
-  const hasMaterialOverride = !!shape?.material;
+  const hasOverride = isMulti 
+    ? selectedShapeIds.some(id => !!svgShapes.find(s => s.id === id)?.shapeExtrusion)
+    : !!shape?.shapeExtrusion;
+  const hasMaterialOverride = isMulti
+    ? selectedShapeIds.some(id => !!svgShapes.find(s => s.id === id)?.material)
+    : !!shape?.material;
 
   const P = Math.PI;
   const rotationPresets: { label: string; r: [number, number, number] }[] = [
@@ -151,18 +161,34 @@ function ThreeDInspector() {
   ];
 
   const set = (key: keyof ExtrusionSettings, value: number | boolean) => {
-    if (!selectedShapeId || isGlobal) return;
-    dispatch(
-      updateShapeExtrusion({
-        id: selectedShapeId,
-        extrusion: { [key]: value },
-      }),
-    );
+    if (isGlobal) return;
+    if (isMulti) {
+      dispatch(
+        updateShapesExtrusion({
+          ids: selectedShapeIds,
+          extrusion: { [key]: value },
+        })
+      );
+    } else if (selectedShapeId) {
+      dispatch(
+        updateShapeExtrusion({
+          id: selectedShapeId,
+          extrusion: { [key]: value },
+        }),
+      );
+    }
   };
 
   const setMaterial = (key: keyof MaterialSettings, value: string | number) => {
     if (isGlobal) {
       dispatch(setGlobalMaterial({ [key]: value }));
+    } else if (isMulti) {
+      dispatch(
+        updateShapesMaterial({
+          ids: selectedShapeIds,
+          material: { [key]: value },
+        })
+      );
     } else if (selectedShapeId) {
       dispatch(
         updateShapeMaterial({
@@ -279,7 +305,7 @@ function ThreeDInspector() {
         <CardDescription className="text-xs">3D View</CardDescription>
       </CardHeader>
       <CardContent className="pt-3 space-y-4 text-xs">
-        {!selectedShapeId ? (
+        {!selectedShapeId && !isMulti ? (
           <p className="text-white/40 text-xs">
             Click a shape or the empty space in the 3D view to inspect it
           </p>
@@ -291,6 +317,10 @@ function ThreeDInspector() {
                 {isGlobal ? (
                   <span className="font-medium text-white/90 text-xs">
                     Global SVG Object
+                  </span>
+                ) : isMulti ? (
+                  <span className="font-medium text-white/90 text-xs">
+                    {selectedShapeIds.length} Shapes Selected
                   </span>
                 ) : (
                   <>
@@ -378,26 +408,27 @@ function ThreeDInspector() {
               </div>
             )}
 
-            {!isGlobal && shape && (
+            {!isGlobal && (shape || isMulti) && (
               <>
-                {/* Fill color */}
+                {/* Fill color - disable if multi-selection with different colors */}
                 <div className="flex items-center justify-between">
                   <Label className="text-white/70 text-xs">Fill</Label>
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-[11px] text-white/50">
-                      {shape.fill}
+                      {isMulti ? "Multiple" : shape?.fill}
                     </span>
                     <input
                       type="color"
-                      value={shape.fill}
-                      onChange={(e) =>
-                        dispatch(
-                          updateShapeColor({
-                            id: shape.id,
-                            color: e.target.value,
-                          }),
-                        )
-                      }
+                      value={isMulti ? "#888888" : shape?.fill}
+                      onChange={(e) => {
+                        if (isMulti) {
+                          selectedShapeIds.forEach(id => {
+                            dispatch(updateShapeColor({ id, color: e.target.value }));
+                          });
+                        } else if (shape) {
+                          dispatch(updateShapeColor({ id: shape.id, color: e.target.value }));
+                        }
+                      }}
                       className="w-7 h-7 rounded cursor-pointer border border-border bg-transparent p-0.5"
                     />
                   </div>
@@ -414,7 +445,7 @@ function ThreeDInspector() {
                         variant="outline"
                         className="h-5 text-[10px] px-2 text-white/50 border-white/10 hover:border-white/30"
                         onClick={() =>
-                          dispatch(resetShapeExtrusion(selectedShapeId!))
+                          isMulti ? dispatch(resetShapesExtrusion(selectedShapeIds)) : dispatch(resetShapeExtrusion(selectedShapeId!))
                         }
                       >
                         Reset to global
@@ -508,12 +539,9 @@ function ThreeDInspector() {
                     variant="outline"
                     className="h-5 text-[10px] px-2 text-white/50 border-white/10 hover:border-white/30"
                     onClick={() =>
-                      dispatch(
-                        updateShapeMaterial({
-                          id: selectedShapeId,
-                          material: {},
-                        }),
-                      )
+                      isMulti
+                        ? dispatch(resetShapesMaterial(selectedShapeIds))
+                        : dispatch(resetShapeMaterial(selectedShapeId!))
                     }
                   >
                     Reset

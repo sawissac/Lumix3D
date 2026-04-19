@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Upload, Sparkles } from "lucide-react";
+import { Upload, Sparkles, PencilIcon, Waypoints } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -111,18 +111,19 @@ export function SVGUploader() {
         {svgFile && (
           <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
             <Button
-              onClick={handleEditSVG}
+              onClick={handleConvertTo3D}
               className="w-full bg-linear-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 border-0 shadow-lg shadow-indigo-500/25 text-white font-semibold"
-            >
-              <Sparkles className="mr-2 h-4 w-4" />
-              Create
+              >
+              <Sparkles className="h-4 w-4" />
+              Convert to 3D
             </Button>
             <Button
-              onClick={handleConvertTo3D}
+              onClick={handleEditSVG}
               className="w-full bg-white/5 hover:bg-white/10 text-white border-white/10"
               variant="outline"
             >
-              Convert to 3D
+              <Waypoints className="h-4 w-4" />
+              Edit SVG 2D
             </Button>
           </div>
         )}

@@ -1,3 +1,19 @@
+export type TextureSettings = {
+  map?: string | null;
+  normalMap?: string | null;
+  roughnessMap?: string | null;
+  metalnessMap?: string | null;
+  displacementMap?: string | null;
+  aoMap?: string | null;
+  emissiveMap?: string | null;
+  alphaMap?: string | null;
+  lightMap?: string | null;
+  displacementScale?: number;
+  aoMapIntensity?: number;
+  normalScale?: number;
+  repeat?: number;
+};
+
 export type MaterialPreset =
   | "custom"
   | "plastic"
@@ -135,11 +151,24 @@ export type ObjectGroup = {
   scale?: [number, number, number];
 };
 
+export type CameraState = {
+  position: [number, number, number];
+  target: [number, number, number];
+  zoom: number;
+};
+
+export type EmbedControls = {
+  enableRotate: boolean;
+  enableZoom: boolean;
+  enablePan: boolean;
+};
+
 export type AppState = {
   svgShapes: SvgShape[];
   svgFile: string | null;
   extrusion: ExtrusionSettings;
   globalMaterial: MaterialSettings;
+  globalTexture: TextureSettings;
   globalTransform: GlobalTransform;
   background: Background;
   lights: Light[];
@@ -158,4 +187,6 @@ export type AppState = {
   rotationLock: RotationLock;
   orbitControlsLock: OrbitControlsLock;
   isBoxSelecting: boolean;
+  cameraState?: CameraState;
+  embedControls?: EmbedControls;
 };

@@ -8,9 +8,11 @@ import {
   LightingPreset,
   SvgSelectionInfo,
   MaterialSettings,
+  TextureSettings,
   BloomSettings,
   GroundSettings,
   ObjectGroup,
+  CameraState,
 } from "@/types";
 
 const initialState: AppState = {
@@ -34,6 +36,7 @@ const initialState: AppState = {
     emissive: "#000000",
     emissiveIntensity: 0,
   },
+  globalTexture: {},
   globalTransform: {
     position: [0, 0, 0],
     rotation: [0, 0, 0],
@@ -204,11 +207,34 @@ const sceneSlice = createSlice({
         };
       }
     },
+    updateShapesExtrusion: (
+      state,
+      action: PayloadAction<{
+        ids: string[];
+        extrusion: Partial<ExtrusionSettings>;
+      }>,
+    ) => {
+      state.svgShapes.forEach((shape) => {
+        if (action.payload.ids.includes(shape.id)) {
+          shape.shapeExtrusion = {
+            ...shape.shapeExtrusion,
+            ...action.payload.extrusion,
+          };
+        }
+      });
+    },
     resetShapeExtrusion: (state, action: PayloadAction<string>) => {
       const shape = state.svgShapes.find((s) => s.id === action.payload);
       if (shape) {
         delete shape.shapeExtrusion;
       }
+    },
+    resetShapesExtrusion: (state, action: PayloadAction<string[]>) => {
+      state.svgShapes.forEach((shape) => {
+        if (action.payload.includes(shape.id)) {
+          delete shape.shapeExtrusion;
+        }
+      });
     },
     setSvgSelection: (state, action: PayloadAction<SvgSelectionInfo>) => {
       state.svgSelection = action.payload;
@@ -265,6 +291,18 @@ const sceneSlice = createSlice({
     ) => {
       state.globalMaterial = { ...state.globalMaterial, ...action.payload };
     },
+    setGlobalTexture: (
+      state,
+      action: PayloadAction<Partial<TextureSettings>>,
+    ) => {
+      state.globalTexture = { ...state.globalTexture, ...action.payload };
+    },
+    clearTextureChannel: (
+      state,
+      action: PayloadAction<keyof TextureSettings>,
+    ) => {
+      state.globalTexture = { ...state.globalTexture, [action.payload]: null };
+    },
     updateShapeMaterial: (
       state,
       action: PayloadAction<{
@@ -276,6 +314,32 @@ const sceneSlice = createSlice({
       if (shape) {
         shape.material = { ...shape.material, ...action.payload.material };
       }
+    },
+    updateShapesMaterial: (
+      state,
+      action: PayloadAction<{
+        ids: string[];
+        material: Partial<MaterialSettings>;
+      }>,
+    ) => {
+      state.svgShapes.forEach((shape) => {
+        if (action.payload.ids.includes(shape.id)) {
+          shape.material = { ...shape.material, ...action.payload.material };
+        }
+      });
+    },
+    resetShapeMaterial: (state, action: PayloadAction<string>) => {
+      const shape = state.svgShapes.find((s) => s.id === action.payload);
+      if (shape) {
+        delete shape.material;
+      }
+    },
+    resetShapesMaterial: (state, action: PayloadAction<string[]>) => {
+      state.svgShapes.forEach((shape) => {
+        if (action.payload.includes(shape.id)) {
+          delete shape.material;
+        }
+      });
     },
     removeShape: (state, action: PayloadAction<string>) => {
       const shape = state.svgShapes.find((s) => s.id === action.payload);
@@ -310,6 +374,21 @@ const sceneSlice = createSlice({
     ) => {
       const control = action.payload;
       state.orbitControlsLock[control] = !state.orbitControlsLock[control];
+    },
+    setExclusiveOrbitControlsAxis: (
+      state,
+      action: PayloadAction<"rotateX" | "rotateY" | "rotateZ">,
+    ) => {
+      const axis = action.payload;
+      const axes: Array<"rotateX" | "rotateY" | "rotateZ"> = ["rotateX", "rotateY", "rotateZ"];
+      
+      const isOnlyUnlocked = !state.orbitControlsLock[axis] && axes.every(a => a === axis || state.orbitControlsLock[a]);
+      
+      if (isOnlyUnlocked) {
+        axes.forEach(a => { state.orbitControlsLock[a] = false; });
+      } else {
+        axes.forEach(a => { state.orbitControlsLock[a] = a !== axis; });
+      }
     },
     toggleShapeSelection: (
       state,
@@ -397,6 +476,9 @@ const sceneSlice = createSlice({
     setBoxSelecting: (state, action: PayloadAction<boolean>) => {
       state.isBoxSelecting = action.payload;
     },
+    loadScene: (state, action: PayloadAction<AppState>) => {
+      return { ...initialState, ...action.payload };
+    },
     resetScene: () => initialState,
     selectAllShapes: (state) => {
       state.selectedShapeIds = state.svgShapes
@@ -425,6 +507,9 @@ const sceneSlice = createSlice({
       }
       state.groups = state.groups.filter((g) => !groupsToRemove.includes(g.id));
     },
+    setCameraState: (state, action: PayloadAction<CameraState>) => {
+      state.cameraState = action.payload;
+    },
   },
 });
 
@@ -446,7 +531,9 @@ export const {
   setEditMode,
   setSelectedShapeId,
   updateShapeExtrusion,
+  updateShapesExtrusion,
   resetShapeExtrusion,
+  resetShapesExtrusion,
   setSvgSelection,
   clearSvgSelection,
   setSvgFocusIndex,
@@ -456,11 +543,15 @@ export const {
   setGlobalTransform,
   setGlobalMaterial,
   updateShapeMaterial,
+  updateShapesMaterial,
+  resetShapeMaterial,
+  resetShapesMaterial,
   removeShape,
   setBloomSettings,
   setGroundSettings,
   toggleRotationLock,
   toggleOrbitControlsLock,
+  setExclusiveOrbitControlsAxis,
   toggleShapeSelection,
   setSelectedShapeIds,
   clearSelection,
@@ -471,7 +562,11 @@ export const {
   ungroupSelected,
   setBoxSelecting,
   resetScene,
+  loadScene,
   selectAllShapes,
+  setCameraState,
+  setGlobalTexture,
+  clearTextureChannel,
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;
