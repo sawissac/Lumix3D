@@ -1,6 +1,15 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 export function MobileBlocker() {
+  const pathname = usePathname();
+  
+  if (pathname === "/embed") {
+    return null;
+  }
+
   return (
-    /* Visible only below md (768 px) */
     <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center px-8 md:hidden bg-background">
       {/* Ambient glow */}
       <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none" />

@@ -161,6 +161,9 @@ export type EmbedControls = {
   enableRotate: boolean;
   enableZoom: boolean;
   enablePan: boolean;
+  enableRotateX?: boolean;
+  enableRotateY?: boolean;
+  enableRotateZ?: boolean;
 };
 
 export type ViewMode = "normal" | "solid" | "wireframe";

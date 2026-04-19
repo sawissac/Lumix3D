@@ -17,6 +17,9 @@ export function ProjectActions() {
   const [embedRotate, setEmbedRotate] = useState(true);
   const [embedZoom, setEmbedZoom] = useState(false);
   const [embedPan, setEmbedPan] = useState(false);
+  const [embedRotateX, setEmbedRotateX] = useState(true);
+  const [embedRotateY, setEmbedRotateY] = useState(true);
+  const [embedRotateZ, setEmbedRotateZ] = useState(true);
 
   const hasProject = sceneState.svgShapes.length > 0 || sceneState.is3DMode;
 
@@ -89,6 +92,9 @@ export function ProjectActions() {
         enableRotate: embedRotate,
         enableZoom: embedZoom,
         enablePan: embedPan,
+        enableRotateX: embedRotateX,
+        enableRotateY: embedRotateY,
+        enableRotateZ: embedRotateZ,
       },
     };
     const stateJson = JSON.stringify(finalState);
@@ -141,6 +147,9 @@ export function ProjectActions() {
         enableRotate: embedRotate,
         enableZoom: embedZoom,
         enablePan: embedPan,
+        enableRotateX: embedRotateX,
+        enableRotateY: embedRotateY,
+        enableRotateZ: embedRotateZ,
       },
     };
     const stateJson = JSON.stringify(finalState, null, 2);
@@ -299,6 +308,34 @@ export default function Lumix3DEmbed() {
                     <span>Pan</span>
                   </label>
                 </div>
+                {embedRotate && (
+                  <div className="flex gap-4 pt-2 border-t border-border/50 mt-1">
+                    <label className="flex items-center gap-2 text-sm cursor-pointer text-muted-foreground">
+                      <Switch
+                        checked={embedRotateX}
+                        onCheckedChange={setEmbedRotateX}
+                        size="sm"
+                      />
+                      <span>Rotate X</span>
+                    </label>
+                    <label className="flex items-center gap-2 text-sm cursor-pointer text-muted-foreground">
+                      <Switch
+                        checked={embedRotateY}
+                        onCheckedChange={setEmbedRotateY}
+                        size="sm"
+                      />
+                      <span>Rotate Y</span>
+                    </label>
+                    <label className="flex items-center gap-2 text-sm cursor-pointer text-muted-foreground">
+                      <Switch
+                        checked={embedRotateZ}
+                        onCheckedChange={setEmbedRotateZ}
+                        size="sm"
+                      />
+                      <span>Rotate Z</span>
+                    </label>
+                  </div>
+                )}
               </div>
 
               {/* Code Type Tabs */}
@@ -334,7 +371,7 @@ export default function Lumix3DEmbed() {
 
                 <div className="border-t pt-3">
                   <h4 className="font-medium text-sm mb-2">Enabled Controls</h4>
-                  <div className="flex gap-2 text-sm">
+                  <div className="flex flex-wrap gap-2 text-sm">
                     {embedRotate && (
                       <span className="px-2 py-1 bg-primary/10 text-primary rounded">
                         ✓ Rotate
@@ -348,6 +385,21 @@ export default function Lumix3DEmbed() {
                     {embedPan && (
                       <span className="px-2 py-1 bg-primary/10 text-primary rounded">
                         ✓ Pan
+                      </span>
+                    )}
+                    {embedRotate && embedRotateX && (
+                      <span className="px-2 py-1 bg-primary/10 text-primary rounded">
+                        ✓ Rotate X
+                      </span>
+                    )}
+                    {embedRotate && embedRotateY && (
+                      <span className="px-2 py-1 bg-primary/10 text-primary rounded">
+                        ✓ Rotate Y
+                      </span>
+                    )}
+                    {embedRotate && embedRotateZ && (
+                      <span className="px-2 py-1 bg-primary/10 text-primary rounded">
+                        ✓ Rotate Z
                       </span>
                     )}
                     {!embedRotate && !embedZoom && !embedPan && (

@@ -24,6 +24,7 @@ import { globalGroupRef } from "../globalGroupRef";
 import { liveTransform } from "../liveTransform";
 import { cameraRef, canvasElementRef } from "../shapeObjectRegistry";
 import { BoxSelectOverlay } from "./BoxSelectOverlay";
+import { usePathname } from "next/navigation";
 
 // Runs inside <Canvas> — writes the live group transform every frame
 function TransformTracker() {
@@ -53,6 +54,68 @@ function CanvasRefsCapture() {
   return null;
 }
 
+// Handles camera restoration and locks inside the R3F context
+function CameraController({
+  controlsRef,
+  cameraState,
+  orbitControlsLock,
+  isEmbedMode,
+  embedRotateX,
+  embedRotateY,
+}: {
+  controlsRef: React.MutableRefObject<any>;
+  cameraState: any;
+  orbitControlsLock: any;
+  isEmbedMode: boolean;
+  embedRotateX: boolean;
+  embedRotateY: boolean;
+}) {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    if (!controlsRef.current) return;
+    const controls = controlsRef.current;
+
+    if (cameraState) {
+      const { position, target } = cameraState;
+      camera.position.set(position[0], position[1], position[2]);
+      controls.target.set(target[0], target[1], target[2]);
+      controls.update();
+    }
+
+    const isRotateXLocked = isEmbedMode ? !embedRotateX : orbitControlsLock.rotateX;
+    if (isRotateXLocked) {
+      const polar = controls.getPolarAngle();
+      controls.minPolarAngle = polar;
+      controls.maxPolarAngle = polar;
+    } else {
+      controls.minPolarAngle = 0;
+      controls.maxPolarAngle = Math.PI;
+    }
+
+    const isRotateYLocked = isEmbedMode ? !embedRotateY : orbitControlsLock.rotateY;
+    if (isRotateYLocked) {
+      const azimuth = controls.getAzimuthalAngle();
+      controls.minAzimuthAngle = azimuth;
+      controls.maxAzimuthAngle = azimuth;
+    } else {
+      controls.minAzimuthAngle = -Infinity;
+      controls.maxAzimuthAngle = Infinity;
+    }
+  }, [
+    camera,
+    controlsRef,
+    cameraState,
+    orbitControlsLock.rotateX,
+    orbitControlsLock.rotateY,
+    isEmbedMode,
+    embedRotateX,
+    embedRotateY,
+  ]);
+
+  return null;
+}
+
 export function Canvas3D() {
   const dispatch = useAppDispatch();
   const background = useAppSelector((state) => state.scene.background);
@@ -75,15 +138,18 @@ export function Canvas3D() {
   const lockedAnglesRef = useRef({ polar: 0, azimuth: 0 });
   const cameraState = useAppSelector((state) => state.scene.cameraState);
   const embedControls = useAppSelector((state) => state.scene.embedControls);
+  const pathname = usePathname();
 
-  // Check if we're in embed mode (iframe)
+  // Check if we're in embed mode (iframe or direct /embed route)
   const isEmbedMode =
-    typeof window !== "undefined" && window.self !== window.top;
+    (typeof window !== "undefined" && window.self !== window.top) || pathname === "/embed";
 
   // Default embed controls: rotation enabled, zoom and pan disabled
   const embedRotate = embedControls?.enableRotate ?? true;
   const embedZoom = embedControls?.enableZoom ?? false;
   const embedPan = embedControls?.enablePan ?? false;
+  const embedRotateX = embedControls?.enableRotateX ?? true;
+  const embedRotateY = embedControls?.enableRotateY ?? true;
 
   useEffect(() => {
     // Expose a way for ProjectActions to get the current camera state
@@ -106,48 +172,12 @@ export function Canvas3D() {
     };
   }, []);
 
-  // Restore camera state and apply orbit controls lock
-  useEffect(() => {
-    if (!orbitControlsRef.current || !cameraRef.current) return;
-
-    const controls = orbitControlsRef.current;
-
-    // First, restore camera state if it exists
-    if (cameraState) {
-      const { position, target } = cameraState;
-      cameraRef.current.position.set(position[0], position[1], position[2]);
-      controls.target.set(target[0], target[1], target[2]);
-      controls.update();
-    }
-
-    // Then, apply the angle locks based on the newly updated camera angles
-    if (orbitControlsLock.rotateX) {
-      lockedAnglesRef.current.polar = controls.getPolarAngle();
-      controls.minPolarAngle = lockedAnglesRef.current.polar;
-      controls.maxPolarAngle = lockedAnglesRef.current.polar;
-    } else {
-      controls.minPolarAngle = 0;
-      controls.maxPolarAngle = Math.PI;
-    }
-
-    if (orbitControlsLock.rotateY) {
-      lockedAnglesRef.current.azimuth = controls.getAzimuthalAngle();
-      controls.minAzimuthAngle = lockedAnglesRef.current.azimuth;
-      controls.maxAzimuthAngle = lockedAnglesRef.current.azimuth;
-    } else {
-      controls.minAzimuthAngle = -Infinity;
-      controls.maxAzimuthAngle = Infinity;
-    }
-  }, [cameraState, orbitControlsLock.rotateX, orbitControlsLock.rotateY]);
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
       if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
 
-      // Disable keyboard shortcuts if in embed mode (iframe)
-      const isEmbedMode =
-        typeof window !== "undefined" && window.self !== window.top;
+      // Disable keyboard shortcuts if in embed mode
       if (isEmbedMode) return;
 
       const key = e.key.toLowerCase();
@@ -283,6 +313,14 @@ export function Canvas3D() {
         <ExtrudedSVG />
         <TransformTracker />
         <CanvasRefsCapture />
+        <CameraController
+          controlsRef={orbitControlsRef}
+          cameraState={cameraState}
+          orbitControlsLock={orbitControlsLock}
+          isEmbedMode={isEmbedMode}
+          embedRotateX={embedRotateX}
+          embedRotateY={embedRotateY}
+        />
 
         {showGrid && (
           <Grid
@@ -330,8 +368,8 @@ export function Canvas3D() {
           zoomSpeed={0.4}
         />
       </Canvas>
-      {/* Hide UI overlays if in an iframe (embed mode) */}
-      {typeof window !== "undefined" && window.self === window.top && (
+      {/* Hide UI overlays if in embed mode */}
+      {!isEmbedMode && (
         <>
           <BoxSelectOverlay />
           <SelectionHint />
