@@ -2,7 +2,10 @@
 
 import { Lock, Unlock, RotateCw, Move, ZoomIn } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { toggleOrbitControlsLock, setExclusiveOrbitControlsAxis } from "@/store/slices/sceneSlice";
+import {
+  toggleOrbitControlsLock,
+  setExclusiveOrbitControlsAxis,
+} from "@/store/slices/sceneSlice";
 import { cn } from "@/lib/utils";
 
 export function OrbitControlsLockToolbar() {
@@ -52,9 +55,10 @@ export function OrbitControlsLockToolbar() {
               title={`${isLocked ? "Unlock" : "Lock"} ${label}`}
               className={cn(
                 "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
+                "hover:bg-white/6 border border-transparent active:bg-white/10 active:scale-95",
                 isLocked
-                  ? "bg-red-500/30 text-red-300 border border-red-500/40"
-                  : "text-white/60 hover:text-white/90 hover:bg-white/6 border border-transparent",
+                  ? "text-white/40"
+                  : "text-blue-400 hover:text-blue-300",
               )}
             >
               {isLocked ? (
@@ -81,12 +85,22 @@ export function OrbitControlsLockToolbar() {
                 <button
                   key={axis}
                   onClick={() => dispatch(setExclusiveOrbitControlsAxis(axis))}
-                  title={!isLocked && ["rotateX", "rotateY", "rotateZ"].every(a => a === axis || orbitControlsLock[a as keyof typeof orbitControlsLock]) ? "Reset all rotation axes" : `Rotate only on ${axisLabel}`}
+                  title={
+                    !isLocked &&
+                    ["rotateX", "rotateY", "rotateZ"].every(
+                      (a) =>
+                        a === axis ||
+                        orbitControlsLock[a as keyof typeof orbitControlsLock],
+                    )
+                      ? "Reset all rotation axes"
+                      : `Rotate only on ${axisLabel}`
+                  }
                   className={cn(
                     "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
+                    "hover:bg-white/6 border border-transparent active:bg-white/10 active:scale-95",
                     isLocked
-                      ? "bg-red-500/30 text-red-300 border border-red-500/40"
-                      : "text-white/60 hover:text-white/90 hover:bg-white/6 border border-transparent",
+                      ? "text-white/40"
+                      : "text-blue-400 hover:text-blue-300",
                   )}
                 >
                   {isLocked ? (

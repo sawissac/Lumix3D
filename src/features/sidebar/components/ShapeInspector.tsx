@@ -453,76 +453,29 @@ function ThreeDInspector() {
                     )}
                   </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-white/70 text-xs">Depth</Label>
-                    <SliderWithInput
-                      value={resolved.depth}
-                      onChange={(v) => set("depth", v)}
-                      min={1}
-                      max={50}
-                      step={1}
-                      sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
-                      inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-white/70 text-xs">
-                      Curve Segments (Smoothness)
-                    </Label>
-                    <SliderWithInput
-                      value={resolved.curveSegments}
-                      onChange={(v) => set("curveSegments", v)}
-                      min={1}
-                      max={64}
-                      step={1}
-                      sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
-                      inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-white/70 text-xs">
-                      Bevel Thickness
-                    </Label>
-                    <SliderWithInput
-                      value={resolved.bevelThickness}
-                      onChange={(v) => set("bevelThickness", v)}
-                      min={0}
-                      max={5}
-                      step={0.1}
-                      sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
-                      inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-white/70 text-xs">Bevel Size</Label>
-                    <SliderWithInput
-                      value={resolved.bevelSize}
-                      onChange={(v) => set("bevelSize", v)}
-                      min={0}
-                      max={3}
-                      step={0.1}
-                      sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
-                      inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-white/70 text-xs">
-                      Bevel Segments
-                    </Label>
-                    <SliderWithInput
-                      value={resolved.bevelSegments}
-                      onChange={(v) => set("bevelSegments", v)}
-                      min={1}
-                      max={8}
-                      step={1}
-                      sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
-                      inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
-                    />
-                  </div>
+                  {[
+                    { key: "depth" as const,          label: "Depth",                    hint: "How far this shape extends into 3D space",          min: 1,  max: 50, step: 1    },
+                    { key: "curveSegments" as const,  label: "Curve Segments",           hint: "Higher = smoother curves, lower = faster render",    min: 1,  max: 64, step: 1    },
+                    { key: "bevelThickness" as const, label: "Bevel Thickness",          hint: "Depth of the bevel along the extrusion side",        min: 0,  max: 5,  step: 0.1  },
+                    { key: "bevelSize" as const,      label: "Bevel Size",               hint: "Outward spread of the bevel from shape edges",       min: 0,  max: 3,  step: 0.1  },
+                    { key: "bevelSegments" as const,  label: "Bevel Segments",           hint: "Number of bevel steps — higher is smoother",         min: 1,  max: 8,  step: 1    },
+                  ].map(({ key, label, hint, min, max, step }) => (
+                    <div key={key} className="space-y-1.5">
+                      <div>
+                        <Label className="text-white/70 text-xs">{label}</Label>
+                        <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">{hint}</p>
+                      </div>
+                      <SliderWithInput
+                        value={resolved[key] as number}
+                        onChange={(v) => set(key, v)}
+                        min={min}
+                        max={max}
+                        step={step}
+                        sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
+                        inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
+                      />
+                    </div>
+                  ))}
                 </div>
               </>
             )}
@@ -581,85 +534,32 @@ function ThreeDInspector() {
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-white/70 text-xs">Roughness</Label>
-                <SliderWithInput
-                  value={resolvedMaterial.roughness}
-                  onChange={(v) => {
-                    setMaterial("preset", "custom");
-                    setMaterial("roughness", v);
-                  }}
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
-                  inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-white/70 text-xs">Metalness</Label>
-                <SliderWithInput
-                  value={resolvedMaterial.metalness}
-                  onChange={(v) => {
-                    setMaterial("preset", "custom");
-                    setMaterial("metalness", v);
-                  }}
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
-                  inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-white/70 text-xs">Transmission</Label>
-                <SliderWithInput
-                  value={resolvedMaterial.transmission}
-                  onChange={(v) => {
-                    setMaterial("preset", "custom");
-                    setMaterial("transmission", v);
-                  }}
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
-                  inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-white/70 text-xs">IOR</Label>
-                <SliderWithInput
-                  value={resolvedMaterial.ior}
-                  onChange={(v) => {
-                    setMaterial("preset", "custom");
-                    setMaterial("ior", v);
-                  }}
-                  min={1}
-                  max={2.33}
-                  step={0.01}
-                  sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
-                  inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs text-white/60">Clearcoat</Label>
-                <SliderWithInput
-                  value={resolvedMaterial.clearcoat}
-                  onChange={(v) => {
-                    setMaterial("clearcoat", v);
-                    setMaterial("preset", "custom");
-                  }}
-                  min={0}
-                  max={1}
-                  step={0.05}
-                  sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
-                  inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
-                />
-              </div>
+              {[
+                { key: "roughness" as const,    label: "Roughness",    hint: "0 = mirror finish, 1 = fully matte diffuse surface",       min: 0, max: 1,    step: 0.01 },
+                { key: "metalness" as const,    label: "Metalness",    hint: "0 = non-metal (plastic/paint), 1 = pure metal",            min: 0, max: 1,    step: 0.01 },
+                { key: "transmission" as const, label: "Transmission", hint: "Light passing through — set to 1 for a glass effect",      min: 0, max: 1,    step: 0.01 },
+                { key: "ior" as const,          label: "IOR",          hint: "Index of refraction. Glass ≈ 1.5, diamond ≈ 2.4",          min: 1, max: 2.33, step: 0.01 },
+                { key: "clearcoat" as const,    label: "Clearcoat",    hint: "Adds a thin glossy lacquer layer on top of the material",  min: 0, max: 1,    step: 0.05 },
+              ].map(({ key, label, hint, min, max, step }) => (
+                <div key={key} className="space-y-1.5">
+                  <div>
+                    <Label className="text-white/70 text-xs">{label}</Label>
+                    <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">{hint}</p>
+                  </div>
+                  <SliderWithInput
+                    value={resolvedMaterial[key] as number}
+                    onChange={(v) => {
+                      setMaterial("preset", "custom");
+                      setMaterial(key, v);
+                    }}
+                    min={min}
+                    max={max}
+                    step={step}
+                    sliderClassName="**:[[role=slider]]:bg-indigo-400 **:[[role=slider]]:border-indigo-400"
+                    inputClassName="focus-visible:ring-indigo-500/50 text-indigo-300"
+                  />
+                </div>
+              ))}
 
               <div className="space-y-2">
                 <Label className="text-xs text-white/60">Emissive Color</Label>
@@ -712,10 +612,11 @@ function ThreeDInspector() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-xs text-white/60">
-                  Emissive Intensity
-                </Label>
+              <div className="space-y-1.5">
+                <div>
+                  <Label className="text-xs text-white/60">Emissive Intensity</Label>
+                  <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">Self-glow brightness — set emissive color above first</p>
+                </div>
                 <SliderWithInput
                   value={resolvedMaterial.emissiveIntensity || 0}
                   onChange={(v) => {

@@ -1,13 +1,6 @@
 "use client";
 
 import { Wand2, Zap, Star, MessageCircle, PawPrint } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
 import { useAppDispatch } from "@/store/hooks";
 import {
   setSvgFile,
@@ -87,51 +80,47 @@ export function QuickScenes() {
   };
 
   return (
-    <Card className="bg-[#1f2123]/80 backdrop-blur-2xl border border-white/8 shadow-2xl rounded-2xl overflow-hidden relative">
-      {/* Subtle top reflection */}
-      <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
-
-      <CardHeader className="pb-3 border-b border-white/4 relative z-10 pt-4 px-4">
-        <CardTitle className="flex items-center gap-2 text-[#ff6b9e] text-[1.1rem] font-semibold tracking-wide">
-          <Wand2 className="h-[1.1rem] w-[1.1rem]" />
+    <div className="space-y-1.5">
+      {/* Section label */}
+      <div className="flex items-center gap-2 px-1">
+        <Wand2 className="w-3 h-3 text-[#ff6b9e] shrink-0" />
+        <span className="text-[11px] font-semibold text-[#ff6b9e] uppercase tracking-widest">
           Quick Scenes
-        </CardTitle>
-        <CardDescription className="text-[#a1a1aa] text-[13px] font-medium mt-1">
-          One-click 3D app icon demos
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="pt-4 pb-4 px-4 relative z-10">
-        <div className="grid grid-cols-4 gap-3">
-          {SIDEBAR_DEMO_SCENES.map((scene: DemoScene) => {
-            const Icon = SCENE_ICONS[scene.id];
-            return (
-              <button
-                key={scene.id}
-                onClick={() => handleLoad(scene)}
-                className="group flex flex-col items-center gap-2.5 focus:outline-none"
-              >
-                <div
-                  className="w-full aspect-square rounded-[0.85rem] shadow-[0_4px_12px_-4px_rgba(0,0,0,0.5)] group-hover:-translate-y-1 group-hover:shadow-[0_8px_16px_-4px_rgba(0,0,0,0.6)] group-focus-visible:ring-2 group-focus-visible:ring-white/40 transition-all duration-300 flex items-center justify-center relative overflow-hidden"
-                  style={{ background: scene.color }}
-                >
-                  {/* Glassmorphic reflection on the button itself */}
-                  <div className="absolute inset-0 bg-linear-to-tr from-white/0 via-white/15 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </span>
+      </div>
 
-                  {Icon && (
-                    <Icon
-                      className="w-5 h-5 text-white/95 relative z-10"
-                      strokeWidth={2.5}
-                    />
-                  )}
-                </div>
-                <span className="text-[11px] font-medium text-[#a1a1aa] group-hover:text-white transition-colors">
-                  {scene.name}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </CardContent>
-    </Card>
+      {/* Scene 2×2 grid */}
+      <div className="grid grid-cols-4 gap-2">
+        {SIDEBAR_DEMO_SCENES.map((scene: DemoScene) => {
+          const Icon = SCENE_ICONS[scene.id];
+          return (
+            <button
+              key={scene.id}
+              onClick={() => handleLoad(scene)}
+              className="group flex flex-col items-center gap-2 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/6 hover:border-white/10 transition-all duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-white/30"
+            >
+              {/* Colour icon tile */}
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center relative overflow-hidden shadow-[0_2px_8px_-2px_rgba(0,0,0,0.5)] group-hover:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.6)] group-hover:-translate-y-0.5 transition-all duration-200"
+                style={{ background: scene.color }}
+              >
+                <div className="absolute inset-0 bg-linear-to-tr from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                {Icon && (
+                  <Icon
+                    className="w-4 h-4 text-white relative z-10"
+                    strokeWidth={2.5}
+                  />
+                )}
+              </div>
+
+              {/* Name */}
+              <span className="text-[11px] font-medium text-muted-foreground/70 group-hover:text-white transition-colors leading-none">
+                {scene.name}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }

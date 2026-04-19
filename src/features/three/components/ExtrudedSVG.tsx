@@ -7,11 +7,12 @@ import {
   updateShapeTransform,
   setGlobalTransform,
   clearSelection,
+  recordSnapshot,
 } from "@/store/slices/sceneSlice";
 import * as THREE from "three";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 import { ThreeEvent, useThree, useFrame, createPortal } from "@react-three/fiber";
-import { ExtrusionSettings, SvgShape, MaterialSettings } from "@/types";
+import { ExtrusionSettings, SvgShape, MaterialSettings, ViewMode } from "@/types";
 import { TransformControls } from "@react-three/drei";
 import { globalGroupRef } from "../globalGroupRef";
 import { shapeObjectRegistry } from "../shapeObjectRegistry";
@@ -47,6 +48,7 @@ type ShapeMeshesProps = {
   globalMaterial: MaterialSettings;
   loadedTextures: LoadedTextures;
   isSelected: boolean;
+  viewMode: ViewMode;
   transformMode: "translate" | "rotate" | "scale" | null;
   rotationLock: { x: boolean; y: boolean; z: boolean };
   onSelect: () => void;
@@ -66,11 +68,13 @@ function ShapeMeshes({
   globalMaterial,
   loadedTextures,
   isSelected,
+  viewMode,
   transformMode,
   rotationLock,
   onSelect,
   onTransformChange,
 }: ShapeMeshesProps) {
+  const dispatch = useAppDispatch();
   const { scene } = useThree();
   const [groupObj, setGroupObj] = useState<THREE.Group | null>(null);
   const matRef = useRef<THREE.MeshPhysicalMaterial>(null);
@@ -93,29 +97,45 @@ function ShapeMeshes({
     [globalMaterial, shapeData],
   );
 
-  // Reset applied flag whenever textures change so useFrame re-applies them
+  // Reset applied flag whenever textures or viewMode change so useFrame re-applies them
   useEffect(() => {
     texApplied.current = false;
-  }, [loadedTextures]);
+  }, [loadedTextures, viewMode]);
 
   // Apply inside the R3F render loop — matRef is guaranteed populated here
   useFrame(() => {
     const mat = matRef.current;
     if (!mat || texApplied.current) return;
     texApplied.current = true;
-    mat.map = loadedTextures.map;
-    mat.normalMap = loadedTextures.normalMap;
-    if (mat.normalMap) mat.normalScale.set(loadedTextures.normalScale, loadedTextures.normalScale);
-    mat.roughnessMap = loadedTextures.roughnessMap;
-    mat.metalnessMap = loadedTextures.metalnessMap;
-    mat.displacementMap = loadedTextures.displacementMap;
-    mat.displacementScale = loadedTextures.displacementMap ? loadedTextures.displacementScale : 0;
-    mat.aoMap = loadedTextures.aoMap;
-    mat.aoMapIntensity = loadedTextures.aoMap ? loadedTextures.aoMapIntensity : 0;
-    mat.emissiveMap = loadedTextures.emissiveMap;
-    mat.alphaMap = loadedTextures.alphaMap;
-    mat.transparent = !!loadedTextures.alphaMap;
-    mat.lightMap = loadedTextures.lightMap;
+    if (viewMode !== "normal") {
+      // Clear all texture slots for solid / wireframe
+      mat.map = null;
+      mat.normalMap = null;
+      mat.roughnessMap = null;
+      mat.metalnessMap = null;
+      mat.displacementMap = null;
+      mat.displacementScale = 0;
+      mat.aoMap = null;
+      mat.aoMapIntensity = 0;
+      mat.emissiveMap = null;
+      mat.alphaMap = null;
+      mat.transparent = false;
+      mat.lightMap = null;
+    } else {
+      mat.map = loadedTextures.map;
+      mat.normalMap = loadedTextures.normalMap;
+      if (mat.normalMap) mat.normalScale.set(loadedTextures.normalScale, loadedTextures.normalScale);
+      mat.roughnessMap = loadedTextures.roughnessMap;
+      mat.metalnessMap = loadedTextures.metalnessMap;
+      mat.displacementMap = loadedTextures.displacementMap;
+      mat.displacementScale = loadedTextures.displacementMap ? loadedTextures.displacementScale : 0;
+      mat.aoMap = loadedTextures.aoMap;
+      mat.aoMapIntensity = loadedTextures.aoMap ? loadedTextures.aoMapIntensity : 0;
+      mat.emissiveMap = loadedTextures.emissiveMap;
+      mat.alphaMap = loadedTextures.alphaMap;
+      mat.transparent = !!loadedTextures.alphaMap;
+      mat.lightMap = loadedTextures.lightMap;
+    }
     mat.needsUpdate = true;
   });
 
@@ -211,18 +231,19 @@ function ShapeMeshes({
   const content = (
     <group ref={setGroupObj} onClick={handleClick}>
       <group position={[-defaultCenter.x, -defaultCenter.y, -defaultCenter.z]}>
-        <mesh geometry={geometry} castShadow receiveShadow>
+        <mesh geometry={geometry} castShadow={viewMode === "normal"} receiveShadow={viewMode === "normal"}>
           <meshPhysicalMaterial
             ref={matRef}
             color={color}
             side={THREE.DoubleSide}
-            roughness={materialSettings.roughness}
-            metalness={materialSettings.metalness}
-            transmission={materialSettings.transmission}
-            ior={materialSettings.ior}
-            clearcoat={materialSettings.clearcoat}
-            emissive={materialSettings.emissive || "#000000"}
-            emissiveIntensity={materialSettings.emissiveIntensity || 0}
+            wireframe={viewMode === "wireframe"}
+            roughness={viewMode === "normal" ? materialSettings.roughness : 1}
+            metalness={viewMode === "normal" ? materialSettings.metalness : 0}
+            transmission={viewMode === "normal" ? materialSettings.transmission : 0}
+            ior={viewMode === "normal" ? materialSettings.ior : 1.5}
+            clearcoat={viewMode === "normal" ? materialSettings.clearcoat : 0}
+            emissive={viewMode === "normal" ? (materialSettings.emissive || "#000000") : "#000000"}
+            emissiveIntensity={viewMode === "normal" ? (materialSettings.emissiveIntensity || 0) : 0}
           />
         </mesh>
       </group>
@@ -242,6 +263,9 @@ function ShapeMeshes({
             showX={transformMode === "rotate" ? !rotationLock.x : true}
             showY={transformMode === "rotate" ? !rotationLock.y : true}
             showZ={transformMode === "rotate" ? !rotationLock.z : true}
+            onMouseDown={() => {
+              dispatch(recordSnapshot());
+            }}
             onChange={() => {
               if (groupObj) {
                 onTransformChange({
@@ -350,6 +374,7 @@ export function ExtrudedSVG() {
     (state) => state.scene.globalTransform,
   );
   const rotationLock = useAppSelector((state) => state.scene.rotationLock);
+  const viewMode = useAppSelector((state) => state.scene.viewMode);
 
   // Preprocessed SVG (strokes converted to fills so Three.js can extrude them)
   const [processedSvg, setProcessedSvg] = useState<string | null>(null);
@@ -435,6 +460,9 @@ export function ExtrudedSVG() {
   } | null>(null);
 
   const isDraggingMultiRef = useRef(false);
+  // Stays true for a short window after the multi-drag ends so that the
+  // pointer-up → click event on individual shapes is suppressed.
+  const wasMultiDraggingRef = useRef(false);
 
   // Sync global transform
   useEffect(() => {
@@ -517,9 +545,13 @@ export function ExtrudedSVG() {
               globalMaterial={globalMaterial}
               loadedTextures={loadedTextures}
               isSelected={isSelected}
+              viewMode={viewMode}
               transformMode={selectedShapeIds.length > 1 ? null : transformMode}
               rotationLock={rotationLock}
               onSelect={() => {
+                // Suppress click if we just finished a multi-drag to avoid
+                // collapsing the multi-selection to a single object.
+                if (wasMultiDraggingRef.current) return;
                 const event = window.event as MouseEvent;
                 const isAdditive = event?.ctrlKey || event?.metaKey;
                 dispatch(
@@ -549,6 +581,7 @@ export function ExtrudedSVG() {
           showZ={transformMode === "rotate" ? !rotationLock.z : true}
           onMouseDown={() => {
             isDraggingMultiRef.current = true;
+            dispatch(recordSnapshot());
             if (!multiSelectGroupObj) return;
 
             multiSelectGroupObj.updateMatrix();
@@ -611,6 +644,12 @@ export function ExtrudedSVG() {
           }}
           onMouseUp={() => {
             isDraggingMultiRef.current = false;
+            // Keep the guard alive long enough to swallow the subsequent click
+            // event that fires on the underlying mesh after pointer-up.
+            wasMultiDraggingRef.current = true;
+            setTimeout(() => {
+              wasMultiDraggingRef.current = false;
+            }, 100);
           }}
         />
       )}
@@ -621,6 +660,9 @@ export function ExtrudedSVG() {
           showX={transformMode === "rotate" ? !rotationLock.x : true}
           showY={transformMode === "rotate" ? !rotationLock.y : true}
           showZ={transformMode === "rotate" ? !rotationLock.z : true}
+          onMouseDown={() => {
+            dispatch(recordSnapshot());
+          }}
           onChange={() => {
             if (globalGroupObj) {
               dispatch(

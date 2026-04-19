@@ -13,6 +13,7 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { ParticleBackground } from "@/components/ParticleBackground";
+import { UndoRedoToolbar } from "@/features/three/components/UndoRedoToolbar";
 
 const Canvas3D = dynamic(
   () =>
@@ -143,66 +144,189 @@ export default function Home() {
             {isEditMode ? (
               <SVGEditor />
             ) : !is3DMode ? (
-              <div className="h-full w-full flex items-center justify-center relative z-10 px-6">
+              <div className="h-full w-full flex items-center justify-center relative z-10 px-6 py-6">
                 <ParticleBackground />
-                <div className="relative group max-w-2xl w-full">
-                  {/* Subtle ambient glow behind the card */}
-                  <div className="absolute -inset-1 bg-linear-to-r from-indigo-500/10 via-purple-500/10 to-indigo-500/10 rounded-[2.5rem] blur-xl opacity-50 group-hover:opacity-70 transition duration-1000 pointer-events-none" />
+                <div className="relative w-full max-w-3xl">
+                  {/* Ambient glow */}
+                  <div className="absolute -inset-2 bg-linear-to-r from-indigo-500/8 via-purple-500/8 to-indigo-500/8 rounded-3xl blur-2xl pointer-events-none" />
 
-                  <div className="relative flex flex-col items-center text-center p-10 sm:p-16 bg-background/30 backdrop-blur-3xl border border-white/5 shadow-2xl rounded-[2.5rem] overflow-hidden">
-                    {/* Decorative top reflection line */}
-                    <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
-                    {/* Decorative bottom reflection line */}
-                    <div className="absolute bottom-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/5 to-transparent" />
+                  <div className="relative bg-background/25 backdrop-blur-3xl border border-white/6 shadow-2xl rounded-2xl overflow-hidden">
+                    {/* Top shine */}
+                    <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/12 to-transparent" />
 
-                    <div className="relative w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 shadow-inner shadow-white/5 backdrop-blur-md">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="w-8 h-8 text-foreground/80"
-                      >
-                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                        <line x1="12" y1="22.08" x2="12" y2="12" />
-                      </svg>
+                    {/* ── Header bar ── */}
+                    <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
+                      <div className="w-8 h-8 rounded-xl bg-linear-to-br from-indigo-500/30 to-purple-500/30 border border-white/10 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-indigo-300">
+                          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                          <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                          <line x1="12" y1="22.08" x2="12" y2="12" />
+                        </svg>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h1 className="text-sm font-semibold tracking-tight text-foreground leading-none">
+                          Lumix<span className="text-transparent bg-clip-text bg-linear-to-r from-indigo-400 to-purple-400">3D</span>
+                        </h1>
+                        <p className="text-xs text-muted-foreground/60 mt-0.5 truncate">SVG → 3D Converter · Cinematic Renderer</p>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          Ready
+                        </span>
+                      </div>
                     </div>
 
-                    <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-6 text-foreground">
-                      Lumix
-                      <span className="text-transparent bg-clip-text bg-linear-to-r from-indigo-400 to-purple-400">
-                        3D
-                      </span>
-                    </h1>
+                    {/* ── Body ── */}
+                    <div className="grid grid-cols-5 divide-x divide-white/5">
 
-                    <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-lg mx-auto mb-12 font-light">
-                      Upload an SVG file from the sidebar to begin creating your
-                      3D masterpiece. Experiment with extrusion settings and
-                      cinematic lighting presets.
-                    </p>
+                      {/* Left col — features */}
+                      <div className="col-span-3 p-5 space-y-4">
+                        <p className="text-xs font-medium text-muted-foreground/50 uppercase tracking-widest">Features</p>
+                        <div className="grid grid-cols-2 gap-2.5">
+                          {/* SVG Import */}
+                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
+                            <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center shrink-0">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-indigo-400">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
+                              </svg>
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-xs font-semibold text-foreground/90 leading-none">SVG Import</p>
+                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">Upload or paste any SVG file to begin</p>
+                            </div>
+                          </div>
+                          {/* Extrusion */}
+                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
+                            <div className="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/20 flex items-center justify-center shrink-0">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-purple-400">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" />
+                              </svg>
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-xs font-semibold text-foreground/90 leading-none">3D Extrusion</p>
+                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">Tune depth, bevel, and surface detail</p>
+                            </div>
+                          </div>
+                          {/* Lighting */}
+                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
+                            <div className="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/20 flex items-center justify-center shrink-0">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-amber-400">
+                                <circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                              </svg>
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-xs font-semibold text-foreground/90 leading-none">Cinematic Lighting</p>
+                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">HDRI presets & custom light rigs</p>
+                            </div>
+                          </div>
+                          {/* Quick Scenes */}
+                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
+                            <div className="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-emerald-400">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                              </svg>
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-xs font-semibold text-foreground/90 leading-none">Quick Scenes</p>
+                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">One-click app icon demos to explore</p>
+                            </div>
+                          </div>
+                          {/* Export */}
+                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
+                            <div className="w-8 h-8 rounded-lg bg-sky-500/15 border border-sky-500/20 flex items-center justify-center shrink-0">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-sky-400">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+                              </svg>
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-xs font-semibold text-foreground/90 leading-none">Scene Export</p>
+                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">Export embed code for any website</p>
+                            </div>
+                          </div>
+                          {/* Multi-Select */}
+                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
+                            <div className="w-8 h-8 rounded-lg bg-rose-500/15 border border-rose-500/20 flex items-center justify-center shrink-0">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-rose-400">
+                                <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
+                              </svg>
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-xs font-semibold text-foreground/90 leading-none">Multi-Select Edit</p>
+                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">Batch-edit material & extrusion props</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
-                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 pt-8 border-t border-white/5 w-full justify-center">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground/60">
-                          Developer
-                        </span>
-                        <span className="text-sm font-medium text-foreground/80">
-                          Saw Issac
-                        </span>
+                      {/* Right col — get started + shortcuts */}
+                      <div className="col-span-2 p-5 space-y-5">
+                        {/* Get started steps */}
+                        <div>
+                          <p className="text-xs font-medium text-muted-foreground/50 uppercase tracking-widest mb-3">Get Started</p>
+                          <ol className="space-y-3">
+                            <li className="flex gap-3 items-start">
+                              <span className="w-5 h-5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                              <div>
+                                <p className="text-xs font-semibold text-foreground/85 leading-none">Upload an SVG</p>
+                                <p className="text-xs text-muted-foreground/55 mt-0.5 leading-snug">Use the sidebar uploader or paste SVG code directly</p>
+                              </div>
+                            </li>
+                            <li className="flex gap-3 items-start">
+                              <span className="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                              <div>
+                                <p className="text-xs font-semibold text-foreground/85 leading-none">Tune the 3D scene</p>
+                                <p className="text-xs text-muted-foreground/55 mt-0.5 leading-snug">Adjust extrusion depth, materials & lighting</p>
+                              </div>
+                            </li>
+                            <li className="flex gap-3 items-start">
+                              <span className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                              <div>
+                                <p className="text-xs font-semibold text-foreground/85 leading-none">Export & share</p>
+                                <p className="text-xs text-muted-foreground/55 mt-0.5 leading-snug">Save the scene or grab an embed snippet</p>
+                              </div>
+                            </li>
+                          </ol>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="h-px bg-white/5" />
+
+                        {/* Keyboard shortcuts */}
+                        <div>
+                          <p className="text-xs font-medium text-muted-foreground/50 uppercase tracking-widest mb-3">Shortcuts</p>
+                          <div className="space-y-2">
+                            {[
+                              { key: "⌘ Z", label: "Undo" },
+                              { key: "⌘ ⇧ Z", label: "Redo" },
+                              { key: "Paste", label: "Load SVG from clipboard" },
+                              { key: "Drag", label: "Orbit camera" },
+                              { key: "Scroll", label: "Zoom in / out" },
+                            ].map(({ key, label }) => (
+                              <div key={key} className="flex items-center justify-between gap-2">
+                                <span className="text-xs text-muted-foreground/55">{label}</span>
+                                <kbd className="px-1.5 py-0.5 rounded-md bg-white/5 border border-white/10 text-foreground/60 text-xs font-mono whitespace-nowrap">{key}</kbd>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                      <div className="hidden sm:block w-1 h-1 rounded-full bg-white/10" />
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground/60">
-                          Studio
-                        </span>
-                        <span className="text-sm font-medium text-foreground/80">
-                          Waux Studio
-                        </span>
+                    </div>
+
+                    {/* ── Footer ── */}
+                    <div className="flex items-center justify-between px-5 py-3 border-t border-white/5 bg-white/1">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xs text-muted-foreground/40">Developer</span>
+                          <span className="text-xs font-medium text-foreground/70">Saw Issac</span>
+                        </div>
+                        <div className="w-px h-3 bg-white/10" />
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xs text-muted-foreground/40">Studio</span>
+                          <span className="text-xs font-medium text-foreground/70">Waux Studio</span>
+                        </div>
                       </div>
+                      <span className="text-xs text-muted-foreground/30">v1.0</span>
                     </div>
                   </div>
                 </div>
@@ -211,6 +335,7 @@ export default function Home() {
               <>
                 <Canvas3D />
                 <SceneTransformToolbar />
+                <UndoRedoToolbar />
               </>
             )}
           </main>

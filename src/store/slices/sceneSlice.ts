@@ -13,7 +13,25 @@ import {
   GroundSettings,
   ObjectGroup,
   CameraState,
+  ViewMode,
 } from "@/types";
+
+export type HistorySnapshot = Pick<
+  AppState,
+  | "svgShapes"
+  | "svgFile"
+  | "extrusion"
+  | "globalMaterial"
+  | "globalTexture"
+  | "globalTransform"
+  | "background"
+  | "lights"
+  | "currentPreset"
+  | "bloom"
+  | "ground"
+  | "showGrid"
+  | "groups"
+>;
 
 const initialState: AppState = {
   svgShapes: [],
@@ -80,6 +98,7 @@ const initialState: AppState = {
   currentPreset: "custom",
   is3DMode: false,
   isEditMode: false,
+  viewMode: "normal" as ViewMode,
   showGrid: true,
   selectedShapeId: null,
   selectedShapeIds: [],
@@ -476,10 +495,34 @@ const sceneSlice = createSlice({
     setBoxSelecting: (state, action: PayloadAction<boolean>) => {
       state.isBoxSelecting = action.payload;
     },
+    setViewMode: (state, action: PayloadAction<ViewMode>) => {
+      state.viewMode = action.payload;
+    },
     loadScene: (state, action: PayloadAction<AppState>) => {
       return { ...initialState, ...action.payload };
     },
     resetScene: () => initialState,
+    restoreSnapshot: (state, action: PayloadAction<HistorySnapshot>) => {
+      const snap = action.payload;
+      state.svgShapes = snap.svgShapes;
+      state.svgFile = snap.svgFile;
+      state.extrusion = snap.extrusion;
+      state.globalMaterial = snap.globalMaterial;
+      state.globalTexture = snap.globalTexture;
+      state.globalTransform = snap.globalTransform;
+      state.background = snap.background;
+      state.lights = snap.lights;
+      state.currentPreset = snap.currentPreset;
+      state.bloom = snap.bloom;
+      state.ground = snap.ground;
+      state.showGrid = snap.showGrid;
+      state.groups = snap.groups;
+    },
+    // No-op: triggers a history snapshot before a drag begins
+    recordSnapshot: () => {},
+    // Sentinel actions — actual logic is handled by historyMiddleware
+    undo: () => {},
+    redo: () => {},
     selectAllShapes: (state) => {
       state.selectedShapeIds = state.svgShapes
         .filter((s) => s.visible !== false)
@@ -561,12 +604,17 @@ export const {
   selectGroup,
   ungroupSelected,
   setBoxSelecting,
+  setViewMode,
   resetScene,
   loadScene,
   selectAllShapes,
   setCameraState,
   setGlobalTexture,
   clearTextureChannel,
+  restoreSnapshot,
+  recordSnapshot,
+  undo,
+  redo,
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

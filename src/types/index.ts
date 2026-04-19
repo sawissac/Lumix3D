@@ -163,6 +163,8 @@ export type EmbedControls = {
   enablePan: boolean;
 };
 
+export type ViewMode = "normal" | "solid" | "wireframe";
+
 export type AppState = {
   svgShapes: SvgShape[];
   svgFile: string | null;
@@ -178,6 +180,7 @@ export type AppState = {
   is3DMode: boolean;
   isEditMode: boolean;
   showGrid: boolean;
+  viewMode: ViewMode;
   selectedShapeId: string | "global" | null;
   selectedShapeIds: string[];
   groups: ObjectGroup[];

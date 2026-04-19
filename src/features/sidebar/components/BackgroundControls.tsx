@@ -40,27 +40,33 @@ export function BackgroundControls() {
       </CardHeader>
       <CardContent className="space-y-4 pt-4">
         <div className="flex items-center justify-between">
-          <Label htmlFor="show-grid" className="text-white/80">
-            Show Grid Helper
-          </Label>
+          <div>
+            <Label htmlFor="show-grid" className="text-white/80">
+              Show Grid Helper
+            </Label>
+            <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">
+              Displays a reference grid on the ground plane
+            </p>
+          </div>
           <Switch
             id="show-grid"
             checked={showGrid}
-            onCheckedChange={(checked: boolean) =>
-              dispatch(setShowGrid(checked))
-            }
+            onCheckedChange={(checked: boolean) => dispatch(setShowGrid(checked))}
           />
         </div>
 
-        <div className="space-y-3">
-          <Label className="text-white/80">Background Type</Label>
+        <div className="space-y-1.5">
+          <div>
+            <Label className="text-white/80">Background Type</Label>
+            <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">
+              Choose how the scene background is rendered
+            </p>
+          </div>
           <Select
             value={background.type}
             onValueChange={(value: string | null) => {
               if (!value) return;
-              dispatch(
-                setBackground({ ...background, type: value as BackgroundType }),
-              );
+              dispatch(setBackground({ ...background, type: value as BackgroundType }));
             }}
           >
             <SelectTrigger className="w-full bg-black/20 border-white/10 text-white focus:ring-pink-500">
@@ -77,10 +83,13 @@ export function BackgroundControls() {
         </div>
 
         {background.type === "color" && (
-          <div className="space-y-3">
-            <Label htmlFor="bg-color" className="text-white/80">
-              Color
-            </Label>
+          <div className="space-y-1.5">
+            <div>
+              <Label htmlFor="bg-color" className="text-white/80">Color</Label>
+              <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">
+                Solid fill color for the scene background
+              </p>
+            </div>
             <div className="flex gap-3">
               <div className="relative w-12 h-10 rounded-md overflow-hidden border border-white/10 shadow-sm cursor-pointer hover:scale-105 transition-transform">
                 <Input
@@ -88,9 +97,7 @@ export function BackgroundControls() {
                   type="color"
                   value={background.value}
                   onChange={(e) =>
-                    dispatch(
-                      setBackground({ ...background, value: e.target.value }),
-                    )
+                    dispatch(setBackground({ ...background, value: e.target.value }))
                   }
                   className="absolute inset-[-10px] w-[200%] h-[200%] cursor-pointer border-0 p-0"
                 />
@@ -99,9 +106,7 @@ export function BackgroundControls() {
                 type="text"
                 value={background.value}
                 onChange={(e) =>
-                  dispatch(
-                    setBackground({ ...background, value: e.target.value }),
-                  )
+                  dispatch(setBackground({ ...background, value: e.target.value }))
                 }
                 className="flex-1 bg-black/20 border-white/10 text-pink-200 font-mono uppercase focus-visible:ring-pink-500"
               />
@@ -111,10 +116,17 @@ export function BackgroundControls() {
 
         {(background.type === "gradient" || background.type === "radial-gradient") && (
           <>
-            <div className="space-y-3">
-              <Label className="text-white/80">
-                {background.type === "radial-gradient" ? "Center Color" : "Start Color"}
-              </Label>
+            <div className="space-y-1.5">
+              <div>
+                <Label className="text-white/80">
+                  {background.type === "radial-gradient" ? "Center Color" : "Start Color"}
+                </Label>
+                <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">
+                  {background.type === "radial-gradient"
+                    ? "Color at the center of the radial gradient"
+                    : "Color at the top of the linear gradient"}
+                </p>
+              </div>
               <div className="flex gap-3">
                 <div className="relative w-12 h-10 rounded-md overflow-hidden border border-white/10 shadow-sm cursor-pointer">
                   <Input
@@ -136,10 +148,18 @@ export function BackgroundControls() {
                 />
               </div>
             </div>
-            <div className="space-y-3">
-              <Label className="text-white/80">
-                {background.type === "radial-gradient" ? "Edge Color" : "End Color"}
-              </Label>
+
+            <div className="space-y-1.5">
+              <div>
+                <Label className="text-white/80">
+                  {background.type === "radial-gradient" ? "Edge Color" : "End Color"}
+                </Label>
+                <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">
+                  {background.type === "radial-gradient"
+                    ? "Color at the outer edge of the radial gradient"
+                    : "Color at the bottom of the linear gradient"}
+                </p>
+              </div>
               <div className="flex gap-3">
                 <div className="relative w-12 h-10 rounded-md overflow-hidden border border-white/10 shadow-sm cursor-pointer">
                   <Input
@@ -165,28 +185,33 @@ export function BackgroundControls() {
         )}
 
         {background.type === "image" && (
-          <div className="space-y-3">
-            <Label className="text-white/80">Image URL</Label>
+          <div className="space-y-1.5">
+            <div>
+              <Label className="text-white/80">Image URL</Label>
+              <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">
+                Direct link to a PNG, JPG, or WebP image
+              </p>
+            </div>
             <Input
               type="text"
               placeholder="https://example.com/texture.jpg"
               value={background.imageUrl || ""}
               onChange={(e) =>
-                dispatch(
-                  setBackground({ ...background, imageUrl: e.target.value }),
-                )
+                dispatch(setBackground({ ...background, imageUrl: e.target.value }))
               }
               className="bg-black/20 border-white/10 text-white focus-visible:ring-pink-500"
             />
-            <p className="text-xs text-white/50">
-              Provide a valid image URL for background, texture, or pattern.
-            </p>
           </div>
         )}
 
         {background.type !== "transparent" && (
-          <div className="space-y-2 pt-1 border-t border-white/5">
-            <Label className="text-white/80 text-xs">Noise Intensity</Label>
+          <div className="space-y-1.5 pt-1 border-t border-white/5">
+            <div>
+              <Label className="text-white/80 text-xs">Noise Intensity</Label>
+              <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">
+                Adds a subtle film grain overlay to the background
+              </p>
+            </div>
             <SliderWithInput
               value={background.noise ?? 0}
               onChange={(v) => dispatch(setBackground({ ...background, noise: v }))}

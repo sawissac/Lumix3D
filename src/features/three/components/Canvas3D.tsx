@@ -10,6 +10,8 @@ import {
   clearSelection,
   selectAllShapes,
   setBoxSelecting,
+  undo,
+  redo,
 } from "@/store/slices/sceneSlice";
 import { ExtrudedSVG } from "./ExtrudedSVG";
 import { SceneLights } from "./SceneLights";
@@ -67,6 +69,7 @@ export function Canvas3D() {
   );
   const isBoxSelecting = useAppSelector((state) => state.scene.isBoxSelecting);
   const svgShapes = useAppSelector((state) => state.scene.svgShapes);
+  const viewMode = useAppSelector((state) => state.scene.viewMode);
 
   const orbitControlsRef = useRef<any>(null);
   const lockedAnglesRef = useRef({ polar: 0, azimuth: 0 });
@@ -148,6 +151,22 @@ export function Canvas3D() {
       if (isEmbedMode) return;
 
       const key = e.key.toLowerCase();
+
+      // Undo / Redo
+      if ((e.ctrlKey || e.metaKey) && key === "z") {
+        e.preventDefault();
+        if (e.shiftKey) {
+          dispatch(redo());
+        } else {
+          dispatch(undo());
+        }
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && key === "y") {
+        e.preventDefault();
+        dispatch(redo());
+        return;
+      }
 
       // Selection shortcuts — available even with no current selection.
       if (key === "a") {
@@ -282,7 +301,7 @@ export function Canvas3D() {
           />
         )}
 
-        {ground.enabled && (
+        {ground.enabled && viewMode === "normal" && (
           <ContactShadows
             position={ground.position}
             opacity={ground.metalness}
@@ -294,7 +313,7 @@ export function Canvas3D() {
           />
         )}
 
-        <EffectComposer enabled={bloom.enabled}>
+        <EffectComposer enabled={bloom.enabled && viewMode === "normal"}>
           <Bloom
             luminanceThreshold={bloom.luminanceThreshold}
             mipmapBlur

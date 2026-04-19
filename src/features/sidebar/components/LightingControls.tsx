@@ -123,8 +123,11 @@ export function LightingControls() {
                   )}
                 </div>
 
-                <div className="space-y-2">
-                  <Label className="text-xs text-white/60">Intensity</Label>
+                <div className="space-y-1.5">
+                  <div>
+                    <Label className="text-xs text-white/60">Intensity</Label>
+                    <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">Brightness of this light source</p>
+                  </div>
                   <SliderWithInput
                     value={light.intensity}
                     onChange={(v) =>
@@ -138,8 +141,11 @@ export function LightingControls() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label className="text-xs text-white/60">Color</Label>
+                <div className="space-y-1.5">
+                  <div>
+                    <Label className="text-xs text-white/60">Color</Label>
+                    <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">Hue of the emitted light</p>
+                  </div>
                   <div className="flex gap-3">
                     <div className="relative w-12 h-9 rounded-md overflow-hidden border border-white/10 shadow-sm cursor-pointer hover:scale-105 transition-transform">
                       <Input
@@ -169,10 +175,13 @@ export function LightingControls() {
                 {light.type !== "ambient" && (
                   <div className="grid grid-cols-3 gap-3 pt-2 border-t border-white/5">
                     {(["X", "Y", "Z"] as const).map((axis, ai) => (
-                      <div key={axis} className="space-y-2">
+                      <div key={axis} className="space-y-1.5">
                         <Label className="text-[10px] text-white/50 uppercase tracking-wider">
                           {axis} Pos
                         </Label>
+                        <p className="text-[9px] text-muted-foreground/35 leading-tight -mt-0.5">
+                          {axis === "X" ? "Left / right" : axis === "Y" ? "Up / down" : "Front / back"}
+                        </p>
                         <Input
                           type="number"
                           value={light.position[ai]}

@@ -2,9 +2,9 @@
 
 import { useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setGlobalTexture } from "@/store/slices/sceneSlice";
+import { setGlobalTexture, clearTextureChannel } from "@/store/slices/sceneSlice";
 import { TextureSettings } from "@/types";
-import { Slider } from "@/components/ui/slider";
+import { SliderWithInput } from "@/components/ui/slider-with-input";
 import {
   Card,
   CardContent,
@@ -44,10 +44,14 @@ const CHANNELS: TextureChannel[] = [
 
 const SUPPORTED = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/bmp", "image/avif"];
 
+
 export function TextureControls() {
   const dispatch = useAppDispatch();
   const globalTexture = useAppSelector((s) => s.scene.globalTexture);
+  const is3DMode = useAppSelector((s) => s.scene.is3DMode);
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  if (!is3DMode) return null;
 
   const upload = (key: keyof TextureSettings, file: File) => {
     if (!SUPPORTED.includes(file.type)) {
@@ -138,7 +142,7 @@ export function TextureControls() {
                   </button>
                   {url && (
                     <button
-                      onClick={() => dispatch(setGlobalTexture({ [key]: null }))}
+                      onClick={() => dispatch(clearTextureChannel(key))}
                       className="w-6 h-6 flex items-center justify-center rounded bg-red-500/10 hover:bg-red-500/20 text-red-400/60 hover:text-red-400 transition-colors text-xs"
                     >
                       ✕
@@ -167,59 +171,63 @@ export function TextureControls() {
           <div className="space-y-3 pt-3 border-t border-white/5">
 
             <div className="space-y-1.5">
-              <div className="flex justify-between text-[10px] text-muted-foreground/70">
-                <span>Texture Scale</span>
-                <span className="text-blue-300/70">{(globalTexture.repeat ?? 1).toFixed(2)}×</span>
+              <div>
+                <p className="text-[10px] text-white/70 font-medium">Texture Scale</p>
+                <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">Tiling repeat — smaller values zoom in, larger zoom out</p>
               </div>
-              <Slider
+              <SliderWithInput
+                value={globalTexture.repeat ?? 1}
                 min={0.01} max={100} step={0.01}
-                value={[globalTexture.repeat ?? 1]}
-                onValueChange={([v]) => dispatch(setGlobalTexture({ repeat: v }))}
+                onChange={(v) => dispatch(setGlobalTexture({ repeat: v }))}
+                sliderClassName="**:[[role=slider]]:bg-blue-400 **:[[role=slider]]:border-blue-400"
+                inputClassName="focus-visible:ring-blue-500/50 text-blue-300"
               />
-              <div className="flex justify-between text-[9px] text-muted-foreground/35">
-                <span>smaller</span>
-                <span>larger</span>
-              </div>
             </div>
 
             {globalTexture.normalMap && (
               <div className="space-y-1.5">
-                <div className="flex justify-between text-[10px] text-muted-foreground/70">
-                  <span>Normal Strength</span>
-                  <span className="text-blue-300/70">{(globalTexture.normalScale ?? 1).toFixed(2)}</span>
+                <div>
+                  <p className="text-[10px] text-white/70 font-medium">Normal Strength</p>
+                  <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">How pronounced the surface bump detail appears</p>
                 </div>
-                <Slider
+                <SliderWithInput
+                  value={globalTexture.normalScale ?? 1}
                   min={0} max={3} step={0.01}
-                  value={[globalTexture.normalScale ?? 1]}
-                  onValueChange={([v]) => dispatch(setGlobalTexture({ normalScale: v }))}
+                  onChange={(v) => dispatch(setGlobalTexture({ normalScale: v }))}
+                  sliderClassName="**:[[role=slider]]:bg-blue-400 **:[[role=slider]]:border-blue-400"
+                  inputClassName="focus-visible:ring-blue-500/50 text-blue-300"
                 />
               </div>
             )}
 
             {globalTexture.displacementMap && (
               <div className="space-y-1.5">
-                <div className="flex justify-between text-[10px] text-muted-foreground/70">
-                  <span>Displacement Scale</span>
-                  <span className="text-blue-300/70">{(globalTexture.displacementScale ?? 0.1).toFixed(2)}</span>
+                <div>
+                  <p className="text-[10px] text-white/70 font-medium">Displacement Scale</p>
+                  <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">How far vertices are pushed by the displacement map</p>
                 </div>
-                <Slider
+                <SliderWithInput
+                  value={globalTexture.displacementScale ?? 0.1}
                   min={0} max={2} step={0.01}
-                  value={[globalTexture.displacementScale ?? 0.1]}
-                  onValueChange={([v]) => dispatch(setGlobalTexture({ displacementScale: v }))}
+                  onChange={(v) => dispatch(setGlobalTexture({ displacementScale: v }))}
+                  sliderClassName="**:[[role=slider]]:bg-blue-400 **:[[role=slider]]:border-blue-400"
+                  inputClassName="focus-visible:ring-blue-500/50 text-blue-300"
                 />
               </div>
             )}
 
             {globalTexture.aoMap && (
               <div className="space-y-1.5">
-                <div className="flex justify-between text-[10px] text-muted-foreground/70">
-                  <span>AO Intensity</span>
-                  <span className="text-blue-300/70">{(globalTexture.aoMapIntensity ?? 1).toFixed(2)}</span>
+                <div>
+                  <p className="text-[10px] text-white/70 font-medium">AO Intensity</p>
+                  <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">Strength of ambient occlusion / contact shadows</p>
                 </div>
-                <Slider
+                <SliderWithInput
+                  value={globalTexture.aoMapIntensity ?? 1}
                   min={0} max={2} step={0.01}
-                  value={[globalTexture.aoMapIntensity ?? 1]}
-                  onValueChange={([v]) => dispatch(setGlobalTexture({ aoMapIntensity: v }))}
+                  onChange={(v) => dispatch(setGlobalTexture({ aoMapIntensity: v }))}
+                  sliderClassName="**:[[role=slider]]:bg-blue-400 **:[[role=slider]]:border-blue-400"
+                  inputClassName="focus-visible:ring-blue-500/50 text-blue-300"
                 />
               </div>
             )}

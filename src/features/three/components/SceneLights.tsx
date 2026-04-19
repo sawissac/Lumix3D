@@ -5,6 +5,13 @@ import * as THREE from "three";
 
 export function SceneLights() {
   const lights = useAppSelector((state) => state.scene.lights);
+  const viewMode = useAppSelector((state) => state.scene.viewMode);
+
+  // In solid/wireframe mode: replace all lighting with a neutral full-intensity ambient
+  // so objects show their flat color with no highlights or shadows.
+  if (viewMode !== "normal") {
+    return <ambientLight intensity={2} color="#ffffff" />;
+  }
 
   return (
     <>

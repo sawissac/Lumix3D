@@ -3,6 +3,7 @@ import { Inter, Geist } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { cn } from "@/lib/utils";
+import { MobileBlocker } from "@/components/MobileBlocker";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("dark", "font-sans", geist.variable)}>
       <body className={inter.className}>
+        <MobileBlocker />
         <Providers>{children}</Providers>
       </body>
     </html>

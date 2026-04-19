@@ -10,6 +10,7 @@ import {
 } from "redux-persist";
 import sceneReducer from "./slices/sceneSlice";
 import { persistConfig, persistReducer } from "./persistConfig";
+import { historyMiddleware } from "./historyMiddleware";
 
 const persistedReducer = persistReducer(persistConfig, sceneReducer);
 
@@ -22,7 +23,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).prepend(historyMiddleware),
 });
 
 export const persistor = persistStore(store);
