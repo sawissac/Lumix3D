@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setSvgFile, setSvgShapes, setEditMode, set3DMode, setSvgSelection, clearSvgSelection, setSvgFocusIndex } from '@/store/slices/sceneSlice';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
@@ -35,12 +35,11 @@ export function SVGEditor() {
   const dispatch = useAppDispatch();
   const svgFile = useAppSelector((state) => state.scene.svgFile);
   const svgFocusIndex = useAppSelector((state) => state.scene.svgFocusIndex);
-  const [sel, setSel] = useState<SelectionProps | null>(null);
+  const svgSelection = useAppSelector((state) => state.scene.svgSelection);
 
   const readSelection = useCallback((canvas: FabricCanvas) => {
     const objects = canvas.getActiveObjects();
     if (objects.length === 0) {
-      setSel(null);
       dispatch(clearSvgSelection());
       return;
     }
@@ -50,7 +49,6 @@ export function SVGEditor() {
       stroke: toHex(first.stroke as string),
       strokeWidth: (first.strokeWidth as number) ?? 0,
     };
-    setSel(selProps);
     const allObjects = canvas.getObjects();
     const firstIndex = allObjects.indexOf(first);
     dispatch(setSvgSelection({ count: objects.length, firstIndex, ...selProps }));
@@ -110,7 +108,7 @@ export function SVGEditor() {
       // Selection events → update fill/stroke panel
       canvas.on('selection:created', () => readSelection(canvas));
       canvas.on('selection:updated', () => readSelection(canvas));
-      canvas.on('selection:cleared', () => setSel(null));
+      canvas.on('selection:cleared', () => dispatch(clearSvgSelection()));
 
       // Mouse-wheel zoom centered on cursor
       canvas.on('mouse:wheel', (opt) => {
@@ -175,7 +173,7 @@ export function SVGEditor() {
       if (props.strokeWidth !== undefined) obj.set('strokeWidth', props.strokeWidth);
     });
     canvas.renderAll();
-    setSel((prev) => prev ? { ...prev, ...props } : prev);
+    readSelection(canvas);
   };
 
   const handleApply = () => {
@@ -325,7 +323,7 @@ export function SVGEditor() {
         </div>
 
         {/* Fill / Stroke controls */}
-        {sel && (
+        {svgSelection && (
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 ml-0 sm:ml-2 px-2 py-1 bg-indigo-500/10 rounded-md border border-indigo-500/20 shadow-inner">
             <span className="text-[10px] text-indigo-300/80 font-mono tracking-wider font-medium sm:mr-1 uppercase leading-none">
               {(() => {
@@ -346,7 +344,7 @@ export function SVGEditor() {
                 <div className="relative w-5 h-5 rounded-full overflow-hidden border border-white/20 shadow-sm transition-transform hover:scale-110 cursor-pointer focus-within:ring-1 focus-within:ring-indigo-500 focus-within:ring-offset-1 focus-within:ring-offset-background">
                   <input
                     type="color"
-                    value={sel.fill}
+                    value={svgSelection.fill}
                     onChange={(e) => applyToSelection({ fill: e.target.value })}
                     className="absolute inset-[-50%] w-[200%] h-[200%] cursor-pointer m-0 p-0 outline-none"
                   />
@@ -358,7 +356,7 @@ export function SVGEditor() {
                 <div className="relative w-5 h-5 rounded-full overflow-hidden border border-white/20 shadow-sm transition-transform hover:scale-110 cursor-pointer focus-within:ring-1 focus-within:ring-indigo-500 focus-within:ring-offset-1 focus-within:ring-offset-background">
                   <input
                     type="color"
-                    value={sel.stroke}
+                    value={svgSelection.stroke}
                     onChange={(e) => applyToSelection({ stroke: e.target.value })}
                     className="absolute inset-[-50%] w-[200%] h-[200%] cursor-pointer m-0 p-0 outline-none"
                   />
@@ -372,7 +370,7 @@ export function SVGEditor() {
                   min={0}
                   max={50}
                   step={0.5}
-                  value={sel.strokeWidth}
+                  value={svgSelection.strokeWidth}
                   onChange={(e) => applyToSelection({ strokeWidth: parseFloat(e.target.value) || 0 })}
                   className="w-12 h-6 rounded border border-white/10 bg-black/40 px-1.5 text-xs font-mono focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-muted-foreground text-center"
                 />

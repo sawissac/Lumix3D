@@ -11,12 +11,14 @@ import {
 import sceneReducer from "./slices/sceneSlice";
 import { persistConfig, persistReducer } from "./persistConfig";
 import { historyMiddleware } from "./historyMiddleware";
+import uiReducer from "./slices/uiSlice";
 
 const persistedReducer = persistReducer(persistConfig, sceneReducer);
 
 export const store = configureStore({
   reducer: {
     scene: persistedReducer,
+    ui: uiReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

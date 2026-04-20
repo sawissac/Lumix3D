@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setIsEmbedLoaded } from "@/store/slices/uiSlice";
 import {
   loadScene,
   set3DMode,
@@ -28,7 +29,7 @@ const Canvas3D = dynamic(
 
 export default function EmbedPage() {
   const dispatch = useAppDispatch();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const isEmbedLoaded = useAppSelector((state) => state.ui.isEmbedLoaded);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -41,7 +42,7 @@ export default function EmbedPage() {
           state.isEditMode = false;
           state.transformMode = null;
           dispatch(loadScene(state));
-          setIsLoaded(true);
+          dispatch(setIsEmbedLoaded(true));
         }
       }
     };
@@ -58,14 +59,14 @@ export default function EmbedPage() {
 
   // Ensure transform controls stay disabled
   useEffect(() => {
-    if (isLoaded) {
+    if (isEmbedLoaded) {
       dispatch(setTransformMode(null));
     }
-  }, [dispatch, isLoaded]);
+  }, [dispatch, isEmbedLoaded]);
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-background">
-      {isLoaded ? (
+      {isEmbedLoaded ? (
         <Canvas3D />
       ) : (
         <div className="h-full w-full flex items-center justify-center bg-background text-muted-foreground">

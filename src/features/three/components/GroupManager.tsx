@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Users, Plus, Trash2, Layers, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -9,22 +8,22 @@ import {
   selectGroup,
   ungroupSelected,
 } from "@/store/slices/sceneSlice";
+import { setGroupName, setShowGroupDialog } from "@/store/slices/uiSlice";
 import { cn } from "@/lib/utils";
 
 export function GroupManager() {
   const dispatch = useAppDispatch();
   const selectedShapeIds = useAppSelector((s) => s.scene.selectedShapeIds);
   const groups = useAppSelector((s) => s.scene.groups);
-  const [showGroupDialog, setShowGroupDialog] = useState(false);
-  const [groupName, setGroupName] = useState("");
+  const { showGroupDialog, groupName } = useAppSelector((s) => s.ui);
 
   const canCreateGroup = selectedShapeIds.length >= 2;
 
   const handleCreateGroup = () => {
     if (groupName.trim() && canCreateGroup) {
       dispatch(createGroup({ name: groupName.trim() }));
-      setGroupName("");
-      setShowGroupDialog(false);
+      dispatch(setGroupName(""));
+      dispatch(setShowGroupDialog(false));
     }
   };
 
@@ -70,7 +69,7 @@ export function GroupManager() {
 
         {canCreateGroup && (
           <button
-            onClick={() => setShowGroupDialog(true)}
+            onClick={() => dispatch(setShowGroupDialog(true))}
             className="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium text-white/60 hover:text-white/90 hover:bg-white/6 border border-transparent"
           >
             <Plus className="w-3.5 h-3.5 shrink-0" />
@@ -130,7 +129,7 @@ export function GroupManager() {
       {showGroupDialog && (
         <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-          onClick={() => setShowGroupDialog(false)}
+          onClick={() => dispatch(setShowGroupDialog(false))}
         >
           <div
             className="rounded-xl p-4 shadow-2xl border border-white/10 w-80"
@@ -144,7 +143,7 @@ export function GroupManager() {
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-white">Create Group</h3>
               <button
-                onClick={() => setShowGroupDialog(false)}
+                onClick={() => dispatch(setShowGroupDialog(false))}
                 className="text-white/40 hover:text-white/90 transition-colors"
               >
                 <X className="w-4 h-4" />
@@ -156,10 +155,10 @@ export function GroupManager() {
             <input
               type="text"
               value={groupName}
-              onChange={(e) => setGroupName(e.target.value)}
+              onChange={(e) => dispatch(setGroupName(e.target.value))}
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleCreateGroup();
-                if (e.key === "Escape") setShowGroupDialog(false);
+                if (e.key === "Escape") dispatch(setShowGroupDialog(false));
               }}
               placeholder="Group name..."
               autoFocus
@@ -167,7 +166,7 @@ export function GroupManager() {
             />
             <div className="flex gap-2 mt-3">
               <button
-                onClick={() => setShowGroupDialog(false)}
+                onClick={() => dispatch(setShowGroupDialog(false))}
                 className="flex-1 px-3 py-1.5 rounded-lg text-xs font-medium text-white/60 hover:text-white/90 hover:bg-white/6 transition-colors"
               >
                 Cancel

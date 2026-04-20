@@ -1,33 +1,48 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Download, Upload, Trash, Code, Copy, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { resetScene, loadScene } from "@/store/slices/sceneSlice";
+import {
+  setShowCodeModal,
+  setCodeType,
+  setCopied,
+  setEmbedRotate,
+  setEmbedZoom,
+  setEmbedPan,
+  setEmbedRotateX,
+  setEmbedRotateY,
+  setEmbedRotateZ,
+} from "@/store/slices/uiSlice";
 
 export function ProjectActions() {
   const dispatch = useAppDispatch();
   const sceneState = useAppSelector((state) => state.scene);
+  const uiState = useAppSelector((state) => state.ui);
+  
+  const {
+    showCodeModal,
+    codeType,
+    copied,
+    embedRotate,
+    embedZoom,
+    embedPan,
+    embedRotateX,
+    embedRotateY,
+    embedRotateZ,
+  } = uiState;
+
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [showCodeModal, setShowCodeModal] = useState(false);
-  const [codeType, setCodeType] = useState<"js" | "react">("js");
-  const [copied, setCopied] = useState(false);
-  const [embedRotate, setEmbedRotate] = useState(true);
-  const [embedZoom, setEmbedZoom] = useState(false);
-  const [embedPan, setEmbedPan] = useState(false);
-  const [embedRotateX, setEmbedRotateX] = useState(true);
-  const [embedRotateY, setEmbedRotateY] = useState(true);
-  const [embedRotateZ, setEmbedRotateZ] = useState(true);
 
   const hasProject = sceneState.svgShapes.length > 0 || sceneState.is3DMode;
 
   const handleExport = () => {
-    // @ts-ignore
     const cameraState =
-      typeof window !== "undefined" && window.getLumixCameraState
-        ? window.getLumixCameraState()
+      typeof window !== "undefined" && (window as any).getLumixCameraState
+        ? (window as any).getLumixCameraState()
         : undefined;
     const finalState = { ...sceneState, cameraState };
 
@@ -72,18 +87,17 @@ export function ProjectActions() {
   const handleCopy = async (code: string) => {
     try {
       await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      dispatch(setCopied(true));
+      setTimeout(() => dispatch(setCopied(false)), 2000);
     } catch (err) {
       console.error("Failed to copy", err);
     }
   };
 
   const generateJavaScriptCode = () => {
-    // @ts-ignore
     const cameraState =
-      typeof window !== "undefined" && window.getLumixCameraState
-        ? window.getLumixCameraState()
+      typeof window !== "undefined" && (window as any).getLumixCameraState
+        ? (window as any).getLumixCameraState()
         : undefined;
     const finalState = {
       ...sceneState,
@@ -135,10 +149,9 @@ export function ProjectActions() {
   };
 
   const generateReactCode = () => {
-    // @ts-ignore
     const cameraState =
-      typeof window !== "undefined" && window.getLumixCameraState
-        ? window.getLumixCameraState()
+      typeof window !== "undefined" && (window as any).getLumixCameraState
+        ? (window as any).getLumixCameraState()
         : undefined;
     const finalState = {
       ...sceneState,
@@ -233,7 +246,7 @@ export default function Lumix3DEmbed() {
         size="icon"
         title="Show Embed Code"
         className="h-7 w-7 text-white/50 hover:text-white/90 hover:bg-white/10"
-        onClick={() => setShowCodeModal(true)}
+        onClick={() => dispatch(setShowCodeModal(true))}
       >
         <Code className="h-4 w-4" />
       </Button>
@@ -259,7 +272,7 @@ export default function Lumix3DEmbed() {
       {showCodeModal && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-          onClick={() => setShowCodeModal(false)}
+          onClick={() => dispatch(setShowCodeModal(false))}
         >
           <div
             className="bg-background border rounded-lg shadow-lg w-[700px] max-h-[85vh] overflow-hidden flex flex-col"
@@ -271,7 +284,7 @@ export default function Lumix3DEmbed() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => setShowCodeModal(false)}
+                  onClick={() => dispatch(setShowCodeModal(false))}
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -286,7 +299,7 @@ export default function Lumix3DEmbed() {
                   <label className="flex items-center gap-2 text-sm cursor-pointer">
                     <Switch
                       checked={embedRotate}
-                      onCheckedChange={setEmbedRotate}
+                      onCheckedChange={(c) => dispatch(setEmbedRotate(c))}
                       size="sm"
                     />
                     <span>Rotate</span>
@@ -294,7 +307,7 @@ export default function Lumix3DEmbed() {
                   <label className="flex items-center gap-2 text-sm cursor-pointer">
                     <Switch
                       checked={embedZoom}
-                      onCheckedChange={setEmbedZoom}
+                      onCheckedChange={(c) => dispatch(setEmbedZoom(c))}
                       size="sm"
                     />
                     <span>Zoom</span>
@@ -302,7 +315,7 @@ export default function Lumix3DEmbed() {
                   <label className="flex items-center gap-2 text-sm cursor-pointer">
                     <Switch
                       checked={embedPan}
-                      onCheckedChange={setEmbedPan}
+                      onCheckedChange={(c) => dispatch(setEmbedPan(c))}
                       size="sm"
                     />
                     <span>Pan</span>
@@ -313,7 +326,7 @@ export default function Lumix3DEmbed() {
                     <label className="flex items-center gap-2 text-sm cursor-pointer text-muted-foreground">
                       <Switch
                         checked={embedRotateX}
-                        onCheckedChange={setEmbedRotateX}
+                        onCheckedChange={(c) => dispatch(setEmbedRotateX(c))}
                         size="sm"
                       />
                       <span>Rotate X</span>
@@ -321,7 +334,7 @@ export default function Lumix3DEmbed() {
                     <label className="flex items-center gap-2 text-sm cursor-pointer text-muted-foreground">
                       <Switch
                         checked={embedRotateY}
-                        onCheckedChange={setEmbedRotateY}
+                        onCheckedChange={(c) => dispatch(setEmbedRotateY(c))}
                         size="sm"
                       />
                       <span>Rotate Y</span>
@@ -329,7 +342,7 @@ export default function Lumix3DEmbed() {
                     <label className="flex items-center gap-2 text-sm cursor-pointer text-muted-foreground">
                       <Switch
                         checked={embedRotateZ}
-                        onCheckedChange={setEmbedRotateZ}
+                        onCheckedChange={(c) => dispatch(setEmbedRotateZ(c))}
                         size="sm"
                       />
                       <span>Rotate Z</span>
@@ -343,14 +356,14 @@ export default function Lumix3DEmbed() {
                 <Button
                   variant={codeType === "js" ? "default" : "ghost"}
                   size="sm"
-                  onClick={() => setCodeType("js")}
+                  onClick={() => dispatch(setCodeType("js"))}
                 >
                   JavaScript
                 </Button>
                 <Button
                   variant={codeType === "react" ? "default" : "ghost"}
                   size="sm"
-                  onClick={() => setCodeType("react")}
+                  onClick={() => dispatch(setCodeType("react"))}
                 >
                   React
                 </Button>
