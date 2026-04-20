@@ -7,15 +7,16 @@ import {
   deleteGroup,
   selectGroup,
   ungroupSelected,
+  setGroupName,
+  setShowGroupDialog,
 } from "@/store/slices/sceneSlice";
-import { setGroupName, setShowGroupDialog } from "@/store/slices/uiSlice";
 import { cn } from "@/lib/utils";
 
 export function GroupManager() {
   const dispatch = useAppDispatch();
   const selectedShapeIds = useAppSelector((s) => s.scene.selectedShapeIds);
   const groups = useAppSelector((s) => s.scene.groups);
-  const { showGroupDialog, groupName } = useAppSelector((s) => s.ui);
+  const { showGroupDialog, groupName } = useAppSelector((s) => s.scene);
 
   const canCreateGroup = selectedShapeIds.length >= 2;
 

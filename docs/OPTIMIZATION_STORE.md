@@ -19,6 +19,7 @@ Requirements:
    - `/components` for UI
 7. Support async logic using `createAsyncThunk` when needed.
 8. Ensure type safety if using TypeScript.
+9. don't build slice in the features folder. Store slice in /store
 
 Additional Constraints:
 - Avoid prop drilling by relying on Redux state.
@@ -28,5 +29,3 @@ Additional Constraints:
 Output:
 - Provide complete working code including:
   - store configuration
-  - example slice
-  - example page/component using Redux (no useState)

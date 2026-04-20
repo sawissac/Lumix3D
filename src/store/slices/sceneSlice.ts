@@ -120,6 +120,19 @@ const initialState: AppState = {
     rotateZ: false,
   },
   isBoxSelecting: false,
+  // UI State
+  showCodeModal: false,
+  codeType: "js",
+  copied: false,
+  embedRotate: true,
+  embedZoom: false,
+  embedPan: false,
+  embedRotateX: true,
+  embedRotateY: true,
+  embedRotateZ: true,
+  showGroupDialog: false,
+  groupName: "",
+  isEmbedLoaded: false,
 };
 
 const sceneSlice = createSlice({
@@ -498,6 +511,43 @@ const sceneSlice = createSlice({
     setViewMode: (state, action: PayloadAction<ViewMode>) => {
       state.viewMode = action.payload;
     },
+    // UI Reducers
+    setShowCodeModal: (state, action: PayloadAction<boolean>) => {
+      state.showCodeModal = action.payload;
+    },
+    setCodeType: (state, action: PayloadAction<"js" | "react">) => {
+      state.codeType = action.payload;
+    },
+    setCopied: (state, action: PayloadAction<boolean>) => {
+      state.copied = action.payload;
+    },
+    setEmbedRotate: (state, action: PayloadAction<boolean>) => {
+      state.embedRotate = action.payload;
+    },
+    setEmbedZoom: (state, action: PayloadAction<boolean>) => {
+      state.embedZoom = action.payload;
+    },
+    setEmbedPan: (state, action: PayloadAction<boolean>) => {
+      state.embedPan = action.payload;
+    },
+    setEmbedRotateX: (state, action: PayloadAction<boolean>) => {
+      state.embedRotateX = action.payload;
+    },
+    setEmbedRotateY: (state, action: PayloadAction<boolean>) => {
+      state.embedRotateY = action.payload;
+    },
+    setEmbedRotateZ: (state, action: PayloadAction<boolean>) => {
+      state.embedRotateZ = action.payload;
+    },
+    setShowGroupDialog: (state, action: PayloadAction<boolean>) => {
+      state.showGroupDialog = action.payload;
+    },
+    setGroupName: (state, action: PayloadAction<string>) => {
+      state.groupName = action.payload;
+    },
+    setIsEmbedLoaded: (state, action: PayloadAction<boolean>) => {
+      state.isEmbedLoaded = action.payload;
+    },
     loadScene: (state, action: PayloadAction<AppState>) => {
       return { ...initialState, ...action.payload };
     },
@@ -615,6 +665,19 @@ export const {
   recordSnapshot,
   undo,
   redo,
+  // UI Actions
+  setShowCodeModal,
+  setCodeType,
+  setCopied,
+  setEmbedRotate,
+  setEmbedZoom,
+  setEmbedPan,
+  setEmbedRotateX,
+  setEmbedRotateY,
+  setEmbedRotateZ,
+  setShowGroupDialog,
+  setGroupName,
+  setIsEmbedLoaded,
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

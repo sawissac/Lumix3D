@@ -3,12 +3,10 @@
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setIsEmbedLoaded } from "@/store/slices/uiSlice";
 import {
   loadScene,
-  set3DMode,
-  setEditMode,
   setTransformMode,
+  setIsEmbedLoaded,
 } from "@/store/slices/sceneSlice";
 import { AppState } from "@/types";
 
@@ -29,7 +27,7 @@ const Canvas3D = dynamic(
 
 export default function EmbedPage() {
   const dispatch = useAppDispatch();
-  const isEmbedLoaded = useAppSelector((state) => state.ui.isEmbedLoaded);
+  const isEmbedLoaded = useAppSelector((state) => state.scene.isEmbedLoaded);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {

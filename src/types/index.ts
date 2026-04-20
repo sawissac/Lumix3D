@@ -195,4 +195,17 @@ export type AppState = {
   isBoxSelecting: boolean;
   cameraState?: CameraState;
   embedControls?: EmbedControls;
+  // UI State
+  showCodeModal: boolean;
+  codeType: "js" | "react";
+  copied: boolean;
+  embedRotate: boolean;
+  embedZoom: boolean;
+  embedPan: boolean;
+  embedRotateX: boolean;
+  embedRotateY: boolean;
+  embedRotateZ: boolean;
+  showGroupDialog: boolean;
+  groupName: string;
+  isEmbedLoaded: boolean;
 };

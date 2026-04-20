@@ -16,12 +16,12 @@ import {
   setEmbedRotateX,
   setEmbedRotateY,
   setEmbedRotateZ,
-} from "@/store/slices/uiSlice";
+} from "@/store/slices/sceneSlice";
 
 export function ProjectActions() {
   const dispatch = useAppDispatch();
   const sceneState = useAppSelector((state) => state.scene);
-  const uiState = useAppSelector((state) => state.ui);
+  const uiState = useAppSelector((state) => state.scene);
   
   const {
     showCodeModal,
