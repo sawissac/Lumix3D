@@ -10,6 +10,7 @@ import { ShapeInspector } from "./ShapeInspector";
 import { ObjectsList } from "./ObjectsList";
 import { ProjectActions } from "./ProjectActions";
 import { TextureControls } from "./TextureControls";
+import { TimelineEditor } from "./TimelineEditor";
 import Image from "next/image";
 
 export function Sidebar() {
@@ -45,6 +46,7 @@ export function Sidebar() {
         <BackgroundControls />
         <EffectControls />
         <LightingControls />
+        <TimelineEditor />
       </div>
     </div>
   );

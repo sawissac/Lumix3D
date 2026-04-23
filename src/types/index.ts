@@ -146,6 +146,7 @@ export type ObjectGroup = {
   id: string;
   name: string;
   shapeIds: string[];
+  visible?: boolean;
   position?: [number, number, number];
   rotation?: [number, number, number];
   scale?: [number, number, number];
@@ -167,6 +168,30 @@ export type EmbedControls = {
 };
 
 export type ViewMode = "normal" | "solid" | "wireframe";
+
+export type KeyframeProperty = "position" | "rotation" | "scale";
+
+export type Keyframe = {
+  id: string;
+  time: number;
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+  scale?: [number, number, number];
+};
+
+export type AnimationTrack = {
+  shapeId: string;
+  keyframes: Keyframe[];
+};
+
+export type TimelineState = {
+  tracks: AnimationTrack[];
+  duration: number;
+  currentTime: number;
+  isPlaying: boolean;
+  fps: number;
+  loop: boolean;
+};
 
 export type AppState = {
   svgShapes: SvgShape[];
@@ -208,4 +233,5 @@ export type AppState = {
   showGroupDialog: boolean;
   groupName: string;
   isEmbedLoaded: boolean;
+  timeline: TimelineState;
 };

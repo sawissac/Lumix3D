@@ -1,18 +1,14 @@
 "use client";
 
 import { memo, useCallback } from "react";
-import { Trash2 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Trash2, Eye, EyeOff } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   setSelectedShapeId,
   setSvgFocusIndex,
   removeShape,
+  toggleShapeVisibility,
 } from "@/store/slices/sceneSlice";
 import { SvgShape } from "@/types";
 
@@ -22,8 +18,10 @@ type ObjectListItemProps = {
   mode: "svg" | "3d" | "preview";
   selected: boolean;
   hasOverride: boolean;
+  hidden: boolean;
   onClick: (id: string, index: number) => void;
   onDelete: (id: string) => void;
+  onToggleVisibility: (id: string) => void;
 };
 
 const ObjectListItem = memo(function ObjectListItem({
@@ -32,8 +30,10 @@ const ObjectListItem = memo(function ObjectListItem({
   mode,
   selected,
   hasOverride,
+  hidden,
   onClick,
   onDelete,
+  onToggleVisibility,
 }: ObjectListItemProps) {
   return (
     <li
@@ -44,6 +44,7 @@ const ObjectListItem = memo(function ObjectListItem({
           ? "bg-indigo-500/20 text-white"
           : "text-white/60 hover:bg-white/5 hover:text-white/80",
         mode === "preview" ? "cursor-default" : "",
+        hidden ? "opacity-40" : "",
       ].join(" ")}
     >
       <span
@@ -56,8 +57,24 @@ const ObjectListItem = memo(function ObjectListItem({
           custom
         </span>
       )}
-      {selected && mode !== "preview" && (
+      {selected && mode !== "preview" && !hidden && (
         <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+      )}
+      {mode !== "preview" && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleVisibility(shape.id);
+          }}
+          title={hidden ? "Show shape" : "Hide shape"}
+          className="opacity-0 group-hover:opacity-100 transition-opacity text-white/30 hover:text-white/70 rounded p-0.5"
+        >
+          {hidden ? (
+            <EyeOff className="w-3 h-3" />
+          ) : (
+            <Eye className="w-3 h-3" />
+          )}
+        </button>
       )}
       {mode !== "preview" && (
         <button
@@ -66,7 +83,7 @@ const ObjectListItem = memo(function ObjectListItem({
             onDelete(shape.id);
           }}
           title="Delete shape"
-          className="opacity-0 group-hover:opacity-100 transition-opacity ml-auto text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded p-0.5"
+          className="opacity-0 group-hover:opacity-100 transition-opacity text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded p-0.5"
         >
           <Trash2 className="w-3 h-3" />
         </button>
@@ -99,14 +116,21 @@ export function ObjectsList() {
         dispatch(setSvgFocusIndex(index));
       }
     },
-    [dispatch, mode]
+    [dispatch, mode],
   );
 
   const handleDelete = useCallback(
     (id: string) => {
       dispatch(removeShape(id));
     },
-    [dispatch]
+    [dispatch],
+  );
+
+  const handleToggleVisibility = useCallback(
+    (id: string) => {
+      dispatch(toggleShapeVisibility(id));
+    },
+    [dispatch],
   );
 
   const isSelected = (id: string, index: number): boolean => {
@@ -115,7 +139,7 @@ export function ObjectsList() {
     return false;
   };
 
-  if (visibleShapes.length === 0) return null;
+  if (svgShapes.length === 0) return null;
 
   return (
     <Card className="border-white/10 bg-white/3">
@@ -125,7 +149,7 @@ export function ObjectsList() {
             {mode === "3d" ? "3D Objects" : "SVG Shapes"}
           </CardTitle>
           <span className="text-[10px] text-white/30 font-mono">
-            {visibleShapes.length}
+            {visibleShapes.length}/{svgShapes.length}
           </span>
         </div>
       </CardHeader>
@@ -135,9 +159,9 @@ export function ObjectsList() {
           style={{ scrollbarWidth: "thin" }}
         >
           {svgShapes.map((shape, index) => {
-            if (shape.visible === false) return null;
             const selected = isSelected(shape.id, index);
             const hasOverride = mode === "3d" && !!shape.shapeExtrusion;
+            const hidden = shape.visible === false;
 
             return (
               <ObjectListItem
@@ -147,8 +171,10 @@ export function ObjectsList() {
                 mode={mode}
                 selected={selected}
                 hasOverride={hasOverride}
+                hidden={hidden}
                 onClick={handleClick}
                 onDelete={handleDelete}
+                onToggleVisibility={handleToggleVisibility}
               />
             );
           })}

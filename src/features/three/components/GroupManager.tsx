@@ -1,10 +1,11 @@
 "use client";
 
-import { Users, Plus, Trash2, Layers, X } from "lucide-react";
+import { Users, Plus, Trash2, Layers, X, Eye, EyeOff } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   createGroup,
   deleteGroup,
+  toggleGroupVisibility,
   selectGroup,
   ungroupSelected,
   setGroupName,
@@ -44,7 +45,12 @@ export function GroupManager() {
   if (selectedShapeIds.length === 0 && groups.length === 0) return null;
 
   return (
-    <div className="absolute bottom-5 left-5 z-20 pointer-events-auto">
+    <div
+      className={cn(
+        "absolute left-5 z-20 pointer-events-auto",
+        selectedShapeIds.length > 0 ? "bottom-[70px]" : "bottom-5",
+      )}
+    >
       <div
         className="rounded-xl px-1 py-1 flex flex-col gap-0.5 shadow-2xl shadow-black/70 border border-white/8"
         style={{
@@ -94,35 +100,51 @@ export function GroupManager() {
             <div className="text-[9px] font-medium text-white/30 px-3 py-0.5 uppercase tracking-wider">
               Groups ({groups.length})
             </div>
-            {groups.map((group) => (
-              <div
-                key={group.id}
-                className={cn(
-                  "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
-                  isGroupSelected(group.id)
-                    ? "bg-blue-500/30 text-blue-300 border border-blue-500/40"
-                    : "text-white/60 hover:bg-white/6 border border-transparent",
-                )}
-              >
-                <button
-                  onClick={() => dispatch(selectGroup(group.id))}
-                  className="flex items-center gap-2 flex-1"
+            {groups.map((group) => {
+              const groupHidden = group.visible === false;
+              return (
+                <div
+                  key={group.id}
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
+                    isGroupSelected(group.id) && !groupHidden
+                      ? "bg-blue-500/30 text-blue-300 border border-blue-500/40"
+                      : groupHidden
+                        ? "text-white/30 border border-transparent"
+                        : "text-white/60 hover:bg-white/6 border border-transparent",
+                  )}
                 >
-                  <Users className="w-3.5 h-3.5 shrink-0" />
-                  <span className="truncate max-w-[120px]">{group.name}</span>
-                  <span className="text-[10px] opacity-50">
-                    ({group.shapeIds.length})
-                  </span>
-                </button>
-                <button
-                  onClick={() => dispatch(deleteGroup(group.id))}
-                  className="hover:text-red-400 transition-colors"
-                  title="Delete group"
-                >
-                  <Trash2 className="w-3 h-3" />
-                </button>
-              </div>
-            ))}
+                  <button
+                    onClick={() => dispatch(selectGroup(group.id))}
+                    className="flex items-center gap-2 flex-1"
+                  >
+                    <Users className="w-3.5 h-3.5 shrink-0" />
+                    <span className="truncate max-w-[120px]">{group.name}</span>
+                    <span className="text-[10px] opacity-50">
+                      ({group.shapeIds.length})
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => dispatch(toggleGroupVisibility(group.id))}
+                    className="hover:text-white/90 transition-colors"
+                    title={groupHidden ? "Show group" : "Hide group"}
+                  >
+                    {groupHidden ? (
+                      <EyeOff className="w-3 h-3" />
+                    ) : (
+                      <Eye className="w-3 h-3" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => dispatch(deleteGroup(group.id))}
+                    className="hover:text-red-400 transition-colors"
+                    title="Delete group"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                </div>
+              );
+            })}
           </>
         )}
       </div>

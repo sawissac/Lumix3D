@@ -24,6 +24,7 @@ import { globalGroupRef } from "../globalGroupRef";
 import { liveTransform } from "../liveTransform";
 import { cameraRef, canvasElementRef } from "../shapeObjectRegistry";
 import { BoxSelectOverlay } from "./BoxSelectOverlay";
+import { TimelinePlayer } from "./TimelinePlayer";
 import { usePathname } from "next/navigation";
 
 // Runs inside <Canvas> — writes the live group transform every frame
@@ -83,7 +84,9 @@ function CameraController({
       controls.update();
     }
 
-    const isRotateXLocked = isEmbedMode ? !embedRotateX : orbitControlsLock.rotateX;
+    const isRotateXLocked = isEmbedMode
+      ? !embedRotateX
+      : orbitControlsLock.rotateX;
     if (isRotateXLocked) {
       const polar = controls.getPolarAngle();
       controls.minPolarAngle = polar;
@@ -93,7 +96,9 @@ function CameraController({
       controls.maxPolarAngle = Math.PI;
     }
 
-    const isRotateYLocked = isEmbedMode ? !embedRotateY : orbitControlsLock.rotateY;
+    const isRotateYLocked = isEmbedMode
+      ? !embedRotateY
+      : orbitControlsLock.rotateY;
     if (isRotateYLocked) {
       const azimuth = controls.getAzimuthalAngle();
       controls.minAzimuthAngle = azimuth;
@@ -142,7 +147,8 @@ export function Canvas3D() {
 
   // Check if we're in embed mode (iframe or direct /embed route)
   const isEmbedMode =
-    (typeof window !== "undefined" && window.self !== window.top) || pathname === "/embed";
+    (typeof window !== "undefined" && window.self !== window.top) ||
+    pathname === "/embed";
 
   // Default embed controls: rotation enabled, zoom and pan disabled
   const embedRotate = embedControls?.enableRotate ?? true;
@@ -153,7 +159,7 @@ export function Canvas3D() {
 
   useEffect(() => {
     // Expose a way for ProjectActions to get the current camera state
-    // @ts-ignore
+    // @ts-expect-error augmenting window for project actions
     window.getLumixCameraState = () => {
       if (cameraRef.current && orbitControlsRef.current) {
         const pos = cameraRef.current.position;
@@ -167,7 +173,7 @@ export function Canvas3D() {
       return undefined;
     };
     return () => {
-      // @ts-ignore
+      // @ts-expect-error cleanup window augmentation
       delete window.getLumixCameraState;
     };
   }, []);
@@ -323,6 +329,7 @@ export function Canvas3D() {
           embedRotateX={embedRotateX}
           embedRotateY={embedRotateY}
         />
+        <TimelinePlayer />
 
         {showGrid && (
           <Grid

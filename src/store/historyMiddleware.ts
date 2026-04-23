@@ -65,37 +65,37 @@ function getSnapshot(state: RootState): HistorySnapshot {
     ground: s.ground,
     showGrid: s.showGrid,
     groups: s.groups,
+    timeline: s.timeline,
   };
 }
 
-export const historyMiddleware: Middleware =
-  (store) => (next) => (action) => {
-    const type = (action as { type: string }).type;
+export const historyMiddleware: Middleware = (store) => (next) => (action) => {
+  const type = (action as { type: string }).type;
 
-    if (type === "scene/undo") {
-      if (past.length === 0) return;
-      const snapshot = past.pop()!;
-      future.push(getSnapshot(store.getState() as RootState));
-      store.dispatch(restoreSnapshot(snapshot));
-      return;
-    }
+  if (type === "scene/undo") {
+    if (past.length === 0) return;
+    const snapshot = past.pop()!;
+    future.push(getSnapshot(store.getState() as RootState));
+    store.dispatch(restoreSnapshot(snapshot));
+    return;
+  }
 
-    if (type === "scene/redo") {
-      if (future.length === 0) return;
-      const snapshot = future.pop()!;
-      past.push(getSnapshot(store.getState() as RootState));
-      store.dispatch(restoreSnapshot(snapshot));
-      return;
-    }
+  if (type === "scene/redo") {
+    if (future.length === 0) return;
+    const snapshot = future.pop()!;
+    past.push(getSnapshot(store.getState() as RootState));
+    store.dispatch(restoreSnapshot(snapshot));
+    return;
+  }
 
-    if (UNDOABLE_ACTIONS.has(type)) {
-      past.push(getSnapshot(store.getState() as RootState));
-      if (past.length > MAX_HISTORY) past.shift();
-      future.length = 0;
-    }
+  if (UNDOABLE_ACTIONS.has(type)) {
+    past.push(getSnapshot(store.getState() as RootState));
+    if (past.length > MAX_HISTORY) past.shift();
+    future.length = 0;
+  }
 
-    return next(action);
-  };
+  return next(action);
+};
 
 export function canUndo() {
   return past.length > 0;

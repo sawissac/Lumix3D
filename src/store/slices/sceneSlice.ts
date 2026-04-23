@@ -31,6 +31,7 @@ export type HistorySnapshot = Pick<
   | "ground"
   | "showGrid"
   | "groups"
+  | "timeline"
 >;
 
 const initialState: AppState = {
@@ -133,6 +134,14 @@ const initialState: AppState = {
   showGroupDialog: false,
   groupName: "",
   isEmbedLoaded: false,
+  timeline: {
+    tracks: [],
+    duration: 5,
+    currentTime: 0,
+    isPlaying: false,
+    fps: 60,
+    loop: true,
+  },
 };
 
 const sceneSlice = createSlice({
@@ -382,6 +391,12 @@ const sceneSlice = createSlice({
         state.selectedShapeId = null;
       }
     },
+    toggleShapeVisibility: (state, action: PayloadAction<string>) => {
+      const shape = state.svgShapes.find((s) => s.id === action.payload);
+      if (shape) {
+        shape.visible = shape.visible === false ? undefined : false;
+      }
+    },
     setBloomSettings: (
       state,
       action: PayloadAction<Partial<BloomSettings>>,
@@ -412,14 +427,24 @@ const sceneSlice = createSlice({
       action: PayloadAction<"rotateX" | "rotateY" | "rotateZ">,
     ) => {
       const axis = action.payload;
-      const axes: Array<"rotateX" | "rotateY" | "rotateZ"> = ["rotateX", "rotateY", "rotateZ"];
-      
-      const isOnlyUnlocked = !state.orbitControlsLock[axis] && axes.every(a => a === axis || state.orbitControlsLock[a]);
-      
+      const axes: Array<"rotateX" | "rotateY" | "rotateZ"> = [
+        "rotateX",
+        "rotateY",
+        "rotateZ",
+      ];
+
+      const isOnlyUnlocked =
+        !state.orbitControlsLock[axis] &&
+        axes.every((a) => a === axis || state.orbitControlsLock[a]);
+
       if (isOnlyUnlocked) {
-        axes.forEach(a => { state.orbitControlsLock[a] = false; });
+        axes.forEach((a) => {
+          state.orbitControlsLock[a] = false;
+        });
       } else {
-        axes.forEach(a => { state.orbitControlsLock[a] = a !== axis; });
+        axes.forEach((a) => {
+          state.orbitControlsLock[a] = a !== axis;
+        });
       }
     },
     toggleShapeSelection: (
@@ -480,6 +505,18 @@ const sceneSlice = createSlice({
     },
     deleteGroup: (state, action: PayloadAction<string>) => {
       state.groups = state.groups.filter((g) => g.id !== action.payload);
+    },
+    toggleGroupVisibility: (state, action: PayloadAction<string>) => {
+      const group = state.groups.find((g) => g.id === action.payload);
+      if (!group) return;
+      const willShow = group.visible === false;
+      group.visible = willShow;
+      group.shapeIds.forEach((id) => {
+        const shape = state.svgShapes.find((s) => s.id === id);
+        if (shape) {
+          shape.visible = willShow ? undefined : false;
+        }
+      });
     },
     updateGroupTransform: (
       state,
@@ -567,6 +604,7 @@ const sceneSlice = createSlice({
       state.ground = snap.ground;
       state.showGrid = snap.showGrid;
       state.groups = snap.groups;
+      if (snap.timeline) state.timeline = snap.timeline;
     },
     // No-op: triggers a history snapshot before a drag begins
     recordSnapshot: () => {},
@@ -602,6 +640,92 @@ const sceneSlice = createSlice({
     },
     setCameraState: (state, action: PayloadAction<CameraState>) => {
       state.cameraState = action.payload;
+    },
+    // Timeline reducers
+    setTimelinePlaying: (state, action: PayloadAction<boolean>) => {
+      state.timeline.isPlaying = action.payload;
+    },
+    setTimelineCurrentTime: (state, action: PayloadAction<number>) => {
+      state.timeline.currentTime = Math.max(
+        0,
+        Math.min(action.payload, state.timeline.duration),
+      );
+    },
+    setTimelineDuration: (state, action: PayloadAction<number>) => {
+      state.timeline.duration = Math.max(0.1, action.payload);
+      state.timeline.currentTime = Math.min(
+        state.timeline.currentTime,
+        state.timeline.duration,
+      );
+    },
+    setTimelineLoop: (state, action: PayloadAction<boolean>) => {
+      state.timeline.loop = action.payload;
+    },
+    addKeyframe: (
+      state,
+      action: PayloadAction<{
+        shapeId: string;
+        keyframe: import("@/types").Keyframe;
+      }>,
+    ) => {
+      const { shapeId, keyframe } = action.payload;
+      let track = state.timeline.tracks.find((t) => t.shapeId === shapeId);
+      if (!track) {
+        track = { shapeId, keyframes: [] };
+        state.timeline.tracks.push(track);
+      }
+      const existingIndex = track.keyframes.findIndex(
+        (k) => k.time === keyframe.time,
+      );
+      if (existingIndex >= 0) {
+        track.keyframes[existingIndex] = keyframe;
+      } else {
+        track.keyframes.push(keyframe);
+      }
+      track.keyframes.sort((a, b) => a.time - b.time);
+    },
+    removeKeyframe: (
+      state,
+      action: PayloadAction<{ shapeId: string; keyframeId: string }>,
+    ) => {
+      const track = state.timeline.tracks.find(
+        (t) => t.shapeId === action.payload.shapeId,
+      );
+      if (track) {
+        track.keyframes = track.keyframes.filter(
+          (k) => k.id !== action.payload.keyframeId,
+        );
+        if (track.keyframes.length === 0) {
+          state.timeline.tracks = state.timeline.tracks.filter(
+            (t) => t.shapeId !== action.payload.shapeId,
+          );
+        }
+      }
+    },
+    updateKeyframe: (
+      state,
+      action: PayloadAction<{
+        shapeId: string;
+        keyframe: import("@/types").Keyframe;
+      }>,
+    ) => {
+      const track = state.timeline.tracks.find(
+        (t) => t.shapeId === action.payload.shapeId,
+      );
+      if (track) {
+        const index = track.keyframes.findIndex(
+          (k) => k.id === action.payload.keyframe.id,
+        );
+        if (index >= 0) {
+          track.keyframes[index] = action.payload.keyframe;
+          track.keyframes.sort((a, b) => a.time - b.time);
+        }
+      }
+    },
+    clearTimelineTracks: (state) => {
+      state.timeline.tracks = [];
+      state.timeline.currentTime = 0;
+      state.timeline.isPlaying = false;
     },
   },
 });
@@ -640,6 +764,7 @@ export const {
   resetShapeMaterial,
   resetShapesMaterial,
   removeShape,
+  toggleShapeVisibility,
   setBloomSettings,
   setGroundSettings,
   toggleRotationLock,
@@ -650,6 +775,7 @@ export const {
   clearSelection,
   createGroup,
   deleteGroup,
+  toggleGroupVisibility,
   updateGroupTransform,
   selectGroup,
   ungroupSelected,
@@ -678,6 +804,14 @@ export const {
   setShowGroupDialog,
   setGroupName,
   setIsEmbedLoaded,
+  setTimelinePlaying,
+  setTimelineCurrentTime,
+  setTimelineDuration,
+  setTimelineLoop,
+  addKeyframe,
+  removeKeyframe,
+  updateKeyframe,
+  clearTimelineTracks,
 } = sceneSlice.actions;
 
 // --- Selectors ---
@@ -685,17 +819,14 @@ import { createSelector } from "@reduxjs/toolkit";
 
 const selectSceneState = (state: { scene: AppState }) => state.scene;
 
-export const selectVisibleShapes = createSelector(
-  [selectSceneState],
-  (scene) => scene.svgShapes.filter((shape) => shape.visible !== false)
+export const selectVisibleShapes = createSelector([selectSceneState], (scene) =>
+  scene.svgShapes.filter((shape) => shape.visible !== false),
 );
 
-export const selectActiveShape = createSelector(
-  [selectSceneState],
-  (scene) =>
-    scene.selectedShapeId
-      ? scene.svgShapes.find((s) => s.id === scene.selectedShapeId) || null
-      : null
+export const selectActiveShape = createSelector([selectSceneState], (scene) =>
+  scene.selectedShapeId
+    ? scene.svgShapes.find((s) => s.id === scene.selectedShapeId) || null
+    : null,
 );
 
 export default sceneSlice.reducer;
