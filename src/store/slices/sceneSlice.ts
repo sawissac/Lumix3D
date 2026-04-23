@@ -38,11 +38,11 @@ const initialState: AppState = {
   svgFile: null,
   extrusion: {
     depth: 10,
-    curveSegments: 12,
+    curveSegments: 8,
     bevelEnabled: true,
     bevelThickness: 1,
     bevelSize: 0.5,
-    bevelSegments: 3,
+    bevelSegments: 2,
   },
   globalMaterial: {
     preset: "plastic",
@@ -679,5 +679,23 @@ export const {
   setGroupName,
   setIsEmbedLoaded,
 } = sceneSlice.actions;
+
+// --- Selectors ---
+import { createSelector } from "@reduxjs/toolkit";
+
+const selectSceneState = (state: { scene: AppState }) => state.scene;
+
+export const selectVisibleShapes = createSelector(
+  [selectSceneState],
+  (scene) => scene.svgShapes.filter((shape) => shape.visible !== false)
+);
+
+export const selectActiveShape = createSelector(
+  [selectSceneState],
+  (scene) =>
+    scene.selectedShapeId
+      ? scene.svgShapes.find((s) => s.id === scene.selectedShapeId) || null
+      : null
+);
 
 export default sceneSlice.reducer;

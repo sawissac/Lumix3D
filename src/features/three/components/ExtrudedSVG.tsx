@@ -266,23 +266,7 @@ function ShapeMeshes({
             onMouseDown={() => {
               dispatch(recordSnapshot());
             }}
-            onChange={() => {
-              if (groupObj) {
-                onTransformChange({
-                  position: [
-                    groupObj.position.x,
-                    groupObj.position.y,
-                    groupObj.position.z,
-                  ],
-                  rotation: [
-                    groupObj.rotation.x,
-                    groupObj.rotation.y,
-                    groupObj.rotation.z,
-                  ],
-                  scale: [groupObj.scale.x, groupObj.scale.y, groupObj.scale.z],
-                });
-              }
-            }}
+
             onMouseUp={() => {
               if (groupObj) {
                 onTransformChange({
@@ -632,14 +616,13 @@ export function ExtrudedSVG() {
               newM.decompose(pos, quat, scl);
               const eul = new THREE.Euler().setFromQuaternion(quat);
 
-              dispatch(
-                updateShapeTransform({
-                  id,
-                  position: [pos.x, pos.y, pos.z],
-                  rotation: [eul.x, eul.y, eul.z],
-                  scale: [scl.x, scl.y, scl.z],
-                }),
-              );
+              const groupObj = shapeObjectRegistry.get(id);
+              if (groupObj) {
+                groupObj.position.copy(pos);
+                groupObj.rotation.copy(eul);
+                groupObj.scale.copy(scl);
+                groupObj.updateMatrixWorld();
+              }
             });
           }}
           onMouseUp={() => {
@@ -650,6 +633,20 @@ export function ExtrudedSVG() {
             setTimeout(() => {
               wasMultiDraggingRef.current = false;
             }, 100);
+
+            selectedShapeIds.forEach((id) => {
+              const groupObj = shapeObjectRegistry.get(id);
+              if (groupObj) {
+                dispatch(
+                  updateShapeTransform({
+                    id,
+                    position: [groupObj.position.x, groupObj.position.y, groupObj.position.z],
+                    rotation: [groupObj.rotation.x, groupObj.rotation.y, groupObj.rotation.z],
+                    scale: [groupObj.scale.x, groupObj.scale.y, groupObj.scale.z],
+                  }),
+                );
+              }
+            });
           }}
         />
       )}
@@ -663,29 +660,7 @@ export function ExtrudedSVG() {
           onMouseDown={() => {
             dispatch(recordSnapshot());
           }}
-          onChange={() => {
-            if (globalGroupObj) {
-              dispatch(
-                setGlobalTransform({
-                  position: [
-                    globalGroupObj.position.x,
-                    globalGroupObj.position.y,
-                    globalGroupObj.position.z,
-                  ],
-                  rotation: [
-                    globalGroupObj.rotation.x,
-                    globalGroupObj.rotation.y,
-                    globalGroupObj.rotation.z,
-                  ],
-                  scale: [
-                    globalGroupObj.scale.x,
-                    globalGroupObj.scale.y,
-                    globalGroupObj.scale.z,
-                  ],
-                }),
-              );
-            }
-          }}
+
           onMouseUp={() => {
             if (globalGroupObj) {
               dispatch(

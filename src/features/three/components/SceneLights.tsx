@@ -37,7 +37,7 @@ export function SceneLights() {
                 intensity={light.intensity}
                 color={color}
                 castShadow
-                shadow-mapSize={[2048, 2048]}
+                shadow-mapSize={[1024, 1024]}
                 shadow-bias={-0.0005}
               >
                 <orthographicCamera

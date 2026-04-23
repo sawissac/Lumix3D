@@ -304,6 +304,8 @@ export function Canvas3D() {
         />
       )}
       <Canvas
+        frameloop="demand"
+        dpr={[1, 2]}
         camera={{ position: [0, 0, 100], fov: 50 }}
         style={{ background: "transparent" }}
         gl={{ alpha: true }}
@@ -351,14 +353,16 @@ export function Canvas3D() {
           />
         )}
 
-        <EffectComposer enabled={bloom.enabled && viewMode === "normal"}>
-          <Bloom
-            luminanceThreshold={bloom.luminanceThreshold}
-            mipmapBlur
-            luminanceSmoothing={bloom.luminanceSmoothing}
-            intensity={bloom.enabled ? bloom.intensity : 0}
-          />
-        </EffectComposer>
+        {bloom.enabled && viewMode === "normal" && (
+          <EffectComposer>
+            <Bloom
+              luminanceThreshold={bloom.luminanceThreshold}
+              mipmapBlur
+              luminanceSmoothing={bloom.luminanceSmoothing}
+              intensity={bloom.intensity}
+            />
+          </EffectComposer>
+        )}
         <OrbitControls
           ref={orbitControlsRef}
           makeDefault

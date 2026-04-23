@@ -1,0 +1,70 @@
+<svg width="100%" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+
+  <rect width="500" height="500" fill="#000"/>
+
+  <!-- Side/top faces -->
+  <polygon points="148,136 233,136 261,174 176,174" fill="rgba(255,255,255,0.13)"/>
+  <polygon points="233,136 261,174 261,299 233,261" fill="rgba(255,255,255,0.08)"/>
+  <polygon points="233,261 261,299 351,299 323,261" fill="rgba(255,255,255,0.11)"/>
+  <polygon points="323,261 351,299 351,364 323,326" fill="rgba(255,255,255,0.07)"/>
+  <polygon points="176,174 148,136 148,326 176,364" fill="rgba(255,255,255,0.05)"/>
+  <polygon points="176,364 148,326 323,326 351,364" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- Front L-face triangles -->
+  <polygon points="176,174 261,174 233,234" fill="rgba(255,255,255,0.10)"/>
+  <polygon points="176,174 233,234 176,364" fill="rgba(255,255,255,0.08)"/>
+  <polygon points="261,174 261,299 233,234" fill="rgba(255,255,255,0.09)"/>
+  <polygon points="233,234 261,299 176,364" fill="rgba(255,255,255,0.07)"/>
+  <polygon points="176,364 261,299 311,329" fill="rgba(255,255,255,0.09)"/>
+  <polygon points="261,299 351,299 311,329" fill="rgba(255,255,255,0.10)"/>
+  <polygon points="351,299 351,364 311,329" fill="rgba(255,255,255,0.09)"/>
+  <polygon points="176,364 311,329 351,364" fill="rgba(255,255,255,0.07)"/>
+
+  <!-- Glow edges: left + top -->
+  <polyline points="176,364 176,174 261,174" fill="none" stroke="#fff" stroke-width="12" opacity="0.07" stroke-linecap="round"/>
+  <polyline points="176,364 176,174 261,174" fill="none" stroke="#fff" stroke-width="5"  opacity="0.22" stroke-linecap="round"/>
+  <polyline points="176,364 176,174 261,174" fill="none" stroke="#fff" stroke-width="1.6" opacity="0.95" stroke-linecap="round"/>
+  <polyline points="148,326 148,136 233,136 261,174" fill="none" stroke="#fff" stroke-width="9"  opacity="0.06" stroke-linecap="round"/>
+  <polyline points="148,326 148,136 233,136 261,174" fill="none" stroke="#fff" stroke-width="3.5" opacity="0.18" stroke-linecap="round"/>
+  <polyline points="148,326 148,136 233,136 261,174" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.75" stroke-linecap="round"/>
+  <line x1="176" y1="174" x2="148" y2="136" stroke="#fff" stroke-width="10" opacity="0.06" stroke-linecap="round"/>
+  <line x1="176" y1="174" x2="148" y2="136" stroke="#fff" stroke-width="4"  opacity="0.20" stroke-linecap="round"/>
+  <line x1="176" y1="174" x2="148" y2="136" stroke="#fff" stroke-width="1.4" opacity="0.90" stroke-linecap="round"/>
+
+  <!-- Right vert + back vert edges -->
+  <line x1="261" y1="174" x2="261" y2="299" stroke="#fff" stroke-width="7"  opacity="0.07" stroke-linecap="round"/>
+  <line x1="261" y1="174" x2="261" y2="299" stroke="#fff" stroke-width="2.5" opacity="0.22" stroke-linecap="round"/>
+  <line x1="261" y1="174" x2="261" y2="299" stroke="#fff" stroke-width="1.3" opacity="0.75" stroke-linecap="round"/>
+  <line x1="233" y1="136" x2="233" y2="261" stroke="#fff" stroke-width="5"  opacity="0.06" stroke-linecap="round"/>
+  <line x1="233" y1="136" x2="233" y2="261" stroke="#fff" stroke-width="1.8" opacity="0.18" stroke-linecap="round"/>
+  <line x1="233" y1="136" x2="233" y2="261" stroke="#fff" stroke-width="1.0" opacity="0.60" stroke-linecap="round"/>
+
+  <!-- Junction edges -->
+  <line x1="261" y1="299" x2="351" y2="299" stroke="#fff" stroke-width="7"  opacity="0.07" stroke-linecap="round"/>
+  <line x1="261" y1="299" x2="351" y2="299" stroke="#fff" stroke-width="2.5" opacity="0.22" stroke-linecap="round"/>
+  <line x1="261" y1="299" x2="351" y2="299" stroke="#fff" stroke-width="1.4" opacity="0.80" stroke-linecap="round"/>
+  <line x1="233" y1="261" x2="323" y2="261" stroke="#fff" stroke-width="1.0" opacity="0.58" stroke-linecap="round"/>
+  <line x1="233" y1="261" x2="261" y2="299" stroke="#fff" stroke-width="1.0" opacity="0.60" stroke-linecap="round"/>
+  <line x1="323" y1="261" x2="351" y2="299" stroke="#fff" stroke-width="1.0" opacity="0.65" stroke-linecap="round"/>
+
+  <!-- Glow edges: right + bottom -->
+  <polyline points="351,299 351,364 176,364" fill="none" stroke="#fff" stroke-width="12" opacity="0.07" stroke-linecap="round"/>
+  <polyline points="351,299 351,364 176,364" fill="none" stroke="#fff" stroke-width="5"  opacity="0.22" stroke-linecap="round"/>
+  <polyline points="351,299 351,364 176,364" fill="none" stroke="#fff" stroke-width="1.6" opacity="0.95" stroke-linecap="round"/>
+  <polyline points="323,261 323,326 148,326" fill="none" stroke="#fff" stroke-width="3"  opacity="0.15" stroke-linecap="round"/>
+  <polyline points="323,261 323,326 148,326" fill="none" stroke="#fff" stroke-width="1.1" opacity="0.65" stroke-linecap="round"/>
+  <line x1="323" y1="326" x2="351" y2="364" stroke="#fff" stroke-width="3"  opacity="0.18" stroke-linecap="round"/>
+  <line x1="323" y1="326" x2="351" y2="364" stroke="#fff" stroke-width="1.3" opacity="0.82" stroke-linecap="round"/>
+  <line x1="148" y1="326" x2="176" y2="364" stroke="#fff" stroke-width="2.5" opacity="0.15" stroke-linecap="round"/>
+  <line x1="148" y1="326" x2="176" y2="364" stroke="#fff" stroke-width="1.1" opacity="0.62" stroke-linecap="round"/>
+
+  <!-- Internal subdivision lines -->
+  <line x1="176" y1="174" x2="233" y2="234" stroke="#fff" stroke-width="0.7" opacity="0.35"/>
+  <line x1="261" y1="174" x2="233" y2="234" stroke="#fff" stroke-width="0.7" opacity="0.35"/>
+  <line x1="233" y1="234" x2="261" y2="299" stroke="#fff" stroke-width="0.7" opacity="0.35"/>
+  <line x1="233" y1="234" x2="176" y2="364" stroke="#fff" stroke-width="0.7" opacity="0.30"/>
+  <line x1="261" y1="299" x2="311" y2="329" stroke="#fff" stroke-width="0.7" opacity="0.35"/>
+  <line x1="351" y1="299" x2="311" y2="329" stroke="#fff" stroke-width="0.7" opacity="0.35"/>
+  <line x1="176" y1="364" x2="311" y2="329" stroke="#fff" stroke-width="0.7" opacity="0.30"/>
+  <line x1="351" y1="364" x2="311" y2="329" stroke="#fff" stroke-width="0.7" opacity="0.30"/>
+</svg>

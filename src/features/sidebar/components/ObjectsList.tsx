@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useCallback } from "react";
 import { Trash2 } from "lucide-react";
 import {
   Card,
@@ -13,6 +14,66 @@ import {
   setSvgFocusIndex,
   removeShape,
 } from "@/store/slices/sceneSlice";
+import { SvgShape } from "@/types";
+
+type ObjectListItemProps = {
+  shape: SvgShape;
+  index: number;
+  mode: "svg" | "3d" | "preview";
+  selected: boolean;
+  hasOverride: boolean;
+  onClick: (id: string, index: number) => void;
+  onDelete: (id: string) => void;
+};
+
+const ObjectListItem = memo(function ObjectListItem({
+  shape,
+  index,
+  mode,
+  selected,
+  hasOverride,
+  onClick,
+  onDelete,
+}: ObjectListItemProps) {
+  return (
+    <li
+      onClick={() => onClick(shape.id, index)}
+      className={[
+        "group flex items-center gap-2 px-3 py-1.5 cursor-pointer transition-colors text-xs",
+        selected
+          ? "bg-indigo-500/20 text-white"
+          : "text-white/60 hover:bg-white/5 hover:text-white/80",
+        mode === "preview" ? "cursor-default" : "",
+      ].join(" ")}
+    >
+      <span
+        className="w-3 h-3 rounded-sm shrink-0 border border-white/20"
+        style={{ background: shape.fill }}
+      />
+      <span className="flex-1 font-mono truncate">Shape {index + 1}</span>
+      {hasOverride && (
+        <span className="text-[9px] bg-indigo-500/30 text-indigo-300 px-1 py-0.5 rounded shrink-0">
+          custom
+        </span>
+      )}
+      {selected && mode !== "preview" && (
+        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+      )}
+      {mode !== "preview" && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(shape.id);
+          }}
+          title="Delete shape"
+          className="opacity-0 group-hover:opacity-100 transition-opacity ml-auto text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded p-0.5"
+        >
+          <Trash2 className="w-3 h-3" />
+        </button>
+      )}
+    </li>
+  );
+});
 
 export function ObjectsList() {
   const dispatch = useAppDispatch();
@@ -23,7 +84,6 @@ export function ObjectsList() {
   const svgSelection = useAppSelector((s) => s.scene.svgSelection);
 
   const visibleShapes = svgShapes.filter((s) => s.visible !== false);
-  if (visibleShapes.length === 0) return null;
 
   const mode: "svg" | "3d" | "preview" = isEditMode
     ? "svg"
@@ -31,19 +91,31 @@ export function ObjectsList() {
       ? "3d"
       : "preview";
 
-  const handleClick = (id: string, index: number) => {
-    if (mode === "3d") {
-      dispatch(setSelectedShapeId(id));
-    } else if (mode === "svg") {
-      dispatch(setSvgFocusIndex(index));
-    }
-  };
+  const handleClick = useCallback(
+    (id: string, index: number) => {
+      if (mode === "3d") {
+        dispatch(setSelectedShapeId(id));
+      } else if (mode === "svg") {
+        dispatch(setSvgFocusIndex(index));
+      }
+    },
+    [dispatch, mode]
+  );
+
+  const handleDelete = useCallback(
+    (id: string) => {
+      dispatch(removeShape(id));
+    },
+    [dispatch]
+  );
 
   const isSelected = (id: string, index: number): boolean => {
     if (mode === "3d") return selectedShapeId === id;
     if (mode === "svg") return svgSelection?.firstIndex === index;
     return false;
   };
+
+  if (visibleShapes.length === 0) return null;
 
   return (
     <Card className="border-white/10 bg-white/3">
@@ -68,52 +140,16 @@ export function ObjectsList() {
             const hasOverride = mode === "3d" && !!shape.shapeExtrusion;
 
             return (
-              <li
+              <ObjectListItem
                 key={shape.id}
-                onClick={() => handleClick(shape.id, index)}
-                className={[
-                  "group flex items-center gap-2 px-3 py-1.5 cursor-pointer transition-colors text-xs",
-                  selected
-                    ? "bg-indigo-500/20 text-white"
-                    : "text-white/60 hover:bg-white/5 hover:text-white/80",
-                  mode === "preview" ? "cursor-default" : "",
-                ].join(" ")}
-              >
-                {/* Color swatch */}
-                <span
-                  className="w-3 h-3 rounded-sm shrink-0 border border-white/20"
-                  style={{ background: shape.fill }}
-                />
-
-                {/* Label */}
-                <span className="flex-1 font-mono truncate">
-                  Shape {index + 1}
-                </span>
-
-                {/* Badges */}
-                {hasOverride && (
-                  <span className="text-[9px] bg-indigo-500/30 text-indigo-300 px-1 py-0.5 rounded shrink-0">
-                    custom
-                  </span>
-                )}
-                {selected && mode !== "preview" && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
-                )}
-
-                {/* Delete button — appears on row hover */}
-                {mode !== "preview" && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      dispatch(removeShape(shape.id));
-                    }}
-                    title="Delete shape"
-                    className="opacity-0 group-hover:opacity-100 transition-opacity ml-auto text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded p-0.5"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </button>
-                )}
-              </li>
+                shape={shape}
+                index={index}
+                mode={mode}
+                selected={selected}
+                hasOverride={hasOverride}
+                onClick={handleClick}
+                onDelete={handleDelete}
+              />
             );
           })}
         </ul>

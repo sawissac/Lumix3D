@@ -33,8 +33,6 @@
  * Three.js SVGLoader.
  */
 
-// ─── SVGO browser import (ESM, no Node.js APIs) ─────────────────────────────
-import { optimize } from 'svgo/browser';
 
 // ─── types ───────────────────────────────────────────────────────────────────
 interface ProcessedSVG {
@@ -271,6 +269,7 @@ export async function preprocessSVGForThree(
     // ── Step 4: SVGO optimisation (browser build) ─────────────────────────
     let optimised = rawSvg;
     try {
+      const { optimize } = await import('svgo/browser');
       const result = optimize(rawSvg, {
         plugins: [
           'convertShapeToPath',
