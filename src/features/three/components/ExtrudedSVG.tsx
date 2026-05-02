@@ -17,6 +17,12 @@ import { TransformControls } from "@react-three/drei";
 import { globalGroupRef } from "../globalGroupRef";
 import { shapeObjectRegistry } from "../shapeObjectRegistry";
 import { preprocessSVGForThree } from "../utils/svgPreprocess";
+import {
+  applyDeltaQuat,
+  applyDeltaScale,
+  ensureBound,
+  resetMultiSelectAnim,
+} from "../multiSelectAnim";
 
 type LoadedTextures = {
   map: THREE.Texture | null;
@@ -443,6 +449,18 @@ export function ExtrudedSVG() {
     shapeMatrices: Map<string, THREE.Matrix4>;
   } | null>(null);
 
+  const multiSelectGestureInitialQuatRef = useRef<THREE.Quaternion | null>(null);
+  const multiSelectGestureInitialScaleRef = useRef<THREE.Vector3 | null>(null);
+
+  const selectionKey = selectedShapeIds.join(",");
+  useEffect(() => {
+    if (selectedShapeIds.length < 2) {
+      resetMultiSelectAnim();
+    }
+    // selection changed -> drop accumulator; next bind will re-init from gesture
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectionKey]);
+
   const isDraggingMultiRef = useRef(false);
   // Stays true for a short window after the multi-drag ends so that the
   // pointer-up → click event on individual shapes is suppressed.
@@ -469,23 +487,43 @@ export function ExtrudedSVG() {
       selectedShapeIds.length > 1 &&
       !isDraggingMultiRef.current
     ) {
-      const positions = selectedShapeIds
-        .map((id) => {
-          const shape = svgShapes.find((s) => s.id === id);
-          return shape?.position;
-        })
-        .filter((p): p is [number, number, number] => p !== undefined);
+      // Pivot = center of union AABB of all selected meshes (in world space),
+      // converted to multiSelectGroupObj's parent-local space. AABB center
+      // tracks visual geometric center; avg-of-shape-positions biases toward
+      // wherever shape origins cluster (often off-center for SVG paths).
+      const worldBox = new THREE.Box3();
+      const tmpBox = new THREE.Box3();
+      for (const id of selectedShapeIds) {
+        const obj = shapeObjectRegistry.get(id);
+        if (!obj) continue;
+        obj.updateMatrixWorld(true);
+        tmpBox.setFromObject(obj);
+        if (!tmpBox.isEmpty()) worldBox.union(tmpBox);
+      }
 
-      if (positions.length > 0) {
-        const avgX =
-          positions.reduce((sum, p) => sum + p[0], 0) / positions.length;
-        const avgY =
-          positions.reduce((sum, p) => sum + p[1], 0) / positions.length;
-        const avgZ =
-          positions.reduce((sum, p) => sum + p[2], 0) / positions.length;
-        multiSelectGroupObj.position.set(avgX, avgY, avgZ);
+      if (!worldBox.isEmpty()) {
+        const worldCenter = worldBox.getCenter(new THREE.Vector3());
+        const parent = multiSelectGroupObj.parent;
+        if (parent) {
+          parent.updateMatrixWorld(true);
+          parent.worldToLocal(worldCenter);
+        }
+        multiSelectGroupObj.position.copy(worldCenter);
         multiSelectGroupObj.rotation.set(0, 0, 0);
         multiSelectGroupObj.scale.set(1, 1, 1);
+      } else {
+        // Fallback: centroid of shape positions if registry not populated yet.
+        const positions = selectedShapeIds
+          .map((id) => svgShapes.find((s) => s.id === id)?.position)
+          .filter((p): p is [number, number, number] => p !== undefined);
+        if (positions.length > 0) {
+          const avgX = positions.reduce((s, p) => s + p[0], 0) / positions.length;
+          const avgY = positions.reduce((s, p) => s + p[1], 0) / positions.length;
+          const avgZ = positions.reduce((s, p) => s + p[2], 0) / positions.length;
+          multiSelectGroupObj.position.set(avgX, avgY, avgZ);
+          multiSelectGroupObj.rotation.set(0, 0, 0);
+          multiSelectGroupObj.scale.set(1, 1, 1);
+        }
       }
     }
   }, [selectedShapeIds, svgShapes, multiSelectGroupObj]);
@@ -568,6 +606,12 @@ export function ExtrudedSVG() {
             dispatch(recordSnapshot());
             if (!multiSelectGroupObj) return;
 
+            ensureBound(selectedShapeIds, multiSelectGroupObj.position);
+            multiSelectGestureInitialQuatRef.current =
+              multiSelectGroupObj.quaternion.clone();
+            multiSelectGestureInitialScaleRef.current =
+              multiSelectGroupObj.scale.clone();
+
             multiSelectGroupObj.updateMatrix();
             const groupInverseMatrix = multiSelectGroupObj.matrix
               .clone()
@@ -596,6 +640,20 @@ export function ExtrudedSVG() {
           onObjectChange={() => {
             if (!multiSelectGroupObj || !multiSelectInitialStateRef.current)
               return;
+
+            // Force uniform scale on multi-select to avoid shear when
+            // shapes have differing local rotations. Pick the axis with
+            // the largest delta from 1 and apply it uniformly.
+            if (transformMode === "scale") {
+              const s = multiSelectGroupObj.scale;
+              const dx = Math.abs(s.x - 1);
+              const dy = Math.abs(s.y - 1);
+              const dz = Math.abs(s.z - 1);
+              let uniform = s.x;
+              if (dy >= dx && dy >= dz) uniform = s.y;
+              else if (dz >= dx && dz >= dy) uniform = s.z;
+              s.set(uniform, uniform, uniform);
+            }
 
             multiSelectGroupObj.updateMatrix();
             const initial = multiSelectInitialStateRef.current;
@@ -633,6 +691,37 @@ export function ExtrudedSVG() {
             setTimeout(() => {
               wasMultiDraggingRef.current = false;
             }, 100);
+
+            // Accumulate this gesture's rotation/scale delta into the shared
+            // multi-select animation ref so a later "Add Keyframe" can
+            // record the group's total transform since bind.
+            if (
+              multiSelectGroupObj &&
+              multiSelectGestureInitialQuatRef.current &&
+              transformMode === "rotate"
+            ) {
+              const finalQuat = multiSelectGroupObj.quaternion.clone();
+              const initialInv =
+                multiSelectGestureInitialQuatRef.current.clone().invert();
+              const delta = finalQuat.multiply(initialInv);
+              applyDeltaQuat(delta);
+            }
+            if (
+              multiSelectGroupObj &&
+              multiSelectGestureInitialScaleRef.current &&
+              transformMode === "scale"
+            ) {
+              const initS = multiSelectGestureInitialScaleRef.current;
+              const finalS = multiSelectGroupObj.scale;
+              const safe = (n: number) => (Math.abs(n) < 1e-8 ? 1 : n);
+              applyDeltaScale([
+                finalS.x / safe(initS.x),
+                finalS.y / safe(initS.y),
+                finalS.z / safe(initS.z),
+              ]);
+            }
+            multiSelectGestureInitialQuatRef.current = null;
+            multiSelectGestureInitialScaleRef.current = null;
 
             selectedShapeIds.forEach((id) => {
               const groupObj = shapeObjectRegistry.get(id);

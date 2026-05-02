@@ -2,7 +2,7 @@
 
 import { memo, useCallback } from "react";
 import { Trash2, Eye, EyeOff } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CollapsibleCard } from "./CollapsibleCard";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   setSelectedShapeId,
@@ -142,18 +142,19 @@ export function ObjectsList() {
   if (svgShapes.length === 0) return null;
 
   return (
-    <Card className="border-white/10 bg-white/3">
-      <CardHeader className="pb-2 pt-3 px-3 border-b border-white/5">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-white/70 text-xs font-semibold uppercase tracking-wider">
-            {mode === "3d" ? "3D Objects" : "SVG Shapes"}
-          </CardTitle>
-          <span className="text-[10px] text-white/30 font-mono">
-            {visibleShapes.length}/{svgShapes.length}
-          </span>
-        </div>
-      </CardHeader>
-      <CardContent className="p-0">
+    <CollapsibleCard
+      id="objects-list"
+      cardClassName="border-white/10 bg-white/3"
+      headerClassName="pb-2 pt-3 px-3"
+      titleClassName="text-white/70 text-xs font-semibold uppercase tracking-wider"
+      title={mode === "3d" ? "3D Objects" : "SVG Shapes"}
+      headerExtra={
+        <span className="text-[10px] text-white/30 font-mono">
+          {visibleShapes.length}/{svgShapes.length}
+        </span>
+      }
+      contentClassName="p-0"
+    >
         <ul
           className="max-h-48 overflow-y-auto divide-y divide-white/5"
           style={{ scrollbarWidth: "thin" }}
@@ -179,7 +180,6 @@ export function ObjectsList() {
             );
           })}
         </ul>
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 }

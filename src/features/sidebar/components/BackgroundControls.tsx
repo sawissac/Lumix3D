@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CollapsibleCard } from "./CollapsibleCard";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -31,14 +25,14 @@ export function BackgroundControls() {
   if (!is3DMode) return null;
 
   return (
-    <Card className="border-pink-500/20 bg-pink-500/5">
-      <CardHeader className="pb-3 border-b border-white/5">
-        <CardTitle className="text-pink-400">Background & Grid</CardTitle>
-        <CardDescription>
-          Customize scene background and helpers
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4 pt-4">
+    <CollapsibleCard
+      id="background"
+      cardClassName="border-pink-500/20 bg-pink-500/5"
+      title="Background & Grid"
+      titleClassName="text-pink-400"
+      description="Customize scene background and helpers"
+      contentClassName="space-y-3 pt-3"
+    >
         <div className="flex items-center justify-between">
           <div>
             <Label htmlFor="show-grid" className="text-white/80">
@@ -223,7 +217,6 @@ export function BackgroundControls() {
             />
           </div>
         )}
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 }

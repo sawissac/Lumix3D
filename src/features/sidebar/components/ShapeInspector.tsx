@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CollapsibleCard } from "./CollapsibleCard";
 import { Label } from "@/components/ui/label";
 import { SliderWithInput } from "@/components/ui/slider-with-input";
 import { Button } from "@/components/ui/button";
@@ -47,12 +41,14 @@ function SVGInspector() {
   const total = svgShapes.length;
 
   return (
-    <Card className="glass-card border-blue-500/20">
-      <CardHeader className="pb-3 border-b border-white/5">
-        <CardTitle className="text-blue-400 text-sm">Inspector</CardTitle>
-        <CardDescription className="text-xs">SVG Edit Mode</CardDescription>
-      </CardHeader>
-      <CardContent className="pt-3 space-y-2 text-xs text-white/70">
+    <CollapsibleCard
+      id="inspector-svg"
+      cardClassName="border-blue-500/20"
+      title="Inspector"
+      titleClassName="text-blue-400 text-sm"
+      description="SVG Edit Mode"
+      contentClassName="pt-3 space-y-2 text-xs text-white/70"
+    >
         {svgSelection ? (
           <>
             <div className="flex items-center justify-between">
@@ -89,8 +85,7 @@ function SVGInspector() {
             Click a shape in the editor to inspect it
           </p>
         )}
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 }
 
@@ -299,12 +294,14 @@ function ThreeDInspector() {
   ];
 
   return (
-    <Card className="glass-card border-indigo-500/20 flex flex-col shrink-0">
-      <CardHeader className="pb-3 border-b border-white/5 shrink-0">
-        <CardTitle className="text-indigo-400 text-sm">Inspector</CardTitle>
-        <CardDescription className="text-xs">3D View</CardDescription>
-      </CardHeader>
-      <CardContent className="pt-3 space-y-4 text-xs">
+    <CollapsibleCard
+      id="inspector-3d"
+      cardClassName="border-indigo-500/20 flex flex-col shrink-0"
+      title="Inspector"
+      titleClassName="text-indigo-400 text-sm"
+      description="3D View"
+      contentClassName="pt-3 space-y-4 text-xs"
+    >
         {!selectedShapeId && !isMulti ? (
           <p className="text-white/40 text-xs">
             Click a shape or the empty space in the 3D view to inspect it
@@ -658,8 +655,7 @@ function ThreeDInspector() {
             </div>
           </>
         )}
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 }
 

@@ -25,47 +25,46 @@ export function UndoRedoToolbar() {
   const dispatch = useAppDispatch();
   const { canUndo: hasUndo, canRedo: hasRedo } = useHistoryAvailability();
 
-  const btnBase =
-    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium border";
-  const activeStyle =
-    "text-white/80 hover:text-white hover:bg-white/8 border-transparent cursor-pointer";
-  const disabledStyle =
-    "text-white/20 border-transparent cursor-not-allowed";
+  const btn =
+    "w-7 h-7 rounded-md flex items-center justify-center transition-colors";
 
   return (
-    <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
+    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
       <div
-        className="rounded-xl px-1 py-1 flex gap-0.5 shadow-2xl shadow-black/70 border border-white/8"
+        className="rounded-lg p-0.5 flex gap-0.5 border border-white/8"
         style={{
           background: "rgba(15, 15, 25, 0.85)",
-          backdropFilter: "blur(24px) saturate(200%)",
-          WebkitBackdropFilter: "blur(24px) saturate(200%)",
-          boxShadow:
-            "0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
+          backdropFilter: "blur(20px) saturate(180%)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%)",
+          boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
         }}
       >
         <button
           onClick={() => hasUndo && dispatch(undo())}
           disabled={!hasUndo}
-          title="Undo (Ctrl+Z)"
-          className={cn(btnBase, hasUndo ? activeStyle : disabledStyle)}
+          title="Undo (⌘Z)"
+          className={cn(
+            btn,
+            hasUndo
+              ? "text-white/75 hover:text-white hover:bg-white/8 cursor-pointer"
+              : "text-white/20 cursor-not-allowed",
+          )}
         >
-          <Undo2 className="w-3.5 h-3.5 shrink-0" />
-          <span>Undo</span>
-          <span className="text-[9px] opacity-35 -ml-0.5">⌘Z</span>
+          <Undo2 className="w-3.5 h-3.5" />
         </button>
-
-        <div className="w-px self-stretch bg-white/8 mx-0.5" />
 
         <button
           onClick={() => hasRedo && dispatch(redo())}
           disabled={!hasRedo}
-          title="Redo (Ctrl+Shift+Z)"
-          className={cn(btnBase, hasRedo ? activeStyle : disabledStyle)}
+          title="Redo (⇧⌘Z)"
+          className={cn(
+            btn,
+            hasRedo
+              ? "text-white/75 hover:text-white hover:bg-white/8 cursor-pointer"
+              : "text-white/20 cursor-not-allowed",
+          )}
         >
-          <Redo2 className="w-3.5 h-3.5 shrink-0" />
-          <span>Redo</span>
-          <span className="text-[9px] opacity-35 -ml-0.5">⇧⌘Z</span>
+          <Redo2 className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>

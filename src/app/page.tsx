@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Sidebar } from "@/features/sidebar/components/Sidebar";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/resizable";
 import { ParticleBackground } from "@/components/ParticleBackground";
 import { UndoRedoToolbar } from "@/features/three/components/UndoRedoToolbar";
+import { TimelinePanel } from "@/features/three/components/TimelinePanel";
 import Image from "next/image";
 
 const Canvas3D = dynamic(
@@ -61,6 +62,7 @@ export default function Home() {
   const is3DMode = useAppSelector((state) => state.scene.is3DMode);
   const isEditMode = useAppSelector((state) => state.scene.isEditMode);
   const dispatch = useAppDispatch();
+  const [showTimeline, setShowTimeline] = useState(false);
 
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
@@ -493,11 +495,49 @@ export default function Home() {
                 </div>
               </div>
             ) : (
-              <>
-                <Canvas3D />
-                <SceneTransformToolbar />
-                <UndoRedoToolbar />
-              </>
+              (() => {
+                const canvasArea = (
+                  <div className="relative w-full h-full min-h-0">
+                    <Canvas3D />
+                    <SceneTransformToolbar />
+                    <UndoRedoToolbar />
+                    <button
+                      onClick={() => setShowTimeline((v) => !v)}
+                      className="absolute top-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-2 h-7 rounded-md bg-black/50 backdrop-blur-sm border border-white/10 text-[10px] text-white/55 hover:text-white/85 hover:border-white/20 transition-colors"
+                    >
+                      <svg
+                        className="w-3 h-3"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <rect x="2" y="3" width="20" height="14" rx="2" />
+                        <path d="M8 21h8M12 17v4" />
+                      </svg>
+                      {showTimeline ? "Hide" : "Show"} Timeline
+                    </button>
+                  </div>
+                );
+
+                return showTimeline ? (
+                  <ResizablePanelGroup orientation="vertical" className="h-full">
+                    <ResizablePanel defaultSize="70%" minSize="20%">
+                      {canvasArea}
+                    </ResizablePanel>
+                    <ResizableHandle withHandle />
+                    <ResizablePanel
+                      defaultSize="30%"
+                      minSize="10%"
+                      maxSize="70%"
+                    >
+                      <TimelinePanel />
+                    </ResizablePanel>
+                  </ResizablePanelGroup>
+                ) : (
+                  canvasArea
+                );
+              })()
             )}
           </main>
         </ResizablePanel>

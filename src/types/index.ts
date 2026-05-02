@@ -177,11 +177,32 @@ export type Keyframe = {
   position?: [number, number, number];
   rotation?: [number, number, number];
   scale?: [number, number, number];
+  // Optional multi-select group context. When two neighboring keyframes
+  // share the same selectionId, TimelinePlayer slerps the group rotation
+  // around `pivot` so the selected shapes orbit as a rigid group instead
+  // of chord-lerping per shape.
+  selectionId?: string;
+  pivot?: [number, number, number];
+  groupQuat?: [number, number, number, number];
+  groupScale?: [number, number, number];
 };
 
 export type AnimationTrack = {
   shapeId: string;
   keyframes: Keyframe[];
+};
+
+// User-saved animation. `tracks` indexed by selection order at save time.
+// On apply, the i-th saved track is mapped to the i-th currently selected
+// shape. Keyframes are stored verbatim (absolute positions / rotations /
+// scales). Group context fields (selectionId/pivot/groupQuat/groupScale)
+// are preserved but selectionId is rewritten on apply to match the new
+// selection so playback group-interpolation still works.
+export type SavedAnimation = {
+  id: string;
+  name: string;
+  duration: number;
+  tracks: { index: number; keyframes: Omit<Keyframe, "id">[] }[];
 };
 
 export type TimelineState = {
@@ -234,4 +255,6 @@ export type AppState = {
   groupName: string;
   isEmbedLoaded: boolean;
   timeline: TimelineState;
+  collapsedSections: Record<string, boolean>;
+  savedAnimations: SavedAnimation[];
 };

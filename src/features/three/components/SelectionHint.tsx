@@ -1,6 +1,7 @@
 "use client";
 
-import { MousePointer2, Move, RotateCw, Scale, X } from "lucide-react";
+import { useState } from "react";
+import { Keyboard, Move, RotateCw, Scale, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setTransformMode, clearSelection } from "@/store/slices/sceneSlice";
 import { cn } from "@/lib/utils";
@@ -23,7 +24,7 @@ const HINTS: HintRow[] = [
 
 function Kbd({ children }: { children: React.ReactNode }) {
   return (
-    <kbd className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-md text-[10px] font-semibold text-white/85 bg-white/8 border border-white/12 shadow-[inset_0_-1px_0_rgba(0,0,0,0.3)]">
+    <kbd className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded text-[9px] font-semibold text-white/85 bg-white/8 border border-white/12">
       {children}
     </kbd>
   );
@@ -44,6 +45,7 @@ export function SelectionHint() {
   const is3DMode = useAppSelector((s) => s.scene.is3DMode);
   const svgShapes = useAppSelector((s) => s.scene.svgShapes);
   const transformMode = useAppSelector((s) => s.scene.transformMode);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
 
   if (!is3DMode || svgShapes.length === 0) return null;
 
@@ -51,38 +53,49 @@ export function SelectionHint() {
 
   if (!hasSelection) {
     return (
-      <div className="absolute top-5 left-5 z-20 pointer-events-none">
-        <div
-          className="rounded-xl p-3 w-56 shadow-2xl shadow-black/60 border border-white/8"
+      <div
+        className="absolute top-3 left-3 z-20 pointer-events-auto"
+        onMouseEnter={() => setShortcutsOpen(true)}
+        onMouseLeave={() => setShortcutsOpen(false)}
+      >
+        <button
+          onClick={() => setShortcutsOpen((v) => !v)}
+          title="Keyboard shortcuts"
+          className="w-7 h-7 rounded-md flex items-center justify-center border border-white/8 text-white/55 hover:text-white/85 transition-colors"
           style={PANEL_STYLE}
         >
-          <div className="flex items-center gap-2 mb-2.5 pb-2 border-b border-white/8">
-            <MousePointer2 className="w-3.5 h-3.5 text-blue-400" />
-            <span className="text-[11px] uppercase tracking-wider font-semibold text-white/70">
+          <Keyboard className="w-3.5 h-3.5" />
+        </button>
+        {shortcutsOpen && (
+          <div
+            className="absolute top-8 left-0 mt-1 rounded-lg p-2 w-48 border border-white/8"
+            style={PANEL_STYLE}
+          >
+            <div className="px-1 pb-1.5 mb-1 border-b border-white/8 text-[9px] uppercase tracking-wider font-semibold text-white/45">
               Shortcuts
-            </span>
-          </div>
-          <div className="flex flex-col gap-1.5">
-            {HINTS.map((hint) => (
-              <div
-                key={hint.label}
-                className="flex items-center justify-between gap-3"
-              >
-                <span className="text-xs text-white/65">{hint.label}</span>
-                <div className="flex items-center gap-1">
-                  {hint.keys.map((key, i) => (
-                    <span key={i} className="flex items-center gap-1">
-                      {i > 0 && (
-                        <span className="text-white/30 text-[10px]">+</span>
-                      )}
-                      <Kbd>{key}</Kbd>
-                    </span>
-                  ))}
+            </div>
+            <div className="flex flex-col gap-0.5">
+              {HINTS.map((hint) => (
+                <div
+                  key={hint.label}
+                  className="flex items-center justify-between gap-2 px-1 h-5"
+                >
+                  <span className="text-[10px] text-white/60">{hint.label}</span>
+                  <div className="flex items-center gap-0.5">
+                    {hint.keys.map((key, i) => (
+                      <span key={i} className="flex items-center gap-0.5">
+                        {i > 0 && (
+                          <span className="text-white/25 text-[9px]">+</span>
+                        )}
+                        <Kbd>{key}</Kbd>
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -105,27 +118,27 @@ export function SelectionHint() {
         : "Object";
 
   return (
-    <div className="absolute top-5 left-5 z-20 pointer-events-auto">
+    <div className="absolute top-3 left-3 z-20 pointer-events-auto">
       <div
-        className="rounded-xl p-3 w-56 shadow-2xl shadow-black/60 border border-white/8"
+        className="rounded-lg p-1.5 w-44 border border-white/8"
         style={PANEL_STYLE}
       >
-        <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-white/8">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]" />
-            <span className="text-[11px] uppercase tracking-wider font-semibold text-white/80">
+        <div className="flex items-center justify-between px-1 mb-1 pb-1.5 border-b border-white/8">
+          <div className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+            <span className="text-[10px] uppercase tracking-wider font-semibold text-white/80">
               {selectionLabel}
             </span>
           </div>
           <button
             onClick={() => dispatch(clearSelection())}
             title="Deselect (Esc)"
-            className="flex items-center justify-center w-5 h-5 rounded-md text-white/50 hover:text-white/90 hover:bg-white/8 transition-colors"
+            className="flex items-center justify-center w-4 h-4 rounded text-white/45 hover:text-white/85 hover:bg-white/8 transition-colors"
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="w-3 h-3" />
           </button>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-0.5">
           {modes.map((mode) => {
             const Icon = mode.icon;
             const isActive = transformMode === mode.id;
@@ -135,14 +148,14 @@ export function SelectionHint() {
                 onClick={() => handleModeChange(mode.id)}
                 title={`${mode.label} (${mode.key})`}
                 className={cn(
-                  "flex items-center justify-between gap-3 px-2 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium border",
+                  "flex items-center justify-between gap-2 px-1.5 h-6 rounded transition-colors text-[10px] font-medium",
                   isActive
-                    ? "bg-blue-500/20 text-blue-200 border-blue-500/40"
-                    : "text-white/65 hover:text-white/90 hover:bg-white/6 border-transparent",
+                    ? "bg-blue-500/20 text-blue-200"
+                    : "text-white/60 hover:text-white/90 hover:bg-white/6",
                 )}
               >
-                <span className="flex items-center gap-2">
-                  <Icon className="w-3.5 h-3.5 shrink-0" />
+                <span className="flex items-center gap-1.5">
+                  <Icon className="w-3 h-3 shrink-0" />
                   <span>{mode.label}</span>
                 </span>
                 <Kbd>{mode.key}</Kbd>

@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CollapsibleCard } from "./CollapsibleCard";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -82,14 +76,14 @@ export function EffectControls() {
   const activeColors = MODE_COLORS[viewMode];
 
   return (
-    <Card className="border-indigo-500/20 bg-indigo-500/5">
-      <CardHeader className="pb-3 border-b border-white/5">
-        <CardTitle className="text-indigo-400">Effects &amp; Ground</CardTitle>
-        <CardDescription>
-          Adjust viewport mode, bloom effects and ground plane
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6 pt-4">
+    <CollapsibleCard
+      id="effects"
+      cardClassName="border-indigo-500/20 bg-indigo-500/5"
+      title="Effects & Ground"
+      titleClassName="text-indigo-400"
+      description="Adjust viewport mode, bloom effects and ground plane"
+      contentClassName="space-y-4 pt-3"
+    >
 
         {/* Viewport Mode Selector */}
         <div className="space-y-2.5">
@@ -293,7 +287,6 @@ export function EffectControls() {
             </div>
           )}
         </div>
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 }

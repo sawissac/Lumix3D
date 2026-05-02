@@ -1,13 +1,7 @@
 "use client";
 
-import { Lightbulb, Trash2 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Trash2 } from "lucide-react";
+import { CollapsibleCard } from "./CollapsibleCard";
 import { Label } from "@/components/ui/label";
 import { SliderWithInput } from "@/components/ui/slider-with-input";
 import { Button } from "@/components/ui/button";
@@ -43,15 +37,12 @@ export function LightingControls() {
   };
 
   return (
-    <Card className="glass-card border-amber-500/20">
-      <CardHeader className="pb-3 border-b border-white/5">
-        <CardTitle className="flex items-center gap-2 text-amber-400">
-          <Lightbulb className="h-5 w-5" />
-          Lighting
-        </CardTitle>
-        <CardDescription>Control scene lighting</CardDescription>
-      </CardHeader>
-      <CardContent className="pt-4">
+    <CollapsibleCard
+      id="lighting"
+      title="Lighting"
+      description="Control scene lighting"
+      contentClassName="pt-3"
+    >
         <Tabs defaultValue="presets" className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-black/20 border border-white/5 p-1 rounded-lg">
             <TabsTrigger
@@ -204,7 +195,6 @@ export function LightingControls() {
             ))}
           </TabsContent>
         </Tabs>
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 }

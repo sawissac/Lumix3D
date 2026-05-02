@@ -25,27 +25,26 @@ export function OrbitControlsLockToolbar() {
     { key: "zoom", label: "Zoom", Icon: ZoomIn },
   ];
 
-  const rotateAxes: Array<"rotateX" | "rotateY" | "rotateZ"> = [
-    "rotateX",
-    "rotateY",
-    "rotateZ",
+  const rotateAxes: Array<{ key: "rotateX" | "rotateY" | "rotateZ"; label: string }> = [
+    { key: "rotateX", label: "X" },
+    { key: "rotateY", label: "Y" },
+    { key: "rotateZ", label: "Z" },
   ];
 
+  const panelStyle = {
+    background: "rgba(15, 15, 25, 0.85)",
+    backdropFilter: "blur(20px) saturate(180%)",
+    WebkitBackdropFilter: "blur(20px) saturate(180%)",
+    boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
+  } as const;
+
   return (
-    <div className="absolute top-5 right-5 z-20 pointer-events-auto">
+    <div className="absolute top-[120px] right-3 z-20 pointer-events-auto flex flex-col items-end gap-1.5">
+      {/* Camera lock — icon-only row */}
       <div
-        className="rounded-xl px-1 py-1 flex flex-col gap-0.5 shadow-2xl shadow-black/70 border border-white/8"
-        style={{
-          background: "rgba(15, 15, 25, 0.85)",
-          backdropFilter: "blur(24px) saturate(200%)",
-          WebkitBackdropFilter: "blur(24px) saturate(200%)",
-          boxShadow:
-            "0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
-        }}
+        className="rounded-lg p-0.5 flex gap-0.5 border border-white/8"
+        style={panelStyle}
       >
-        <div className="text-[10px] font-medium text-white/40 px-3 py-1 uppercase tracking-wider">
-          Lock Camera
-        </div>
         {controls.map(({ key, label, Icon }) => {
           const isLocked = orbitControlsLock[key];
           return (
@@ -54,67 +53,57 @@ export function OrbitControlsLockToolbar() {
               onClick={() => dispatch(toggleOrbitControlsLock(key))}
               title={`${isLocked ? "Unlock" : "Lock"} ${label}`}
               className={cn(
-                "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
-                "hover:bg-white/6 border border-transparent active:bg-white/10 active:scale-95",
+                "w-7 h-7 rounded-md flex items-center justify-center relative transition-colors",
                 isLocked
-                  ? "text-white/40"
-                  : "text-blue-400 hover:text-blue-300",
+                  ? "text-white/35 hover:text-white/55 hover:bg-white/6"
+                  : "text-blue-400 hover:text-blue-300 hover:bg-white/6",
               )}
             >
+              <Icon className="w-3.5 h-3.5" />
               {isLocked ? (
-                <Lock className="w-3.5 h-3.5 shrink-0" />
-              ) : (
-                <Unlock className="w-3.5 h-3.5 shrink-0" />
-              )}
-              <Icon className="w-3.5 h-3.5 shrink-0" />
-              <span className="font-medium">{label}</span>
+                <Lock className="absolute -top-px -right-px w-2 h-2 text-white/55" />
+              ) : null}
             </button>
           );
         })}
-
-        {!orbitControlsLock.rotate && (
-          <>
-            <div className="h-px bg-white/10 my-0.5" />
-            <div className="text-[9px] font-medium text-white/30 px-3 py-0.5 uppercase tracking-wider">
-              Rotate Axis
-            </div>
-            {rotateAxes.map((axis) => {
-              const isLocked = orbitControlsLock[axis];
-              const axisLabel = axis.replace("rotate", "");
-              return (
-                <button
-                  key={axis}
-                  onClick={() => dispatch(setExclusiveOrbitControlsAxis(axis))}
-                  title={
-                    !isLocked &&
-                    ["rotateX", "rotateY", "rotateZ"].every(
-                      (a) =>
-                        a === axis ||
-                        orbitControlsLock[a as keyof typeof orbitControlsLock],
-                    )
-                      ? "Reset all rotation axes"
-                      : `Rotate only on ${axisLabel}`
-                  }
-                  className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
-                    "hover:bg-white/6 border border-transparent active:bg-white/10 active:scale-95",
-                    isLocked
-                      ? "text-white/40"
-                      : "text-blue-400 hover:text-blue-300",
-                  )}
-                >
-                  {isLocked ? (
-                    <Lock className="w-3.5 h-3.5 shrink-0" />
-                  ) : (
-                    <Unlock className="w-3.5 h-3.5 shrink-0" />
-                  )}
-                  <span className="uppercase font-bold">{axisLabel}</span>
-                </button>
-              );
-            })}
-          </>
-        )}
       </div>
+
+      {/* Per-axis rotate locks — only when rotate enabled */}
+      {!orbitControlsLock.rotate && (
+        <div
+          className="rounded-lg p-0.5 flex gap-0.5 border border-white/8"
+          style={panelStyle}
+        >
+          {rotateAxes.map(({ key, label }) => {
+            const isLocked = orbitControlsLock[key];
+            const isOnlyUnlocked = !isLocked &&
+              (["rotateX", "rotateY", "rotateZ"] as const).every(
+                (a) =>
+                  a === key ||
+                  orbitControlsLock[a as keyof typeof orbitControlsLock],
+              );
+            return (
+              <button
+                key={key}
+                onClick={() => dispatch(setExclusiveOrbitControlsAxis(key))}
+                title={
+                  isOnlyUnlocked
+                    ? "Reset all rotation axes"
+                    : `Rotate only on ${label}`
+                }
+                className={cn(
+                  "w-7 h-7 rounded-md flex items-center justify-center text-[10px] font-bold uppercase transition-colors",
+                  isLocked
+                    ? "text-white/35 hover:text-white/55 hover:bg-white/6"
+                    : "text-blue-400 hover:text-blue-300 hover:bg-white/6",
+                )}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

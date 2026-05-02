@@ -3,13 +3,7 @@
 import { useRef } from "react";
 import { Upload, Sparkles, PencilIcon, Waypoints } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CollapsibleCard } from "./CollapsibleCard";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   setSvgFile,
@@ -78,12 +72,14 @@ export function SVGUploader() {
   };
 
   return (
-    <Card className="overflow-hidden border-indigo-500/20 bg-indigo-500/5">
-      <CardHeader className="pb-3 border-b border-white/5">
-        <CardTitle className="text-indigo-400">SVG Import</CardTitle>
-        <CardDescription>Upload an SVG file to get started</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4 pt-4">
+    <CollapsibleCard
+      id="svg-uploader"
+      cardClassName="overflow-hidden border-indigo-500/20 bg-indigo-500/5"
+      title="SVG Import"
+      titleClassName="text-indigo-400"
+      description="Upload an SVG file to get started"
+      contentClassName="space-y-3 pt-3"
+    >
         <div>
           <input
             ref={fileInputRef}
@@ -94,15 +90,15 @@ export function SVGUploader() {
           />
           <div
             onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-indigo-500/30 hover:border-indigo-400 hover:bg-indigo-500/10 transition-all rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer group"
+            className="border-2 border-dashed border-indigo-500/30 hover:border-indigo-400 hover:bg-indigo-500/10 transition-all rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer group"
           >
-            <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <Upload className="h-6 w-6 text-indigo-400" />
+            <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+              <Upload className="h-5 w-5 text-indigo-400" />
             </div>
-            <span className="text-sm font-medium text-indigo-200">
+            <span className="text-xs font-medium text-indigo-200">
               {svgFile ? "Click to change SVG" : "Click to upload SVG"}
             </span>
-            <span className="text-xs text-muted-foreground mt-1">
+            <span className="text-[10px] text-muted-foreground mt-0.5">
               SVG files only
             </span>
           </div>
@@ -127,7 +123,6 @@ export function SVGUploader() {
             </Button>
           </div>
         )}
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 }

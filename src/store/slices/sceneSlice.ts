@@ -14,6 +14,8 @@ import {
   ObjectGroup,
   CameraState,
   ViewMode,
+  SavedAnimation,
+  Keyframe,
 } from "@/types";
 
 export type HistorySnapshot = Pick<
@@ -142,6 +144,8 @@ const initialState: AppState = {
     fps: 60,
     loop: true,
   },
+  collapsedSections: {},
+  savedAnimations: [],
 };
 
 const sceneSlice = createSlice({
@@ -727,6 +731,116 @@ const sceneSlice = createSlice({
       state.timeline.currentTime = 0;
       state.timeline.isPlaying = false;
     },
+
+    // Save the current keyframe tracks for the given shape IDs (in order)
+    // as a named, reusable animation. Saved tracks index by selection order,
+    // not by shape ID, so the animation can be applied to a different
+    // selection later.
+    saveAnimation: (
+      state,
+      action: PayloadAction<{ name: string; shapeIds: string[] }>,
+    ) => {
+      const { name, shapeIds } = action.payload;
+      const tracks = shapeIds
+        .map((id, index) => {
+          const track = state.timeline.tracks.find((t) => t.shapeId === id);
+          if (!track || track.keyframes.length === 0) return null;
+          // Strip per-keyframe ids; they will be regenerated on apply.
+          return {
+            index,
+            keyframes: track.keyframes.map((k) => {
+              const stripped: Omit<Keyframe, "id"> = {
+                time: k.time,
+                position: k.position,
+                rotation: k.rotation,
+                scale: k.scale,
+              };
+              if (k.selectionId !== undefined) stripped.selectionId = k.selectionId;
+              if (k.pivot !== undefined) stripped.pivot = k.pivot;
+              if (k.groupQuat !== undefined) stripped.groupQuat = k.groupQuat;
+              if (k.groupScale !== undefined) stripped.groupScale = k.groupScale;
+              return stripped;
+            }),
+          };
+        })
+        .filter((t): t is { index: number; keyframes: Omit<Keyframe, "id">[] } => !!t);
+
+      if (tracks.length === 0) return;
+
+      const saved: SavedAnimation = {
+        id: `anim-${Date.now()}`,
+        name: name.trim() || `Animation ${state.savedAnimations.length + 1}`,
+        duration: state.timeline.duration,
+        tracks,
+      };
+      state.savedAnimations.push(saved);
+    },
+
+    // Apply a saved animation to the given target shape IDs (selection
+    // order). The i-th saved track maps to the i-th target shape.
+    applyAnimation: (
+      state,
+      action: PayloadAction<{ animationId: string; targetIds: string[] }>,
+    ) => {
+      const { animationId, targetIds } = action.payload;
+      const saved = state.savedAnimations.find((a) => a.id === animationId);
+      if (!saved) return;
+
+      // Rewrite group selectionId to match the new target so playback
+      // group-interpolation still recognises a coherent selection.
+      const newSelectionId = [...targetIds].sort().join("|");
+      const now = Date.now();
+
+      saved.tracks.forEach((src) => {
+        const targetId = targetIds[src.index];
+        if (!targetId) return;
+
+        // Replace any existing track for this target.
+        state.timeline.tracks = state.timeline.tracks.filter(
+          (t) => t.shapeId !== targetId,
+        );
+
+        const newKeyframes: Keyframe[] = src.keyframes.map((k, i) => ({
+          ...k,
+          id: `kf-${now}-${targetId}-${i}`,
+          ...(k.selectionId !== undefined ? { selectionId: newSelectionId } : {}),
+        }));
+
+        state.timeline.tracks.push({
+          shapeId: targetId,
+          keyframes: newKeyframes,
+        });
+      });
+
+      // Bump duration if saved animation is longer than current timeline.
+      if (saved.duration > state.timeline.duration) {
+        state.timeline.duration = saved.duration;
+      }
+    },
+
+    deleteSavedAnimation: (state, action: PayloadAction<string>) => {
+      state.savedAnimations = state.savedAnimations.filter(
+        (a) => a.id !== action.payload,
+      );
+    },
+
+    renameSavedAnimation: (
+      state,
+      action: PayloadAction<{ id: string; name: string }>,
+    ) => {
+      const a = state.savedAnimations.find((x) => x.id === action.payload.id);
+      if (a) a.name = action.payload.name;
+    },
+    toggleSectionCollapsed: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      state.collapsedSections[id] = !state.collapsedSections[id];
+    },
+    setSectionCollapsed: (
+      state,
+      action: PayloadAction<{ id: string; collapsed: boolean }>,
+    ) => {
+      state.collapsedSections[action.payload.id] = action.payload.collapsed;
+    },
   },
 });
 
@@ -812,6 +926,12 @@ export const {
   removeKeyframe,
   updateKeyframe,
   clearTimelineTracks,
+  saveAnimation,
+  applyAnimation,
+  deleteSavedAnimation,
+  renameSavedAnimation,
+  toggleSectionCollapsed,
+  setSectionCollapsed,
 } = sceneSlice.actions;
 
 // --- Selectors ---

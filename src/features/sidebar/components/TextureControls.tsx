@@ -5,13 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setGlobalTexture, clearTextureChannel } from "@/store/slices/sceneSlice";
 import { TextureSettings } from "@/types";
 import { SliderWithInput } from "@/components/ui/slider-with-input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CollapsibleCard } from "./CollapsibleCard";
 
 type TextureChannel = {
   key: keyof Pick<
@@ -68,33 +62,32 @@ export function TextureControls() {
   const hasAny = CHANNELS.some((c) => !!globalTexture[c.key]);
 
   return (
-    <Card className="glass-card border-blue-500/20">
-      <CardHeader className="pb-3 border-b border-white/5">
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="text-blue-400">Textures</CardTitle>
-            <CardDescription>Applies to all objects in the scene</CardDescription>
-          </div>
-          {hasAny && (
-            <button
-              onClick={() =>
-                dispatch(
-                  setGlobalTexture({
-                    map: null, normalMap: null, roughnessMap: null,
-                    metalnessMap: null, displacementMap: null, aoMap: null,
-                    emissiveMap: null, alphaMap: null, lightMap: null,
-                  }),
-                )
-              }
-              className="text-[10px] text-red-400/60 hover:text-red-400 transition-colors shrink-0"
-            >
-              Clear all
-            </button>
-          )}
-        </div>
-      </CardHeader>
-
-      <CardContent className="pt-4 space-y-4">
+    <CollapsibleCard
+      id="textures"
+      cardClassName="border-blue-500/20"
+      title="Textures"
+      titleClassName="text-blue-400"
+      description="Applies to all objects in the scene"
+      headerExtra={
+        hasAny ? (
+          <button
+            onClick={() =>
+              dispatch(
+                setGlobalTexture({
+                  map: null, normalMap: null, roughnessMap: null,
+                  metalnessMap: null, displacementMap: null, aoMap: null,
+                  emissiveMap: null, alphaMap: null, lightMap: null,
+                }),
+              )
+            }
+            className="text-[10px] text-red-400/60 hover:text-red-400 transition-colors shrink-0"
+          >
+            Clear all
+          </button>
+        ) : null
+      }
+      contentClassName="pt-3 space-y-3"
+    >
         {/* Texture channels */}
         <div className="space-y-1.5">
           {CHANNELS.map(({ key, label, hint }) => {
@@ -234,7 +227,6 @@ export function TextureControls() {
 
           </div>
         )}
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 }

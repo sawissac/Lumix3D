@@ -21,6 +21,9 @@ const persistConfig = {
     "groups",
     "is3DMode",
     "globalTexture",
+    "timeline",
+    "collapsedSections",
+    "savedAnimations",
   ],
 };
 

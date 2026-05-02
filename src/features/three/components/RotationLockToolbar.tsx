@@ -1,6 +1,6 @@
 "use client";
 
-import { Lock, Unlock } from "lucide-react";
+import { Lock } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleRotationLock } from "@/store/slices/sceneSlice";
 import { cn } from "@/lib/utils";
@@ -16,19 +16,16 @@ export function RotationLockToolbar() {
   const axes: Array<"x" | "y" | "z"> = ["x", "y", "z"];
 
   return (
-    <div className="absolute bottom-5 right-5 z-20 pointer-events-auto">
+    <div className="absolute bottom-3 right-3 z-20 pointer-events-auto">
       <div
-        className="rounded-xl px-1 py-1 flex flex-col gap-0.5 shadow-2xl shadow-black/70 border border-white/8"
+        className="rounded-lg p-0.5 flex gap-0.5 border border-white/8"
         style={{
           background: "rgba(15, 15, 25, 0.85)",
-          backdropFilter: "blur(24px) saturate(200%)",
-          WebkitBackdropFilter: "blur(24px) saturate(200%)",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
+          backdropFilter: "blur(20px) saturate(180%)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%)",
+          boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
         }}
       >
-        <div className="text-[10px] font-medium text-white/40 px-3 py-1 uppercase tracking-wider">
-          Lock Axis
-        </div>
         {axes.map((axis) => {
           const isLocked = rotationLock[axis];
           return (
@@ -37,18 +34,16 @@ export function RotationLockToolbar() {
               onClick={() => dispatch(toggleRotationLock(axis))}
               title={`${isLocked ? "Unlock" : "Lock"} ${axis.toUpperCase()} rotation`}
               className={cn(
-                "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
+                "w-7 h-7 rounded-md flex items-center justify-center text-[10px] font-bold uppercase relative transition-colors",
                 isLocked
-                  ? "bg-red-500/30 text-red-300 border border-red-500/40"
-                  : "text-white/60 hover:text-white/90 hover:bg-white/6 border border-transparent",
+                  ? "bg-red-500/25 text-red-300"
+                  : "text-white/55 hover:text-white/85 hover:bg-white/6",
               )}
             >
+              {axis}
               {isLocked ? (
-                <Lock className="w-3.5 h-3.5 shrink-0" />
-              ) : (
-                <Unlock className="w-3.5 h-3.5 shrink-0" />
-              )}
-              <span className="uppercase font-bold">{axis}</span>
+                <Lock className="absolute -top-px -right-px w-2 h-2 text-red-200" />
+              ) : null}
             </button>
           );
         })}

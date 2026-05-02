@@ -13,6 +13,13 @@ import {
 } from "@/store/slices/sceneSlice";
 import { cn } from "@/lib/utils";
 
+const PANEL_STYLE = {
+  background: "rgba(15, 15, 25, 0.85)",
+  backdropFilter: "blur(20px) saturate(180%)",
+  WebkitBackdropFilter: "blur(20px) saturate(180%)",
+  boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
+} as const;
+
 export function GroupManager() {
   const dispatch = useAppDispatch();
   const selectedShapeIds = useAppSelector((s) => s.scene.selectedShapeIds);
@@ -47,107 +54,101 @@ export function GroupManager() {
   return (
     <div
       className={cn(
-        "absolute left-5 z-20 pointer-events-auto",
-        selectedShapeIds.length > 0 ? "bottom-[70px]" : "bottom-5",
+        "absolute left-3 z-20 pointer-events-auto flex flex-col gap-1.5 max-w-[200px]",
+        selectedShapeIds.length > 0 ? "bottom-14" : "bottom-3",
       )}
     >
-      <div
-        className="rounded-xl px-1 py-1 flex flex-col gap-0.5 shadow-2xl shadow-black/70 border border-white/8"
-        style={{
-          background: "rgba(15, 15, 25, 0.85)",
-          backdropFilter: "blur(24px) saturate(200%)",
-          WebkitBackdropFilter: "blur(24px) saturate(200%)",
-          boxShadow:
-            "0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
-        }}
-      >
-        <div className="text-[10px] font-medium text-white/40 px-3 py-1 uppercase tracking-wider">
-          Selection & Groups
-        </div>
-
-        {selectedShapeIds.length > 0 && (
-          <div className="px-3 py-1.5 text-xs text-white/60">
-            <span className="font-medium text-blue-400">
-              {selectedShapeIds.length}
-            </span>{" "}
-            object{selectedShapeIds.length > 1 ? "s" : ""} selected
-          </div>
-        )}
-
-        {canCreateGroup && (
-          <button
-            onClick={() => dispatch(setShowGroupDialog(true))}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium text-white/60 hover:text-white/90 hover:bg-white/6 border border-transparent"
-          >
-            <Plus className="w-3.5 h-3.5 shrink-0" />
-            <span>Create Group</span>
-          </button>
-        )}
-
-        {selectedShapeIds.length >= 2 && (
-          <button
-            onClick={handleUngroup}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium text-white/60 hover:text-white/90 hover:bg-white/6 border border-transparent"
-          >
-            <Layers className="w-3.5 h-3.5 shrink-0" />
-            <span>Ungroup</span>
-          </button>
-        )}
-
-        {groups.length > 0 && (
-          <>
-            <div className="h-px bg-white/10 my-0.5" />
-            <div className="text-[9px] font-medium text-white/30 px-3 py-0.5 uppercase tracking-wider">
-              Groups ({groups.length})
+      {/* Selection actions */}
+      {(selectedShapeIds.length > 0 || canCreateGroup) && (
+        <div
+          className="rounded-lg p-0.5 flex flex-col gap-0.5 border border-white/8"
+          style={PANEL_STYLE}
+        >
+          {selectedShapeIds.length > 0 && (
+            <div className="px-2 h-6 flex items-center text-[10px] text-white/55">
+              <span className="font-semibold text-blue-400 mr-1">
+                {selectedShapeIds.length}
+              </span>
+              selected
             </div>
-            {groups.map((group) => {
-              const groupHidden = group.visible === false;
-              return (
-                <div
-                  key={group.id}
-                  className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
-                    isGroupSelected(group.id) && !groupHidden
-                      ? "bg-blue-500/30 text-blue-300 border border-blue-500/40"
-                      : groupHidden
-                        ? "text-white/30 border border-transparent"
-                        : "text-white/60 hover:bg-white/6 border border-transparent",
-                  )}
+          )}
+          {canCreateGroup && (
+            <button
+              onClick={() => dispatch(setShowGroupDialog(true))}
+              className="flex items-center gap-1.5 px-2 h-6 rounded-md text-[10px] text-white/65 hover:text-white hover:bg-white/6 transition-colors"
+            >
+              <Plus className="w-3 h-3 shrink-0" />
+              <span>Create Group</span>
+            </button>
+          )}
+          {selectedShapeIds.length >= 2 && (
+            <button
+              onClick={handleUngroup}
+              className="flex items-center gap-1.5 px-2 h-6 rounded-md text-[10px] text-white/65 hover:text-white hover:bg-white/6 transition-colors"
+            >
+              <Layers className="w-3 h-3 shrink-0" />
+              <span>Ungroup</span>
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Groups list */}
+      {groups.length > 0 && (
+        <div
+          className="rounded-lg p-0.5 flex flex-col gap-0.5 border border-white/8"
+          style={PANEL_STYLE}
+        >
+          <div className="px-2 pt-1 pb-0.5 text-[9px] font-semibold text-white/35 uppercase tracking-wider">
+            Groups · {groups.length}
+          </div>
+          {groups.map((group) => {
+            const groupHidden = group.visible === false;
+            return (
+              <div
+                key={group.id}
+                className={cn(
+                  "flex items-center gap-1 px-1.5 h-6 rounded-md text-[10px]",
+                  isGroupSelected(group.id) && !groupHidden
+                    ? "bg-blue-500/25 text-blue-200"
+                    : groupHidden
+                      ? "text-white/30"
+                      : "text-white/65 hover:bg-white/6",
+                )}
+              >
+                <button
+                  onClick={() => dispatch(selectGroup(group.id))}
+                  className="flex items-center gap-1.5 flex-1 min-w-0"
                 >
-                  <button
-                    onClick={() => dispatch(selectGroup(group.id))}
-                    className="flex items-center gap-2 flex-1"
-                  >
-                    <Users className="w-3.5 h-3.5 shrink-0" />
-                    <span className="truncate max-w-[120px]">{group.name}</span>
-                    <span className="text-[10px] opacity-50">
-                      ({group.shapeIds.length})
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => dispatch(toggleGroupVisibility(group.id))}
-                    className="hover:text-white/90 transition-colors"
-                    title={groupHidden ? "Show group" : "Hide group"}
-                  >
-                    {groupHidden ? (
-                      <EyeOff className="w-3 h-3" />
-                    ) : (
-                      <Eye className="w-3 h-3" />
-                    )}
-                  </button>
-                  <button
-                    onClick={() => dispatch(deleteGroup(group.id))}
-                    className="hover:text-red-400 transition-colors"
-                    title="Delete group"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </button>
-                </div>
-              );
-            })}
-          </>
-        )}
-      </div>
+                  <Users className="w-3 h-3 shrink-0" />
+                  <span className="truncate">{group.name}</span>
+                  <span className="text-[9px] text-white/35 shrink-0">
+                    {group.shapeIds.length}
+                  </span>
+                </button>
+                <button
+                  onClick={() => dispatch(toggleGroupVisibility(group.id))}
+                  className="text-white/35 hover:text-white/85 transition-colors p-0.5"
+                  title={groupHidden ? "Show group" : "Hide group"}
+                >
+                  {groupHidden ? (
+                    <EyeOff className="w-2.5 h-2.5" />
+                  ) : (
+                    <Eye className="w-2.5 h-2.5" />
+                  )}
+                </button>
+                <button
+                  onClick={() => dispatch(deleteGroup(group.id))}
+                  className="text-white/35 hover:text-red-400 transition-colors p-0.5"
+                  title="Delete group"
+                >
+                  <Trash2 className="w-2.5 h-2.5" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {showGroupDialog && (
         <div

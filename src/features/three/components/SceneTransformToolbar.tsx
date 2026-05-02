@@ -20,14 +20,14 @@ export function SceneTransformToolbar() {
   ];
 
   return (
-    <div className="absolute bottom-5 left-5 z-20 pointer-events-auto">
+    <div className="absolute bottom-3 left-3 z-20 pointer-events-auto">
       <div
-        className="rounded-xl px-1 py-1 flex gap-0.5 shadow-2xl shadow-black/70 border border-white/8"
+        className="rounded-lg p-0.5 flex gap-0.5 border border-white/8"
         style={{
           background: "rgba(15, 15, 25, 0.85)",
-          backdropFilter: "blur(24px) saturate(200%)",
-          WebkitBackdropFilter: "blur(24px) saturate(200%)",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
+          backdropFilter: "blur(20px) saturate(180%)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%)",
+          boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
         }}
       >
         {tools.map(({ mode, label, Icon, shortcut }) => {
@@ -38,15 +38,13 @@ export function SceneTransformToolbar() {
               onClick={() => dispatch(setTransformMode(mode))}
               title={`${label} (${shortcut})`}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all duration-150 text-xs font-medium",
+                "w-7 h-7 rounded-md flex items-center justify-center transition-colors",
                 active
-                  ? "bg-indigo-500/30 text-indigo-300 border border-indigo-500/40"
-                  : "text-white/40 hover:text-white/80 hover:bg-white/6 border border-transparent",
+                  ? "bg-indigo-500/30 text-indigo-300"
+                  : "text-white/45 hover:text-white/85 hover:bg-white/6",
               )}
             >
-              <Icon className="w-3.5 h-3.5 shrink-0" />
-              <span>{label}</span>
-              <span className="text-[9px] opacity-35 -ml-0.5">{shortcut}</span>
+              <Icon className="w-3.5 h-3.5" />
             </button>
           );
         })}

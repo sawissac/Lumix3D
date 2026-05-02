@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CollapsibleCard } from "./CollapsibleCard";
 import { Label } from "@/components/ui/label";
 import { SliderWithInput } from "@/components/ui/slider-with-input";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -32,14 +26,14 @@ export function ExtrusionControls() {
   if (!is3DMode) return null;
 
   return (
-    <Card className="glass-card border-purple-500/20">
-      <CardHeader className="pb-3 border-b border-white/5">
-        <CardTitle className="text-purple-400">3D Settings</CardTitle>
-        <CardDescription>
-          Applies to all shapes — overrides any per-shape settings
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-5 pt-4">
+    <CollapsibleCard
+      id="extrusion"
+      cardClassName="border-purple-500/20"
+      title="3D Settings"
+      titleClassName="text-purple-400"
+      description="Applies to all shapes — overrides any per-shape settings"
+      contentClassName="space-y-4 pt-3"
+    >
         <Field label="Depth" hint="How far the shape extends into 3D space">
           <SliderWithInput
             value={extrusion.depth}
@@ -99,7 +93,6 @@ export function ExtrusionControls() {
             inputClassName="focus-visible:ring-purple-500/50 text-purple-300"
           />
         </Field>
-      </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 }

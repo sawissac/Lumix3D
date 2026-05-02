@@ -2,7 +2,14 @@
 
 import React, { useRef, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Grid, ContactShadows, Stats } from "@react-three/drei";
+import {
+  OrbitControls,
+  Grid,
+  ContactShadows,
+  Stats,
+  GizmoHelper,
+  GizmoViewport,
+} from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import {
@@ -22,7 +29,11 @@ import { GroupManager } from "./GroupManager";
 import * as THREE from "three";
 import { globalGroupRef } from "../globalGroupRef";
 import { liveTransform } from "../liveTransform";
-import { cameraRef, canvasElementRef } from "../shapeObjectRegistry";
+import {
+  cameraRef,
+  canvasElementRef,
+  shapeObjectRegistry,
+} from "../shapeObjectRegistry";
 import { BoxSelectOverlay } from "./BoxSelectOverlay";
 import { TimelinePlayer } from "./TimelinePlayer";
 import { usePathname } from "next/navigation";
@@ -156,6 +167,37 @@ export function Canvas3D() {
   const embedPan = embedControls?.enablePan ?? false;
   const embedRotateX = embedControls?.enableRotateX ?? true;
   const embedRotateY = embedControls?.enableRotateY ?? true;
+
+  // Re-target OrbitControls to AABB center of selection (or all visible
+  // shapes when nothing selected) so camera orbits around the visual center
+  // instead of world origin.
+  useEffect(() => {
+    const controls = orbitControlsRef.current;
+    if (!controls) return;
+
+    const ids =
+      selectedShapeIds.length > 0
+        ? selectedShapeIds
+        : svgShapes.filter((s) => s.visible !== false).map((s) => s.id);
+
+    if (ids.length === 0) return;
+
+    const box = new THREE.Box3();
+    const tmp = new THREE.Box3();
+    for (const id of ids) {
+      const obj = shapeObjectRegistry.get(id);
+      if (!obj) continue;
+      obj.updateMatrixWorld(true);
+      tmp.setFromObject(obj);
+      if (!tmp.isEmpty()) box.union(tmp);
+    }
+
+    if (!box.isEmpty()) {
+      const center = box.getCenter(new THREE.Vector3());
+      controls.target.copy(center);
+      controls.update();
+    }
+  }, [selectedShapeIds, svgShapes]);
 
   useEffect(() => {
     // Expose a way for ProjectActions to get the current camera state
@@ -378,6 +420,15 @@ export function Canvas3D() {
           enableRotate={isEmbedMode ? embedRotate : !orbitControlsLock.rotate}
           zoomSpeed={0.4}
         />
+
+        {!isEmbedMode && (
+          <GizmoHelper alignment="top-right" margin={[60, 60]}>
+            <GizmoViewport
+              axisColors={["#ff3653", "#8adb00", "#2c8fff"]}
+              labelColor="#ffffff"
+            />
+          </GizmoHelper>
+        )}
       </Canvas>
       {/* Hide UI overlays if in embed mode */}
       {!isEmbedMode && (
