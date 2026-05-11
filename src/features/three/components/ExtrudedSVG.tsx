@@ -297,9 +297,18 @@ function ShapeMeshes({
   );
 }
 
+type ParsedSvgGroup = {
+  svgId: string;
+  shapes: { shape: THREE.Shape; colorHex: string }[];
+  center: THREE.Vector3;
+  scale: number;
+};
+
+const SVG_LAYOUT_SPACING = 40;
+
 export function ExtrudedSVG() {
   const dispatch = useAppDispatch();
-  const svgFile = useAppSelector((state) => state.scene.svgFile);
+  const importedSvgs = useAppSelector((state) => state.scene.importedSvgs);
   const svgShapes = useAppSelector((state) => state.scene.svgShapes);
   const extrusion = useAppSelector((state) => state.scene.extrusion);
   const globalMaterial = useAppSelector((state) => state.scene.globalMaterial);
@@ -366,76 +375,73 @@ export function ExtrudedSVG() {
   const rotationLock = useAppSelector((state) => state.scene.rotationLock);
   const viewMode = useAppSelector((state) => state.scene.viewMode);
 
-  // Preprocessed SVG (strokes converted to fills so Three.js can extrude them)
-  const [processedSvg, setProcessedSvg] = useState<string | null>(null);
+  const active3DSvgs = useMemo(
+    () => importedSvgs.filter((s) => s.is3D),
+    [importedSvgs],
+  );
+
+  // Preprocessed SVG strings keyed by svg id (strokes converted to fills)
+  const [processedById, setProcessedById] = useState<Record<string, string>>({});
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      if (!svgFile) {
-        if (!cancelled) setProcessedSvg(null);
-        return;
-      }
-      try {
-        const { svgString } = await preprocessSVGForThree(svgFile);
-        if (!cancelled) setProcessedSvg(svgString);
-      } catch {
-        if (!cancelled) setProcessedSvg(svgFile); // fallback to original
-      }
+      const result: Record<string, string> = {};
+      await Promise.all(
+        active3DSvgs.map(async (svg) => {
+          try {
+            const { svgString } = await preprocessSVGForThree(svg.svgText);
+            result[svg.id] = svgString;
+          } catch {
+            result[svg.id] = svg.svgText;
+          }
+        }),
+      );
+      if (!cancelled) setProcessedById(result);
     })();
     return () => {
       cancelled = true;
     };
-  }, [svgFile]);
+  }, [active3DSvgs]);
 
-  const { allShapeData, globalCenter, svgScale } = useMemo(() => {
-    const src = processedSvg ?? svgFile;
-    if (!src)
-      return {
-        allShapeData: [],
-        globalCenter: new THREE.Vector3(),
-        svgScale: 1,
-      };
-    try {
-      const loader = new SVGLoader();
-      const parsed = loader.parse(src);
-
-      const allShapeData: { shape: THREE.Shape; colorHex: string }[] = [];
-      const box = new THREE.Box3();
-
-      for (const path of parsed.paths) {
-        const shapes = SVGLoader.createShapes(path);
-        const pathColor = path.color?.getStyle() || "#cccccc";
-        for (const shape of shapes) {
-          allShapeData.push({ shape, colorHex: pathColor });
-
-          const geom = new THREE.ShapeGeometry(shape);
-          geom.scale(1, -1, 1);
-          geom.computeBoundingBox();
-          if (geom.boundingBox) box.union(geom.boundingBox);
+  const parsedSvgs = useMemo<ParsedSvgGroup[]>(() => {
+    return active3DSvgs.map((svg) => {
+      const src = processedById[svg.id] ?? svg.svgText;
+      try {
+        const loader = new SVGLoader();
+        const parsed = loader.parse(src);
+        const shapes: { shape: THREE.Shape; colorHex: string }[] = [];
+        const box = new THREE.Box3();
+        for (const path of parsed.paths) {
+          const subShapes = SVGLoader.createShapes(path);
+          const pathColor = path.color?.getStyle() || "#cccccc";
+          for (const shape of subShapes) {
+            shapes.push({ shape, colorHex: pathColor });
+            const geom = new THREE.ShapeGeometry(shape);
+            geom.scale(1, -1, 1);
+            geom.computeBoundingBox();
+            if (geom.boundingBox) box.union(geom.boundingBox);
+          }
         }
-      }
-
-      const center = new THREE.Vector3();
-      let scale = 1;
-      if (!box.isEmpty()) {
-        box.getCenter(center);
-        const size = box.getSize(new THREE.Vector3());
-        const maxSize = Math.max(size.x, size.y);
-        if (maxSize > 0) {
-          scale = 30 / maxSize;
+        const center = new THREE.Vector3();
+        let scale = 1;
+        if (!box.isEmpty()) {
+          box.getCenter(center);
+          const size = box.getSize(new THREE.Vector3());
+          const maxSize = Math.max(size.x, size.y);
+          if (maxSize > 0) scale = 30 / maxSize;
         }
+        return { svgId: svg.id, shapes, center, scale };
+      } catch {
+        return {
+          svgId: svg.id,
+          shapes: [],
+          center: new THREE.Vector3(),
+          scale: 1,
+        };
       }
-
-      return { allShapeData, globalCenter: center, svgScale: scale };
-    } catch {
-      return {
-        allShapeData: [],
-        globalCenter: new THREE.Vector3(),
-        svgScale: 1,
-      };
-    }
-  }, [processedSvg, svgFile]);
+    });
+  }, [active3DSvgs, processedById]);
 
   const [globalGroupObj, setGlobalGroupObj] = useState<THREE.Group | null>(
     null,
@@ -528,7 +534,15 @@ export function ExtrudedSVG() {
     }
   }, [selectedShapeIds, svgShapes, multiSelectGroupObj]);
 
-  if (!svgFile || svgShapes.length === 0 || allShapeData.length === 0)
+  const totalParsedShapes = parsedSvgs.reduce(
+    (sum, p) => sum + p.shapes.length,
+    0,
+  );
+  if (
+    parsedSvgs.length === 0 ||
+    svgShapes.length === 0 ||
+    totalParsedShapes === 0
+  )
     return null;
 
   const content = (
@@ -547,47 +561,63 @@ export function ExtrudedSVG() {
         }
       }}
     >
-      <group
-        scale={[svgScale, svgScale, svgScale]}
-        position={[-globalCenter.x * svgScale, -globalCenter.y * svgScale, 0]}
-      >
-        {allShapeData.map((data, i) => {
-          const shapeData = svgShapes[i];
-          const shapeId = shapeData?.id ?? `shape-${i}`;
-          if (shapeData?.visible === false) return null;
-          const isSelected = selectedShapeIds.includes(shapeId);
-          return (
-            <ShapeMeshes
-              key={shapeId}
-              shapeId={shapeId}
-              singleShape={data.shape}
-              colorHex={data.colorHex}
-              shapeData={shapeData}
-              globalExtrusion={extrusion}
-              globalMaterial={globalMaterial}
-              loadedTextures={loadedTextures}
-              isSelected={isSelected}
-              viewMode={viewMode}
-              transformMode={selectedShapeIds.length > 1 ? null : transformMode}
-              rotationLock={rotationLock}
-              onSelect={() => {
-                // Suppress click if we just finished a multi-drag to avoid
-                // collapsing the multi-selection to a single object.
-                if (wasMultiDraggingRef.current) return;
-                const event = window.event as MouseEvent;
-                const isAdditive = event?.ctrlKey || event?.metaKey;
-                dispatch(
-                  toggleShapeSelection({ id: shapeId, additive: isAdditive }),
+      {parsedSvgs.map((parsed, svgIdx) => {
+        const xOffset = svgIdx * SVG_LAYOUT_SPACING;
+        return (
+          <group key={parsed.svgId} position={[xOffset, 0, 0]}>
+            <group
+              scale={[parsed.scale, parsed.scale, parsed.scale]}
+              position={[
+                -parsed.center.x * parsed.scale,
+                -parsed.center.y * parsed.scale,
+                0,
+              ]}
+            >
+              {parsed.shapes.map((data, i) => {
+                const shapeId = `${parsed.svgId}-shape-${i}`;
+                const shapeData = svgShapes.find((s) => s.id === shapeId);
+                if (shapeData?.visible === false) return null;
+                const isSelected = selectedShapeIds.includes(shapeId);
+                return (
+                  <ShapeMeshes
+                    key={shapeId}
+                    shapeId={shapeId}
+                    singleShape={data.shape}
+                    colorHex={data.colorHex}
+                    shapeData={shapeData}
+                    globalExtrusion={extrusion}
+                    globalMaterial={globalMaterial}
+                    loadedTextures={loadedTextures}
+                    isSelected={isSelected}
+                    viewMode={viewMode}
+                    transformMode={
+                      selectedShapeIds.length > 1 ? null : transformMode
+                    }
+                    rotationLock={rotationLock}
+                    onSelect={() => {
+                      if (wasMultiDraggingRef.current) return;
+                      const event = window.event as MouseEvent;
+                      const isAdditive = event?.ctrlKey || event?.metaKey;
+                      dispatch(
+                        toggleShapeSelection({
+                          id: shapeId,
+                          additive: isAdditive,
+                        }),
+                      );
+                    }}
+                    onTransformChange={(transform) => {
+                      dispatch(
+                        updateShapeTransform({ id: shapeId, ...transform }),
+                      );
+                    }}
+                  />
                 );
-              }}
-              onTransformChange={(transform) => {
-                dispatch(updateShapeTransform({ id: shapeId, ...transform }));
-              }}
-            />
-          );
-        })}
-        <group ref={setMultiSelectGroupObj} />
-      </group>
+              })}
+            </group>
+          </group>
+        );
+      })}
+      <group ref={setMultiSelectGroupObj} />
     </group>
   );
 

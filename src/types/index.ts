@@ -49,6 +49,14 @@ export type SvgShape = {
   scale?: [number, number, number];
 };
 
+export type ImportedSvg = {
+  id: string;
+  name: string;
+  svgText: string;
+  is3D: boolean;
+  shapes: SvgShape[];
+};
+
 export type LightType = "ambient" | "directional" | "point" | "spot";
 
 export type Light = {
@@ -217,6 +225,8 @@ export type TimelineState = {
 export type AppState = {
   svgShapes: SvgShape[];
   svgFile: string | null;
+  importedSvgs: ImportedSvg[];
+  editingSvgId: string | null;
   extrusion: ExtrusionSettings;
   globalMaterial: MaterialSettings;
   globalTexture: TextureSettings;

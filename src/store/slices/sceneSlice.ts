@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   AppState,
   SvgShape,
+  ImportedSvg,
   Light,
   Background,
   ExtrusionSettings,
@@ -39,6 +40,8 @@ export type HistorySnapshot = Pick<
 const initialState: AppState = {
   svgShapes: [],
   svgFile: null,
+  importedSvgs: [],
+  editingSvgId: null,
   extrusion: {
     depth: 10,
     curveSegments: 8,
@@ -233,6 +236,7 @@ const sceneSlice = createSlice({
     },
     setEditMode: (state, action: PayloadAction<boolean>) => {
       state.isEditMode = action.payload;
+      if (!action.payload) state.editingSvgId = null;
     },
     setSelectedShapeId: (state, action: PayloadAction<string | null>) => {
       state.selectedShapeId = action.payload;
@@ -841,6 +845,98 @@ const sceneSlice = createSlice({
     ) => {
       state.collapsedSections[action.payload.id] = action.payload.collapsed;
     },
+    addImportedSvg: (state, action: PayloadAction<ImportedSvg>) => {
+      state.importedSvgs.push(action.payload);
+    },
+    convertImportedSvgTo3D: (state, action: PayloadAction<string>) => {
+      const svg = state.importedSvgs.find((s) => s.id === action.payload);
+      if (!svg || svg.is3D) return;
+      svg.is3D = true;
+      const existingIds = new Set(state.svgShapes.map((s) => s.id));
+      const newShapes = svg.shapes
+        .filter((s) => !existingIds.has(s.id))
+        .map((s) => ({ ...s }));
+      state.svgShapes.push(...newShapes);
+      state.is3DMode = true;
+      state.isEditMode = false;
+    },
+    deleteImportedSvg: (state, action: PayloadAction<string>) => {
+      const svg = state.importedSvgs.find((s) => s.id === action.payload);
+      if (!svg) return;
+      const wasEditing = state.isEditMode && state.svgFile === svg.svgText;
+      if (svg.is3D) {
+        const shapeIds = new Set(svg.shapes.map((s) => s.id));
+        state.svgShapes = state.svgShapes.filter((s) => !shapeIds.has(s.id));
+        state.selectedShapeIds = state.selectedShapeIds.filter(
+          (id) => !shapeIds.has(id),
+        );
+        if (state.selectedShapeId && shapeIds.has(state.selectedShapeId)) {
+          state.selectedShapeId = null;
+          state.transformMode = null;
+        }
+        state.timeline.tracks = state.timeline.tracks.filter(
+          (t) => !shapeIds.has(t.shapeId),
+        );
+        state.groups.forEach((g) => {
+          g.shapeIds = g.shapeIds.filter((id) => !shapeIds.has(id));
+        });
+        state.groups = state.groups.filter((g) => g.shapeIds.length > 0);
+      }
+      state.importedSvgs = state.importedSvgs.filter(
+        (s) => s.id !== action.payload,
+      );
+      if (wasEditing) {
+        state.svgFile = null;
+        state.isEditMode = false;
+      }
+      const stillHas3D = state.importedSvgs.some((s) => s.is3D);
+      if (!stillHas3D && !state.isEditMode) {
+        state.is3DMode = false;
+      }
+    },
+    setEditImportedSvg: (state, action: PayloadAction<string>) => {
+      const svg = state.importedSvgs.find((s) => s.id === action.payload);
+      if (!svg || svg.is3D) return;
+      state.svgFile = svg.svgText;
+      state.isEditMode = true;
+      state.is3DMode = false;
+      state.editingSvgId = svg.id;
+    },
+    saveEditedSvg: (
+      state,
+      action: PayloadAction<{ svgText: string; shapes: SvgShape[] }>,
+    ) => {
+      const editingId = state.editingSvgId;
+      if (!editingId) return;
+      const svg = state.importedSvgs.find((s) => s.id === editingId);
+      if (!svg) return;
+      svg.svgText = action.payload.svgText;
+      svg.shapes = action.payload.shapes.map((s) => ({ ...s }));
+      state.svgFile = action.payload.svgText;
+      state.isEditMode = false;
+      state.editingSvgId = null;
+    },
+    commitEditedSvgTo3D: (
+      state,
+      action: PayloadAction<{ svgText: string; shapes: SvgShape[] }>,
+    ) => {
+      const editingId = state.editingSvgId;
+      if (!editingId) return;
+      const svg = state.importedSvgs.find((s) => s.id === editingId);
+      if (!svg) return;
+      svg.svgText = action.payload.svgText;
+      svg.shapes = action.payload.shapes.map((s) => ({ ...s }));
+      svg.is3D = true;
+      const existingIds = new Set(state.svgShapes.map((s) => s.id));
+      const newShapes = svg.shapes
+        .filter((s) => !existingIds.has(s.id))
+        .map((s) => ({ ...s }));
+      state.svgShapes.push(...newShapes);
+      state.is3DMode = true;
+      state.isEditMode = false;
+      state.editingSvgId = null;
+      state.svgFile = action.payload.svgText;
+    },
   },
 });
 
@@ -932,6 +1028,12 @@ export const {
   renameSavedAnimation,
   toggleSectionCollapsed,
   setSectionCollapsed,
+  addImportedSvg,
+  convertImportedSvgTo3D,
+  deleteImportedSvg,
+  setEditImportedSvg,
+  commitEditedSvgTo3D,
+  saveEditedSvg,
 } = sceneSlice.actions;
 
 // --- Selectors ---

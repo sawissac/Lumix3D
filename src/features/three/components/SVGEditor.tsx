@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setSvgFile, setSvgShapes, setEditMode, set3DMode, setSvgSelection, clearSvgSelection, setSvgFocusIndex } from '@/store/slices/sceneSlice';
+import { setSvgFile, setSvgShapes, setEditMode, set3DMode, setSvgSelection, clearSvgSelection, setSvgFocusIndex, commitEditedSvgTo3D, saveEditedSvg } from '@/store/slices/sceneSlice';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { SvgShape } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -36,6 +36,7 @@ export function SVGEditor() {
   const svgFile = useAppSelector((state) => state.scene.svgFile);
   const svgFocusIndex = useAppSelector((state) => state.scene.svgFocusIndex);
   const svgSelection = useAppSelector((state) => state.scene.svgSelection);
+  const editingSvgId = useAppSelector((state) => state.scene.editingSvgId);
 
   const readSelection = useCallback((canvas: FabricCanvas) => {
     const objects = canvas.getActiveObjects();
@@ -182,26 +183,39 @@ export function SVGEditor() {
     fabricRef.current.backgroundColor = '';
     const svgOutput = fabricRef.current.toSVG();
     fabricRef.current.backgroundColor = prevBg as string;
-    // Store the raw Fabric SVG for re-editing in the 2D canvas
-    dispatch(setSvgFile(svgOutput));
 
-    // Parse shapes from raw SVG for the store
+    const editingId = editingSvgId;
+    let shapes: SvgShape[] = [];
     try {
       const loader = new SVGLoader();
       const svgData = loader.parse(svgOutput);
-      const shapes: SvgShape[] = svgData.paths.map((path, i) => ({
-        id: `shape-${i}`,
-        path: svgOutput,
-        fill: path.color?.getStyle() || '#cccccc',
-        stroke: path.userData?.style?.stroke || undefined,
-        opacity: 1,
-      }));
-      dispatch(setSvgShapes(shapes));
+      let shapeCount = 0;
+      svgData.paths.forEach((path) => {
+        const subShapes = SVGLoader.createShapes(path);
+        subShapes.forEach(() => {
+          shapes.push({
+            id: editingId
+              ? `${editingId}-shape-${shapeCount}`
+              : `shape-${shapeCount}`,
+            path: svgOutput,
+            fill: path.color?.getStyle() || '#cccccc',
+            stroke: path.userData?.style?.stroke || undefined,
+            opacity: 1,
+          });
+          shapeCount++;
+        });
+      });
     } catch {
       // shapes will be re-parsed on 3D convert
     }
 
-    dispatch(setEditMode(false));
+    if (editingId) {
+      dispatch(saveEditedSvg({ svgText: svgOutput, shapes }));
+    } else {
+      dispatch(setSvgFile(svgOutput));
+      dispatch(setSvgShapes(shapes));
+      dispatch(setEditMode(false));
+    }
   };
 
   const handleCancel = () => dispatch(setEditMode(false));
@@ -213,10 +227,6 @@ export function SVGEditor() {
     const svgOutput = fabricRef.current.toSVG();
     fabricRef.current.backgroundColor = prevBg as string;
 
-    // Store raw SVG (Fabric can re-edit it later)
-    dispatch(setSvgFile(svgOutput));
-
-    // Preprocess: convert strokes → fills so Three.js extracts correct geometry
     let processedSvg = svgOutput;
     try {
       const result = await preprocessSVGForThree(svgOutput);
@@ -225,24 +235,39 @@ export function SVGEditor() {
       // fall back to raw if preprocessing fails
     }
 
-    // Extract shape colour metadata from the preprocessed SVG
+    const editingId = editingSvgId;
+    let shapes: SvgShape[] = [];
     try {
       const loader = new SVGLoader();
       const svgData = loader.parse(processedSvg);
-      const shapes: SvgShape[] = svgData.paths.map((path, i) => ({
-        id: `shape-${i}`,
-        path: processedSvg,
-        fill: path.color?.getStyle() || '#cccccc',
-        stroke: path.userData?.style?.stroke || undefined,
-        opacity: 1,
-      }));
-      dispatch(setSvgShapes(shapes));
+      let shapeCount = 0;
+      svgData.paths.forEach((path) => {
+        const subShapes = SVGLoader.createShapes(path);
+        subShapes.forEach(() => {
+          shapes.push({
+            id: editingId
+              ? `${editingId}-shape-${shapeCount}`
+              : `shape-${shapeCount}`,
+            path: svgOutput,
+            fill: path.color?.getStyle() || '#cccccc',
+            stroke: path.userData?.style?.stroke || undefined,
+            opacity: 1,
+          });
+          shapeCount++;
+        });
+      });
     } catch {
       // shapes will be re-parsed on 3D convert
     }
 
-    dispatch(setEditMode(false));
-    dispatch(set3DMode(true));
+    if (editingId) {
+      dispatch(commitEditedSvgTo3D({ svgText: svgOutput, shapes }));
+    } else {
+      dispatch(setSvgFile(svgOutput));
+      dispatch(setSvgShapes(shapes));
+      dispatch(setEditMode(false));
+      dispatch(set3DMode(true));
+    }
   };
 
   const handleDeleteSelected = () => {

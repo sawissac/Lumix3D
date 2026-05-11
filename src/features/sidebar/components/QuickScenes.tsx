@@ -4,24 +4,22 @@ import { Zap, Star, MessageCircle, PawPrint } from "lucide-react";
 import { CollapsibleCard } from "./CollapsibleCard";
 import { useAppDispatch } from "@/store/hooks";
 import {
-  setSvgFile,
-  setSvgShapes,
+  addImportedSvg,
+  convertImportedSvgTo3D,
   setExtrusionSettings,
   setGlobalMaterial,
   setGlobalTransform,
   setBackground,
   setLights,
   setLightingPreset,
-  set3DMode,
   setShowGrid,
   setSelectedShapeId,
   clearSvgSelection,
   setSvgFocusIndex,
-  setEditMode,
 } from "@/store/slices/sceneSlice";
 import { SIDEBAR_DEMO_SCENES, DemoScene } from "../constants/demoScenes";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
-import { SvgShape } from "@/types";
+import { ImportedSvg, SvgShape } from "@/types";
 
 const SCENE_ICONS: Record<
   string,
@@ -33,20 +31,21 @@ const SCENE_ICONS: Record<
   paw: PawPrint,
 };
 
-function loadDemoScene(scene: DemoScene) {
+function buildDemoSvgShapes(svgId: string, svgText: string): SvgShape[] {
   const loader = new SVGLoader();
-  const svgData = loader.parse(scene.svgContent);
+  const svgData = loader.parse(svgText);
   let count = 0;
   const shapes: SvgShape[] = [];
   svgData.paths.forEach((path) => {
     SVGLoader.createShapes(path).forEach(() => {
       shapes.push({
-        id: `shape-${count++}`,
-        path: scene.svgContent,
+        id: `${svgId}-shape-${count}`,
+        path: svgText,
         fill: path.color?.getStyle() || "#cccccc",
         stroke: path.userData?.style?.stroke || undefined,
         opacity: 1,
       });
+      count++;
     });
   });
   return shapes;
@@ -56,11 +55,18 @@ export function QuickScenes() {
   const dispatch = useAppDispatch();
 
   const handleLoad = (scene: DemoScene) => {
-    const shapes = loadDemoScene(scene);
+    const svgId = `svg-demo-${scene.id}-${Date.now()}`;
+    const shapes = buildDemoSvgShapes(svgId, scene.svgContent);
+    const imported: ImportedSvg = {
+      id: svgId,
+      name: scene.name,
+      svgText: scene.svgContent,
+      is3D: false,
+      shapes,
+    };
 
-    dispatch(setEditMode(false));
-    dispatch(setSvgFile(scene.svgContent));
-    dispatch(setSvgShapes(shapes));
+    dispatch(addImportedSvg(imported));
+    dispatch(convertImportedSvgTo3D(svgId));
     dispatch(setExtrusionSettings(scene.extrusion));
     dispatch(setGlobalMaterial(scene.material));
     dispatch(
@@ -77,7 +83,6 @@ export function QuickScenes() {
     dispatch(setSelectedShapeId(null));
     dispatch(clearSvgSelection());
     dispatch(setSvgFocusIndex(null));
-    dispatch(set3DMode(true));
   };
 
   return (

@@ -66,6 +66,81 @@ function CanvasRefsCapture() {
   return null;
 }
 
+// Fits the camera to all visible shapes whenever a new SVG file is loaded.
+// Uses useFrame to poll the registry because shape objects are registered
+// asynchronously after the Redux state update triggers a re-render.
+function FitCameraOnLoad() {
+  const { camera, controls, scene, invalidate } = useThree();
+  const active3DCount = useAppSelector(
+    (state) => state.scene.importedSvgs.filter((s) => s.is3D).length,
+  );
+  const svgShapes = useAppSelector((state) => state.scene.svgShapes);
+
+  const pendingFitRef = useRef(false);
+  const prevCountRef = useRef(0);
+
+  useEffect(() => {
+    if (active3DCount > 0 && active3DCount !== prevCountRef.current) {
+      pendingFitRef.current = true;
+    }
+    prevCountRef.current = active3DCount;
+  }, [active3DCount]);
+
+  useFrame(() => {
+    if (!pendingFitRef.current || !controls) return;
+
+    const ids = svgShapes
+      .filter((s) => s.visible !== false)
+      .map((s) => s.id);
+    if (ids.length === 0) return;
+
+    const objects = ids
+      .map((id) => shapeObjectRegistry.get(id))
+      .filter((obj): obj is THREE.Object3D => obj !== undefined);
+    if (objects.length === 0) return;
+
+    pendingFitRef.current = false;
+
+    // Force-compute all world matrices before reading bounds — objects were
+    // just mounted so renderer.render() hasn't run for them yet (matrixWorld
+    // would still be identity, giving wrong bounds and placing camera inside).
+    scene.updateMatrixWorld(true);
+
+    const box = new THREE.Box3();
+    const tmp = new THREE.Box3();
+    for (const obj of objects) {
+      tmp.setFromObject(obj);
+      if (!tmp.isEmpty()) box.union(tmp);
+    }
+    if (box.isEmpty()) return;
+
+    const center = box.getCenter(new THREE.Vector3());
+    const sphere = new THREE.Sphere();
+    box.getBoundingSphere(sphere);
+    const fov = (camera as THREE.PerspectiveCamera).fov ?? 50;
+    const distance =
+      (sphere.radius / Math.tan(((fov / 2) * Math.PI) / 180)) * 1.8;
+
+    // 45° azimuth, 45° elevation — clear isometric-ish view
+    const phi = Math.PI / 4;
+    const theta = Math.PI / 4;
+    camera.position.set(
+      center.x + distance * Math.sin(phi) * Math.sin(theta),
+      center.y + distance * Math.cos(phi),
+      center.z + distance * Math.sin(phi) * Math.cos(theta),
+    );
+
+    (controls as any).target.copy(center);
+    // saveState + reset clears accumulated sphericalDelta so no leftover
+    // orbit momentum carries into the new view (avoids double-update spin).
+    (controls as any).saveState();
+    (controls as any).reset();
+    invalidate();
+  });
+
+  return null;
+}
+
 // Handles camera restoration and locks inside the R3F context
 function CameraController({
   controlsRef,
@@ -371,6 +446,7 @@ export function Canvas3D() {
           embedRotateX={embedRotateX}
           embedRotateY={embedRotateY}
         />
+        <FitCameraOnLoad />
         <TimelinePlayer />
 
         {showGrid && (

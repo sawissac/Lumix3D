@@ -1,23 +1,47 @@
 "use client";
 
 import { useRef } from "react";
-import { Upload, Sparkles, PencilIcon, Waypoints } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Upload, Sparkles, Waypoints, Trash2, Lock, FileCode2 } from "lucide-react";
 import { CollapsibleCard } from "./CollapsibleCard";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  setSvgFile,
-  setSvgShapes,
-  set3DMode,
-  setEditMode,
+  addImportedSvg,
+  convertImportedSvgTo3D,
+  deleteImportedSvg,
+  setEditImportedSvg,
 } from "@/store/slices/sceneSlice";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
-import { SvgShape } from "@/types";
+import { ImportedSvg, SvgShape } from "@/types";
+
+function parseSvgShapes(svgId: string, svgText: string): SvgShape[] {
+  try {
+    const loader = new SVGLoader();
+    const svgData = loader.parse(svgText);
+    let shapeCount = 0;
+    const shapes: SvgShape[] = [];
+    svgData.paths.forEach((path) => {
+      const subShapes = SVGLoader.createShapes(path);
+      subShapes.forEach(() => {
+        shapes.push({
+          id: `${svgId}-shape-${shapeCount}`,
+          path: svgText,
+          fill: path.color?.getStyle() || "#cccccc",
+          stroke: path.userData?.style?.stroke || undefined,
+          opacity: 1,
+        });
+        shapeCount++;
+      });
+    });
+    return shapes;
+  } catch {
+    return [];
+  }
+}
 
 export function SVGUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
-  const svgFile = useAppSelector((state) => state.scene.svgFile);
+  const importedSvgs = useAppSelector((state) => state.scene.importedSvgs);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -26,103 +50,90 @@ export function SVGUploader() {
     const reader = new FileReader();
     reader.onload = (e) => {
       const svgText = e.target?.result as string;
-      dispatch(setSvgFile(svgText));
-      parseSVG(svgText);
+      const id = `svg-${Date.now()}`;
+      const shapes = parseSvgShapes(id, svgText);
+      const imported: ImportedSvg = {
+        id,
+        name: file.name,
+        svgText,
+        is3D: false,
+        shapes,
+      };
+      dispatch(addImportedSvg(imported));
     };
     reader.readAsText(file);
-  };
-
-  const parseSVG = (svgText: string) => {
-    try {
-      const loader = new SVGLoader();
-      const svgData = loader.parse(svgText);
-
-      let shapeCount = 0;
-      const shapes: SvgShape[] = [];
-
-      svgData.paths.forEach((path) => {
-        const subShapes = SVGLoader.createShapes(path);
-        subShapes.forEach(() => {
-          shapes.push({
-            id: `shape-${shapeCount}`,
-            path: svgText,
-            fill: path.color?.getStyle() || "#cccccc",
-            stroke: path.userData?.style?.stroke || undefined,
-            opacity: 1,
-          });
-          shapeCount++;
-        });
-      });
-
-      dispatch(setSvgShapes(shapes));
-    } catch (error) {
-      console.error("Error parsing SVG:", error);
-    }
-  };
-
-  const handleConvertTo3D = () => {
-    if (svgFile) {
-      dispatch(set3DMode(true));
-    }
-  };
-
-  const handleEditSVG = () => {
-    dispatch(set3DMode(false));
-    dispatch(setEditMode(true));
+    event.target.value = "";
   };
 
   return (
     <CollapsibleCard
       id="svg-uploader"
-      cardClassName="overflow-hidden border-indigo-500/20 bg-indigo-500/5"
       title="SVG Import"
-      titleClassName="text-indigo-400"
-      description="Upload an SVG file to get started"
-      contentClassName="space-y-3 pt-3"
+      description="Upload SVG files"
+      contentClassName="space-y-2 pt-2"
     >
-        <div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".svg"
-            onChange={handleFileUpload}
-            className="hidden"
-          />
-          <div
-            onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-indigo-500/30 hover:border-indigo-400 hover:bg-indigo-500/10 transition-all rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer group"
-          >
-            <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <Upload className="h-5 w-5 text-indigo-400" />
-            </div>
-            <span className="text-xs font-medium text-indigo-200">
-              {svgFile ? "Click to change SVG" : "Click to upload SVG"}
-            </span>
-            <span className="text-[10px] text-muted-foreground mt-0.5">
-              SVG files only
-            </span>
-          </div>
-        </div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".svg"
+        onChange={handleFileUpload}
+        className="hidden"
+      />
 
-        {svgFile && (
-          <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
-            <Button
-              onClick={handleConvertTo3D}
-              className="w-full bg-linear-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 border-0 shadow-lg shadow-indigo-500/25 text-white font-semibold"
-              >
-              <Sparkles className="h-4 w-4" />
-              Convert to 3D
-            </Button>
-            <Button
-              onClick={handleEditSVG}
-              className="w-full bg-white/5 hover:bg-white/10 text-white border-white/10"
-              variant="outline"
+      <button
+        onClick={() => fileInputRef.current?.click()}
+        className="w-full h-8 text-[11px] text-white/70 hover:text-white border-b border-white/10 hover:border-white/30 flex items-center justify-center gap-1.5 transition-colors"
+      >
+        <Upload className="h-3 w-3" />
+        Import SVG
+      </button>
+
+      {importedSvgs.length > 0 && (
+        <div className="flex flex-col">
+          {importedSvgs.map((svg) => (
+            <div
+              key={svg.id}
+              className={`px-1 py-1.5 flex items-center gap-1.5 border-b border-white/5 ${
+                svg.is3D ? "text-indigo-300" : "text-white/80"
+              }`}
             >
-              <Waypoints className="h-4 w-4" />
-              Edit SVG 2D
-            </Button>
-          </div>
-        )}
+              <FileCode2 className="h-3 w-3 shrink-0 opacity-60" />
+              <span
+                className="text-[11px] truncate flex-1 min-w-0"
+                title={svg.name}
+              >
+                {svg.name}
+              </span>
+
+              <button
+                onClick={() => dispatch(convertImportedSvgTo3D(svg.id))}
+                disabled={svg.is3D}
+                className="h-5 w-5 flex items-center justify-center text-white/60 hover:text-indigo-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                title={svg.is3D ? "Active in 3D" : "Convert to 3D"}
+              >
+                <Sparkles className="h-3 w-3" />
+              </button>
+
+              <button
+                onClick={() => dispatch(setEditImportedSvg(svg.id))}
+                disabled={svg.is3D}
+                className="h-5 w-5 flex items-center justify-center text-white/60 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                title={svg.is3D ? "Locked - in 3D mode" : "Edit SVG"}
+              >
+                {svg.is3D ? <Lock className="h-3 w-3" /> : <Waypoints className="h-3 w-3" />}
+              </button>
+
+              <button
+                onClick={() => dispatch(deleteImportedSvg(svg.id))}
+                className="h-5 w-5 flex items-center justify-center text-white/60 hover:text-red-400 transition-colors"
+                title="Delete SVG"
+              >
+                <Trash2 className="h-3 w-3" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </CollapsibleCard>
   );
 }
