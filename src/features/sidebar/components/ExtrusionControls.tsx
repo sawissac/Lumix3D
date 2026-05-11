@@ -3,6 +3,7 @@
 import { CollapsibleCard } from "./CollapsibleCard";
 import { Label } from "@/components/ui/label";
 import { SliderWithInput } from "@/components/ui/slider-with-input";
+import { Switch } from "@/components/ui/switch";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setExtrusionSettings } from "@/store/slices/sceneSlice";
 
@@ -58,41 +59,63 @@ export function ExtrusionControls() {
           />
         </Field>
 
-        <Field label="Bevel Thickness" hint="Depth of the bevel along the extrusion side">
-          <SliderWithInput
-            value={extrusion.bevelThickness}
-            onChange={(v) => dispatch(setExtrusionSettings({ bevelThickness: v }))}
-            min={0}
-            max={5}
-            step={0.1}
-            sliderClassName="**:[[role=slider]]:bg-purple-400 **:[[role=slider]]:border-purple-400"
-            inputClassName="focus-visible:ring-purple-500/50 text-purple-300"
+        <div className="flex items-center justify-between pt-1">
+          <div>
+            <Label htmlFor="enable-bevel" className="text-white/80 text-xs">
+              Enable Bevel
+            </Label>
+            <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">
+              Toggle rounded edges on extrusion
+            </p>
+          </div>
+          <Switch
+            id="enable-bevel"
+            checked={extrusion.bevelEnabled}
+            onCheckedChange={(checked: boolean) =>
+              dispatch(setExtrusionSettings({ bevelEnabled: checked }))
+            }
           />
-        </Field>
+        </div>
 
-        <Field label="Bevel Size" hint="Outward spread of the bevel from shape edges">
-          <SliderWithInput
-            value={extrusion.bevelSize}
-            onChange={(v) => dispatch(setExtrusionSettings({ bevelSize: v }))}
-            min={0}
-            max={3}
-            step={0.1}
-            sliderClassName="**:[[role=slider]]:bg-purple-400 **:[[role=slider]]:border-purple-400"
-            inputClassName="focus-visible:ring-purple-500/50 text-purple-300"
-          />
-        </Field>
+        {extrusion.bevelEnabled && (
+          <div className="space-y-4 pl-2 border-l-2 border-white/10">
+            <Field label="Bevel Thickness" hint="Depth of the bevel along the extrusion side">
+              <SliderWithInput
+                value={extrusion.bevelThickness}
+                onChange={(v) => dispatch(setExtrusionSettings({ bevelThickness: v }))}
+                min={0}
+                max={5}
+                step={0.1}
+                sliderClassName="**:[[role=slider]]:bg-purple-400 **:[[role=slider]]:border-purple-400"
+                inputClassName="focus-visible:ring-purple-500/50 text-purple-300"
+              />
+            </Field>
 
-        <Field label="Bevel Segments" hint="Number of steps in the bevel curve — higher is smoother">
-          <SliderWithInput
-            value={extrusion.bevelSegments}
-            onChange={(v) => dispatch(setExtrusionSettings({ bevelSegments: v }))}
-            min={1}
-            max={8}
-            step={1}
-            sliderClassName="**:[[role=slider]]:bg-purple-400 **:[[role=slider]]:border-purple-400"
-            inputClassName="focus-visible:ring-purple-500/50 text-purple-300"
-          />
-        </Field>
+            <Field label="Bevel Size" hint="Outward spread of the bevel from shape edges">
+              <SliderWithInput
+                value={extrusion.bevelSize}
+                onChange={(v) => dispatch(setExtrusionSettings({ bevelSize: v }))}
+                min={0}
+                max={3}
+                step={0.1}
+                sliderClassName="**:[[role=slider]]:bg-purple-400 **:[[role=slider]]:border-purple-400"
+                inputClassName="focus-visible:ring-purple-500/50 text-purple-300"
+              />
+            </Field>
+
+            <Field label="Bevel Segments" hint="Number of steps in the bevel curve — higher is smoother">
+              <SliderWithInput
+                value={extrusion.bevelSegments}
+                onChange={(v) => dispatch(setExtrusionSettings({ bevelSegments: v }))}
+                min={1}
+                max={8}
+                step={1}
+                sliderClassName="**:[[role=slider]]:bg-purple-400 **:[[role=slider]]:border-purple-400"
+                inputClassName="focus-visible:ring-purple-500/50 text-purple-300"
+              />
+            </Field>
+          </div>
+        )}
     </CollapsibleCard>
   );
 }

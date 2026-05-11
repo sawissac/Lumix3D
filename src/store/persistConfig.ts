@@ -9,6 +9,7 @@ const persistConfig = {
   whitelist: [
     "svgShapes",
     "svgFile",
+    "importedSvgs",
     "extrusion",
     "globalMaterial",
     "globalTransform",
@@ -20,10 +21,18 @@ const persistConfig = {
     "showGrid",
     "groups",
     "is3DMode",
+    "viewMode",
     "globalTexture",
     "timeline",
     "collapsedSections",
     "savedAnimations",
+    "embedRotate",
+    "embedZoom",
+    "embedPan",
+    "embedRotateX",
+    "embedRotateY",
+    "embedRotateZ",
+    "codeType",
   ],
 };
 

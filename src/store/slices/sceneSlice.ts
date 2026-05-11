@@ -352,6 +352,38 @@ const sceneSlice = createSlice({
     ) => {
       state.globalTexture = { ...state.globalTexture, [action.payload]: null };
     },
+    updateShapesTexture: (
+      state,
+      action: PayloadAction<{
+        ids: string[];
+        texture: Partial<TextureSettings>;
+      }>,
+    ) => {
+      state.svgShapes.forEach((shape) => {
+        if (action.payload.ids.includes(shape.id)) {
+          shape.texture = { ...shape.texture, ...action.payload.texture };
+        }
+      });
+    },
+    clearShapesTextureChannel: (
+      state,
+      action: PayloadAction<{
+        ids: string[];
+        key: keyof TextureSettings;
+      }>,
+    ) => {
+      state.svgShapes.forEach((shape) => {
+        if (!action.payload.ids.includes(shape.id) || !shape.texture) return;
+        shape.texture = { ...shape.texture, [action.payload.key]: null };
+      });
+    },
+    resetShapesTexture: (state, action: PayloadAction<string[]>) => {
+      state.svgShapes.forEach((shape) => {
+        if (action.payload.includes(shape.id)) {
+          delete shape.texture;
+        }
+      });
+    },
     updateShapeMaterial: (
       state,
       action: PayloadAction<{
@@ -999,6 +1031,9 @@ export const {
   setCameraState,
   setGlobalTexture,
   clearTextureChannel,
+  updateShapesTexture,
+  clearShapesTextureChannel,
+  resetShapesTexture,
   restoreSnapshot,
   recordSnapshot,
   undo,

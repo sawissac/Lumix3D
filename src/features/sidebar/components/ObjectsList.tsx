@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useState } from "react";
+import { Fragment, memo, useCallback } from "react";
 import {
   Trash2,
   Eye,
@@ -19,6 +19,7 @@ import {
   selectGroup,
   toggleGroupVisibility,
   deleteGroup,
+  toggleSectionCollapsed,
 } from "@/store/slices/sceneSlice";
 import { SvgShape, ObjectGroup } from "@/types";
 
@@ -192,8 +193,7 @@ export function ObjectsList() {
   const selectedShapeIds = useAppSelector((s) => s.scene.selectedShapeIds);
   const svgSelection = useAppSelector((s) => s.scene.svgSelection);
   const groups = useAppSelector((s) => s.scene.groups);
-
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const collapsedSections = useAppSelector((s) => s.scene.collapsedSections);
 
   const visibleShapes = svgShapes.filter((s) => s.visible !== false);
 
@@ -245,9 +245,12 @@ export function ObjectsList() {
     [dispatch],
   );
 
-  const handleToggleExpand = useCallback((id: string) => {
-    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
-  }, []);
+  const handleToggleExpand = useCallback(
+    (id: string) => {
+      dispatch(toggleSectionCollapsed(`group-expand-${id}`));
+    },
+    [dispatch],
+  );
 
   const isShapeSelected = (id: string, index: number): boolean => {
     if (mode === "3d") {
@@ -293,9 +296,9 @@ export function ObjectsList() {
       >
         {showGroups &&
           groups.map((group) => {
-            const isOpen = expanded[group.id] ?? true;
+            const isOpen = !collapsedSections[`group-expand-${group.id}`];
             return (
-              <li key={group.id} className="contents">
+              <Fragment key={group.id}>
                 <GroupRow
                   group={group}
                   expanded={isOpen}
@@ -331,7 +334,7 @@ export function ObjectsList() {
                       />
                     );
                   })}
-              </li>
+              </Fragment>
             );
           })}
         {ungrouped.map((shape) => {

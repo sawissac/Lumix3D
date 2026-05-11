@@ -1,15 +1,25 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { CollapsibleCard } from "./CollapsibleCard";
 import { Label } from "@/components/ui/label";
 import { SliderWithInput } from "@/components/ui/slider-with-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
+  addLight,
   updateLight,
+  toggleLight,
   removeLight,
   setLights,
   setLightingPreset,
@@ -18,7 +28,7 @@ import {
   SIDEBAR_PRESET_DESCRIPTIONS,
   SIDEBAR_LIGHTING_PRESETS,
 } from "../constants/lightingPresets";
-import { LightingPreset } from "@/types";
+import { Light, LightingPreset, LightType } from "@/types";
 
 export function LightingControls() {
   const dispatch = useAppDispatch();
@@ -34,6 +44,19 @@ export function LightingControls() {
     if (presetLights.length > 0) {
       dispatch(setLights(presetLights));
     }
+  };
+
+  const handleAddLight = (type: LightType) => {
+    const newLight: Light = {
+      id: `${type}-${Date.now()}`,
+      type,
+      intensity: type === "ambient" ? 0.5 : 1,
+      color: "#ffffff",
+      position: type === "ambient" ? [0, 0, 0] : [5, 5, 5],
+      enabled: true,
+    };
+    dispatch(addLight(newLight));
+    dispatch(setLightingPreset("custom"));
   };
 
   return (
@@ -90,8 +113,30 @@ export function LightingControls() {
 
           <TabsContent
             value="custom"
-            className="space-y-6 mt-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-2"
+            className="space-y-4 mt-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-2"
           >
+            <div className="flex items-center gap-2">
+              <Select onValueChange={(v) => handleAddLight(v as LightType)}>
+                <SelectTrigger className="flex-1 bg-black/20 border-white/10 text-amber-200/80 hover:bg-white/5 h-9 text-xs">
+                  <SelectValue placeholder="Add light…" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ambient">Ambient</SelectItem>
+                  <SelectItem value="directional">Directional</SelectItem>
+                  <SelectItem value="point">Point</SelectItem>
+                  <SelectItem value="spot">Spot</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                size="icon"
+                variant="outline"
+                onClick={() => handleAddLight("directional")}
+                title="Add directional light"
+                className="h-9 w-9 bg-amber-500/15 border-amber-500/40 text-amber-300 hover:bg-amber-500/25"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
             {lights.map((light, index) => (
               <div
                 key={light.id}
@@ -99,19 +144,26 @@ export function LightingControls() {
               >
                 <div className="flex items-center justify-between">
                   <Label className="capitalize text-amber-200/90 font-medium flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]"></span>
+                    <span className={`w-2 h-2 rounded-full ${light.enabled ? "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]" : "bg-white/20"}`}></span>
                     {light.type} Light #{index + 1}
                   </Label>
-                  {lights.length > 1 && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7 text-white/40 hover:text-red-400 hover:bg-red-400/10 absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={() => dispatch(removeLight(light.id))}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  )}
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      size="sm"
+                      checked={light.enabled}
+                      onCheckedChange={() => dispatch(toggleLight(light.id))}
+                    />
+                    {lights.length > 1 && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 text-white/40 hover:text-red-400 hover:bg-red-400/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={() => dispatch(removeLight(light.id))}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="space-y-1.5">

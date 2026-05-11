@@ -55,7 +55,7 @@
       "source_file": "postcss.config.mjs",
       "source_location": "L1",
       "id": "postcss_config_mjs",
-      "community": 17,
+      "community": 16,
       "norm_label": "postcss.config.mjs"
     },
     {
@@ -64,7 +64,7 @@
       "source_file": "postcss.config.mjs",
       "source_location": "L1",
       "id": "lumix3d_postcss_config_config",
-      "community": 17,
+      "community": 16,
       "norm_label": "config"
     },
     {
@@ -73,7 +73,7 @@
       "source_file": "next-env.d.ts",
       "source_location": "L1",
       "id": "next_env_d_ts",
-      "community": 25,
+      "community": 24,
       "norm_label": "next-env.d.ts"
     },
     {
@@ -82,7 +82,7 @@
       "source_file": "tailwind.config.ts",
       "source_location": "L1",
       "id": "tailwind_config_ts",
-      "community": 18,
+      "community": 17,
       "norm_label": "tailwind.config.ts"
     },
     {
@@ -91,7 +91,7 @@
       "source_file": "tailwind.config.ts",
       "source_location": "L4",
       "id": "lumix3d_tailwind_config_config",
-      "community": 18,
+      "community": 17,
       "norm_label": "config"
     },
     {
@@ -100,7 +100,7 @@
       "source_file": "eslint.config.mjs",
       "source_location": "L1",
       "id": "eslint_config_mjs",
-      "community": 19,
+      "community": 18,
       "norm_label": "eslint.config.mjs"
     },
     {
@@ -109,7 +109,7 @@
       "source_file": "eslint.config.mjs",
       "source_location": "L5",
       "id": "lumix3d_eslint_config_eslintconfig",
-      "community": 19,
+      "community": 18,
       "norm_label": "eslintconfig"
     },
     {
@@ -118,7 +118,7 @@
       "source_file": "next.config.ts",
       "source_location": "L1",
       "id": "next_config_ts",
-      "community": 20,
+      "community": 19,
       "norm_label": "next.config.ts"
     },
     {
@@ -127,7 +127,7 @@
       "source_file": "next.config.ts",
       "source_location": "L3",
       "id": "lumix3d_next_config_nextconfig",
-      "community": 20,
+      "community": 19,
       "norm_label": "nextconfig"
     },
     {
@@ -136,7 +136,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L1",
       "id": "src_types_index_ts",
-      "community": 1,
+      "community": 2,
       "norm_label": "index.ts"
     },
     {
@@ -145,7 +145,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L1",
       "id": "types_index_texturesettings",
-      "community": 1,
+      "community": 2,
       "norm_label": "texturesettings"
     },
     {
@@ -154,7 +154,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L17",
       "id": "types_index_materialpreset",
-      "community": 1,
+      "community": 2,
       "norm_label": "materialpreset"
     },
     {
@@ -163,7 +163,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L27",
       "id": "types_index_materialsettings",
-      "community": 1,
+      "community": 2,
       "norm_label": "materialsettings"
     },
     {
@@ -172,7 +172,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L38",
       "id": "types_index_svgshape",
-      "community": 1,
+      "community": 2,
       "norm_label": "svgshape"
     },
     {
@@ -181,7 +181,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L52",
       "id": "types_index_importedsvg",
-      "community": 1,
+      "community": 2,
       "norm_label": "importedsvg"
     },
     {
@@ -190,7 +190,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L60",
       "id": "types_index_lighttype",
-      "community": 1,
+      "community": 2,
       "norm_label": "lighttype"
     },
     {
@@ -199,7 +199,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L62",
       "id": "types_index_light",
-      "community": 1,
+      "community": 2,
       "norm_label": "light"
     },
     {
@@ -208,7 +208,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L71",
       "id": "types_index_lightingpreset",
-      "community": 1,
+      "community": 2,
       "norm_label": "lightingpreset"
     },
     {
@@ -217,7 +217,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L85",
       "id": "types_index_backgroundtype",
-      "community": 1,
+      "community": 2,
       "norm_label": "backgroundtype"
     },
     {
@@ -226,7 +226,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L92",
       "id": "types_index_background",
-      "community": 1,
+      "community": 2,
       "norm_label": "background"
     },
     {
@@ -235,7 +235,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L100",
       "id": "types_index_extrusionsettings",
-      "community": 1,
+      "community": 2,
       "norm_label": "extrusionsettings"
     },
     {
@@ -244,7 +244,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L109",
       "id": "types_index_svgselectioninfo",
-      "community": 1,
+      "community": 2,
       "norm_label": "svgselectioninfo"
     },
     {
@@ -253,7 +253,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L117",
       "id": "types_index_globaltransform",
-      "community": 1,
+      "community": 2,
       "norm_label": "globaltransform"
     },
     {
@@ -262,7 +262,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L123",
       "id": "types_index_groundsettings",
-      "community": 1,
+      "community": 2,
       "norm_label": "groundsettings"
     },
     {
@@ -271,7 +271,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L131",
       "id": "types_index_bloomsettings",
-      "community": 1,
+      "community": 2,
       "norm_label": "bloomsettings"
     },
     {
@@ -280,7 +280,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L138",
       "id": "types_index_rotationlock",
-      "community": 1,
+      "community": 2,
       "norm_label": "rotationlock"
     },
     {
@@ -289,7 +289,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L144",
       "id": "types_index_orbitcontrolslock",
-      "community": 1,
+      "community": 2,
       "norm_label": "orbitcontrolslock"
     },
     {
@@ -298,7 +298,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L153",
       "id": "types_index_objectgroup",
-      "community": 1,
+      "community": 2,
       "norm_label": "objectgroup"
     },
     {
@@ -307,7 +307,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L163",
       "id": "types_index_camerastate",
-      "community": 1,
+      "community": 2,
       "norm_label": "camerastate"
     },
     {
@@ -316,7 +316,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L169",
       "id": "types_index_embedcontrols",
-      "community": 1,
+      "community": 2,
       "norm_label": "embedcontrols"
     },
     {
@@ -325,7 +325,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L178",
       "id": "types_index_viewmode",
-      "community": 1,
+      "community": 2,
       "norm_label": "viewmode"
     },
     {
@@ -334,7 +334,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L180",
       "id": "types_index_keyframeproperty",
-      "community": 1,
+      "community": 2,
       "norm_label": "keyframeproperty"
     },
     {
@@ -343,7 +343,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L182",
       "id": "types_index_keyframe",
-      "community": 1,
+      "community": 2,
       "norm_label": "keyframe"
     },
     {
@@ -352,7 +352,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L198",
       "id": "types_index_animationtrack",
-      "community": 1,
+      "community": 2,
       "norm_label": "animationtrack"
     },
     {
@@ -361,7 +361,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L209",
       "id": "types_index_savedanimation",
-      "community": 1,
+      "community": 2,
       "norm_label": "savedanimation"
     },
     {
@@ -370,7 +370,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L216",
       "id": "types_index_timelinestate",
-      "community": 1,
+      "community": 2,
       "norm_label": "timelinestate"
     },
     {
@@ -379,7 +379,7 @@
       "source_file": "src/types/index.ts",
       "source_location": "L225",
       "id": "types_index_appstate",
-      "community": 1,
+      "community": 2,
       "norm_label": "appstate"
     },
     {
@@ -388,7 +388,7 @@
       "source_file": "src/app/layout.tsx",
       "source_location": "L1",
       "id": "src_app_layout_tsx",
-      "community": 4,
+      "community": 8,
       "norm_label": "layout.tsx"
     },
     {
@@ -397,7 +397,7 @@
       "source_file": "src/app/layout.tsx",
       "source_location": "L8",
       "id": "app_layout_geist",
-      "community": 4,
+      "community": 8,
       "norm_label": "geist"
     },
     {
@@ -406,7 +406,7 @@
       "source_file": "src/app/layout.tsx",
       "source_location": "L10",
       "id": "app_layout_inter",
-      "community": 4,
+      "community": 8,
       "norm_label": "inter"
     },
     {
@@ -415,7 +415,7 @@
       "source_file": "src/app/layout.tsx",
       "source_location": "L12",
       "id": "app_layout_metadata",
-      "community": 4,
+      "community": 8,
       "norm_label": "metadata"
     },
     {
@@ -424,7 +424,7 @@
       "source_file": "src/app/layout.tsx",
       "source_location": "L18",
       "id": "app_layout_rootlayout",
-      "community": 4,
+      "community": 8,
       "norm_label": "rootlayout()"
     },
     {
@@ -433,7 +433,7 @@
       "source_file": "src/app/page.tsx",
       "source_location": "L1",
       "id": "src_app_page_tsx",
-      "community": 10,
+      "community": 0,
       "norm_label": "page.tsx"
     },
     {
@@ -442,7 +442,7 @@
       "source_file": "src/app/page.tsx",
       "source_location": "L20",
       "id": "app_page_canvas3d",
-      "community": 10,
+      "community": 0,
       "norm_label": "canvas3d"
     },
     {
@@ -451,7 +451,7 @@
       "source_file": "src/app/page.tsx",
       "source_location": "L38",
       "id": "app_page_svgeditor",
-      "community": 10,
+      "community": 0,
       "norm_label": "svgeditor"
     },
     {
@@ -460,7 +460,7 @@
       "source_file": "src/app/page.tsx",
       "source_location": "L53",
       "id": "app_page_scenetransformtoolbar",
-      "community": 10,
+      "community": 0,
       "norm_label": "scenetransformtoolbar"
     },
     {
@@ -478,7 +478,7 @@
       "source_file": "src/app/providers.tsx",
       "source_location": "L1",
       "id": "src_app_providers_tsx",
-      "community": 4,
+      "community": 8,
       "norm_label": "providers.tsx"
     },
     {
@@ -487,7 +487,7 @@
       "source_file": "src/app/providers.tsx",
       "source_location": "L10",
       "id": "app_providers_providers",
-      "community": 4,
+      "community": 8,
       "norm_label": "providers()"
     },
     {
@@ -496,7 +496,7 @@
       "source_file": "src/app/embed/page.tsx",
       "source_location": "L1",
       "id": "src_app_embed_page_tsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "page.tsx"
     },
     {
@@ -505,7 +505,7 @@
       "source_file": "src/app/embed/page.tsx",
       "source_location": "L13",
       "id": "embed_page_canvas3d",
-      "community": 0,
+      "community": 1,
       "norm_label": "canvas3d"
     },
     {
@@ -514,7 +514,7 @@
       "source_file": "src/app/embed/page.tsx",
       "source_location": "L28",
       "id": "embed_page_embedpage",
-      "community": 0,
+      "community": 1,
       "norm_label": "embedpage()"
     },
     {
@@ -523,7 +523,7 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L1",
       "id": "src_features_sidebar_constants_demoscenes_ts",
-      "community": 1,
+      "community": 2,
       "norm_label": "demoscenes.ts"
     },
     {
@@ -532,7 +532,7 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L9",
       "id": "constants_demoscenes_demoscene",
-      "community": 1,
+      "community": 2,
       "norm_label": "demoscene"
     },
     {
@@ -541,7 +541,7 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L23",
       "id": "constants_demoscenes_sidebar_app_icon_extrusion",
-      "community": 1,
+      "community": 2,
       "norm_label": "sidebar_app_icon_extrusion"
     },
     {
@@ -550,7 +550,7 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L32",
       "id": "constants_demoscenes_sidebar_app_icon_material",
-      "community": 1,
+      "community": 2,
       "norm_label": "sidebar_app_icon_material"
     },
     {
@@ -559,7 +559,7 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L43",
       "id": "constants_demoscenes_sidebar_app_icon_lights",
-      "community": 1,
+      "community": 2,
       "norm_label": "sidebar_app_icon_lights"
     },
     {
@@ -568,7 +568,7 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L79",
       "id": "constants_demoscenes_sidebar_app_icon_rotation",
-      "community": 1,
+      "community": 2,
       "norm_label": "sidebar_app_icon_rotation"
     },
     {
@@ -577,7 +577,7 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L82",
       "id": "constants_demoscenes_sidebar_paw_extrusion",
-      "community": 1,
+      "community": 2,
       "norm_label": "sidebar_paw_extrusion"
     },
     {
@@ -586,7 +586,7 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L91",
       "id": "constants_demoscenes_sidebar_paw_material",
-      "community": 1,
+      "community": 2,
       "norm_label": "sidebar_paw_material"
     },
     {
@@ -595,7 +595,7 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L102",
       "id": "constants_demoscenes_sidebar_paw_lights",
-      "community": 1,
+      "community": 2,
       "norm_label": "sidebar_paw_lights"
     },
     {
@@ -604,7 +604,7 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L137",
       "id": "constants_demoscenes_sidebar_demo_scenes",
-      "community": 1,
+      "community": 2,
       "norm_label": "sidebar_demo_scenes"
     },
     {
@@ -613,7 +613,7 @@
       "source_file": "src/features/sidebar/constants/lightingPresets.ts",
       "source_location": "L1",
       "id": "src_features_sidebar_constants_lightingpresets_ts",
-      "community": 2,
+      "community": 0,
       "norm_label": "lightingpresets.ts"
     },
     {
@@ -622,7 +622,7 @@
       "source_file": "src/features/sidebar/constants/lightingPresets.ts",
       "source_location": "L3",
       "id": "constants_lightingpresets_sidebar_lighting_presets",
-      "community": 2,
+      "community": 0,
       "norm_label": "sidebar_lighting_presets"
     },
     {
@@ -631,7 +631,7 @@
       "source_file": "src/features/sidebar/constants/lightingPresets.ts",
       "source_location": "L277",
       "id": "constants_lightingpresets_sidebar_preset_descriptions",
-      "community": 2,
+      "community": 0,
       "norm_label": "sidebar_preset_descriptions"
     },
     {
@@ -658,7 +658,7 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L1",
       "id": "src_features_sidebar_components_quickscenes_tsx",
-      "community": 1,
+      "community": 2,
       "norm_label": "quickscenes.tsx"
     },
     {
@@ -667,7 +667,7 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L24",
       "id": "components_quickscenes_scene_icons",
-      "community": 1,
+      "community": 2,
       "norm_label": "scene_icons"
     },
     {
@@ -676,7 +676,7 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L34",
       "id": "components_quickscenes_builddemosvgshapes",
-      "community": 1,
+      "community": 2,
       "norm_label": "builddemosvgshapes()"
     },
     {
@@ -685,7 +685,7 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L54",
       "id": "components_quickscenes_quickscenes",
-      "community": 1,
+      "community": 2,
       "norm_label": "quickscenes()"
     },
     {
@@ -694,7 +694,7 @@
       "source_file": "src/features/sidebar/components/ShapeInspector.tsx",
       "source_location": "L1",
       "id": "src_features_sidebar_components_shapeinspector_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "shapeinspector.tsx"
     },
     {
@@ -703,7 +703,7 @@
       "source_file": "src/features/sidebar/components/ShapeInspector.tsx",
       "source_location": "L38",
       "id": "components_shapeinspector_svginspector",
-      "community": 2,
+      "community": 1,
       "norm_label": "svginspector()"
     },
     {
@@ -712,7 +712,7 @@
       "source_file": "src/features/sidebar/components/ShapeInspector.tsx",
       "source_location": "L94",
       "id": "components_shapeinspector_threedinspector",
-      "community": 0,
+      "community": 1,
       "norm_label": "threedinspector()"
     },
     {
@@ -730,7 +730,7 @@
       "source_file": "src/features/sidebar/components/ExtrusionControls.tsx",
       "source_location": "L1",
       "id": "src_features_sidebar_components_extrusioncontrols_tsx",
-      "community": 2,
+      "community": 1,
       "norm_label": "extrusioncontrols.tsx"
     },
     {
@@ -739,7 +739,7 @@
       "source_file": "src/features/sidebar/components/ExtrusionControls.tsx",
       "source_location": "L9",
       "id": "components_extrusioncontrols_field",
-      "community": 2,
+      "community": 1,
       "norm_label": "field()"
     },
     {
@@ -748,7 +748,7 @@
       "source_file": "src/features/sidebar/components/ExtrusionControls.tsx",
       "source_location": "L21",
       "id": "components_extrusioncontrols_extrusioncontrols",
-      "community": 0,
+      "community": 1,
       "norm_label": "extrusioncontrols()"
     },
     {
@@ -775,7 +775,7 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L41",
       "id": "components_svguploader_svguploader",
-      "community": 0,
+      "community": 1,
       "norm_label": "svguploader()"
     },
     {
@@ -784,7 +784,7 @@
       "source_file": "src/features/sidebar/components/EffectControls.tsx",
       "source_location": "L1",
       "id": "src_features_sidebar_components_effectcontrols_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "effectcontrols.tsx"
     },
     {
@@ -793,7 +793,7 @@
       "source_file": "src/features/sidebar/components/EffectControls.tsx",
       "source_location": "L12",
       "id": "components_effectcontrols_field",
-      "community": 2,
+      "community": 0,
       "norm_label": "field()"
     },
     {
@@ -802,7 +802,7 @@
       "source_file": "src/features/sidebar/components/EffectControls.tsx",
       "source_location": "L24",
       "id": "components_effectcontrols_view_modes",
-      "community": 2,
+      "community": 0,
       "norm_label": "view_modes"
     },
     {
@@ -811,7 +811,7 @@
       "source_file": "src/features/sidebar/components/EffectControls.tsx",
       "source_location": "L61",
       "id": "components_effectcontrols_mode_colors",
-      "community": 2,
+      "community": 0,
       "norm_label": "mode_colors"
     },
     {
@@ -829,7 +829,7 @@
       "source_file": "src/features/sidebar/components/BackgroundControls.tsx",
       "source_location": "L1",
       "id": "src_features_sidebar_components_backgroundcontrols_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "backgroundcontrols.tsx"
     },
     {
@@ -847,34 +847,61 @@
       "source_file": "src/features/sidebar/components/ObjectsList.tsx",
       "source_location": "L1",
       "id": "src_features_sidebar_components_objectslist_tsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "objectslist.tsx"
+    },
+    {
+      "label": "ListMode",
+      "file_type": "code",
+      "source_file": "src/features/sidebar/components/ObjectsList.tsx",
+      "source_location": "L25",
+      "id": "components_objectslist_listmode",
+      "community": 1,
+      "norm_label": "listmode"
     },
     {
       "label": "ObjectListItemProps",
       "file_type": "code",
       "source_file": "src/features/sidebar/components/ObjectsList.tsx",
-      "source_location": "L15",
+      "source_location": "L27",
       "id": "components_objectslist_objectlistitemprops",
-      "community": 0,
+      "community": 1,
       "norm_label": "objectlistitemprops"
     },
     {
       "label": "ObjectListItem",
       "file_type": "code",
       "source_file": "src/features/sidebar/components/ObjectsList.tsx",
-      "source_location": "L27",
+      "source_location": "L40",
       "id": "components_objectslist_objectlistitem",
-      "community": 0,
+      "community": 1,
       "norm_label": "objectlistitem"
+    },
+    {
+      "label": "GroupRowProps",
+      "file_type": "code",
+      "source_file": "src/features/sidebar/components/ObjectsList.tsx",
+      "source_location": "L110",
+      "id": "components_objectslist_grouprowprops",
+      "community": 1,
+      "norm_label": "grouprowprops"
+    },
+    {
+      "label": "GroupRow",
+      "file_type": "code",
+      "source_file": "src/features/sidebar/components/ObjectsList.tsx",
+      "source_location": "L121",
+      "id": "components_objectslist_grouprow",
+      "community": 1,
+      "norm_label": "grouprow"
     },
     {
       "label": "ObjectsList()",
       "file_type": "code",
       "source_file": "src/features/sidebar/components/ObjectsList.tsx",
-      "source_location": "L95",
+      "source_location": "L186",
       "id": "components_objectslist_objectslist",
-      "community": 0,
+      "community": 1,
       "norm_label": "objectslist()"
     },
     {
@@ -910,7 +937,7 @@
       "source_file": "src/features/sidebar/components/Sidebar.tsx",
       "source_location": "L29",
       "id": "components_sidebar_sidebar",
-      "community": 10,
+      "community": 0,
       "norm_label": "sidebar()"
     },
     {
@@ -919,7 +946,7 @@
       "source_file": "src/features/sidebar/components/TimelineEditor.tsx",
       "source_location": "L1",
       "id": "src_features_sidebar_components_timelineeditor_tsx",
-      "community": 11,
+      "community": 10,
       "norm_label": "timelineeditor.tsx"
     },
     {
@@ -928,7 +955,7 @@
       "source_file": "src/features/sidebar/components/TimelineEditor.tsx",
       "source_location": "L17",
       "id": "components_timelineeditor_formattime",
-      "community": 11,
+      "community": 10,
       "norm_label": "formattime()"
     },
     {
@@ -937,7 +964,7 @@
       "source_file": "src/features/sidebar/components/TimelineEditor.tsx",
       "source_location": "L24",
       "id": "components_timelineeditor_timelineeditor",
-      "community": 11,
+      "community": 10,
       "norm_label": "timelineeditor()"
     },
     {
@@ -946,7 +973,7 @@
       "source_file": "src/features/sidebar/components/TextureControls.tsx",
       "source_location": "L1",
       "id": "src_features_sidebar_components_texturecontrols_tsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "texturecontrols.tsx"
     },
     {
@@ -955,7 +982,7 @@
       "source_file": "src/features/sidebar/components/TextureControls.tsx",
       "source_location": "L10",
       "id": "components_texturecontrols_texturechannel",
-      "community": 0,
+      "community": 1,
       "norm_label": "texturechannel"
     },
     {
@@ -964,7 +991,7 @@
       "source_file": "src/features/sidebar/components/TextureControls.tsx",
       "source_location": "L27",
       "id": "components_texturecontrols_channels",
-      "community": 0,
+      "community": 1,
       "norm_label": "channels"
     },
     {
@@ -973,7 +1000,7 @@
       "source_file": "src/features/sidebar/components/TextureControls.tsx",
       "source_location": "L39",
       "id": "components_texturecontrols_supported",
-      "community": 0,
+      "community": 1,
       "norm_label": "supported"
     },
     {
@@ -982,7 +1009,7 @@
       "source_file": "src/features/sidebar/components/TextureControls.tsx",
       "source_location": "L42",
       "id": "components_texturecontrols_texturecontrols",
-      "community": 0,
+      "community": 1,
       "norm_label": "texturecontrols()"
     },
     {
@@ -991,7 +1018,7 @@
       "source_file": "src/features/sidebar/components/CollapsibleCard.tsx",
       "source_location": "L1",
       "id": "src_features_sidebar_components_collapsiblecard_tsx",
-      "community": 2,
+      "community": 1,
       "norm_label": "collapsiblecard.tsx"
     },
     {
@@ -1000,7 +1027,7 @@
       "source_file": "src/features/sidebar/components/CollapsibleCard.tsx",
       "source_location": "L22",
       "id": "components_collapsiblecard_section_icons",
-      "community": 2,
+      "community": 1,
       "norm_label": "section_icons"
     },
     {
@@ -1009,7 +1036,7 @@
       "source_file": "src/features/sidebar/components/CollapsibleCard.tsx",
       "source_location": "L35",
       "id": "components_collapsiblecard_collapsiblecardprops",
-      "community": 2,
+      "community": 1,
       "norm_label": "collapsiblecardprops"
     },
     {
@@ -1018,7 +1045,7 @@
       "source_file": "src/features/sidebar/components/CollapsibleCard.tsx",
       "source_location": "L51",
       "id": "components_collapsiblecard_collapsiblecard",
-      "community": 2,
+      "community": 1,
       "norm_label": "collapsiblecard()"
     },
     {
@@ -1027,7 +1054,7 @@
       "source_file": "src/features/sidebar/components/LightingControls.tsx",
       "source_location": "L1",
       "id": "src_features_sidebar_components_lightingcontrols_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "lightingcontrols.tsx"
     },
     {
@@ -1045,7 +1072,7 @@
       "source_file": "src/features/three/liveTransform.ts",
       "source_location": "L1",
       "id": "src_features_three_livetransform_ts",
-      "community": 8,
+      "community": 3,
       "norm_label": "livetransform.ts"
     },
     {
@@ -1054,7 +1081,7 @@
       "source_file": "src/features/three/liveTransform.ts",
       "source_location": "L7",
       "id": "three_livetransform_livetransform",
-      "community": 8,
+      "community": 3,
       "norm_label": "livetransform"
     },
     {
@@ -1171,7 +1198,7 @@
       "source_file": "src/features/three/globalGroupRef.ts",
       "source_location": "L1",
       "id": "src_features_three_globalgroupref_ts",
-      "community": 8,
+      "community": 3,
       "norm_label": "globalgroupref.ts"
     },
     {
@@ -1180,7 +1207,7 @@
       "source_file": "src/features/three/globalGroupRef.ts",
       "source_location": "L7",
       "id": "three_globalgroupref_globalgroupref",
-      "community": 8,
+      "community": 3,
       "norm_label": "globalgroupref"
     },
     {
@@ -1189,7 +1216,7 @@
       "source_file": "src/features/three/shapeObjectRegistry.ts",
       "source_location": "L1",
       "id": "src_features_three_shapeobjectregistry_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "shapeobjectregistry.ts"
     },
     {
@@ -1198,7 +1225,7 @@
       "source_file": "src/features/three/shapeObjectRegistry.ts",
       "source_location": "L7",
       "id": "three_shapeobjectregistry_shapeobjectregistry",
-      "community": 0,
+      "community": 3,
       "norm_label": "shapeobjectregistry"
     },
     {
@@ -1207,7 +1234,7 @@
       "source_file": "src/features/three/shapeObjectRegistry.ts",
       "source_location": "L9",
       "id": "three_shapeobjectregistry_cameraref",
-      "community": 0,
+      "community": 3,
       "norm_label": "cameraref"
     },
     {
@@ -1216,7 +1243,7 @@
       "source_file": "src/features/three/shapeObjectRegistry.ts",
       "source_location": "L10",
       "id": "three_shapeobjectregistry_canvaselementref",
-      "community": 0,
+      "community": 3,
       "norm_label": "canvaselementref"
     },
     {
@@ -1225,7 +1252,7 @@
       "source_file": "src/features/three/utils/svgPreprocess.ts",
       "source_location": "L1",
       "id": "src_features_three_utils_svgpreprocess_ts",
-      "community": 9,
+      "community": 7,
       "norm_label": "svgpreprocess.ts"
     },
     {
@@ -1234,7 +1261,7 @@
       "source_file": "src/features/three/utils/svgPreprocess.ts",
       "source_location": "L38",
       "id": "utils_svgpreprocess_processedsvg",
-      "community": 9,
+      "community": 7,
       "norm_label": "processedsvg"
     },
     {
@@ -1243,7 +1270,7 @@
       "source_file": "src/features/three/utils/svgPreprocess.ts",
       "source_location": "L47",
       "id": "utils_svgpreprocess_resolvepx",
-      "community": 9,
+      "community": 7,
       "norm_label": "resolvepx()"
     },
     {
@@ -1252,7 +1279,7 @@
       "source_file": "src/features/three/utils/svgPreprocess.ts",
       "source_location": "L62",
       "id": "utils_svgpreprocess_stroketofilledpathdata",
-      "community": 9,
+      "community": 7,
       "norm_label": "stroketofilledpathdata()"
     },
     {
@@ -1261,7 +1288,7 @@
       "source_file": "src/features/three/utils/svgPreprocess.ts",
       "source_location": "L113",
       "id": "utils_svgpreprocess_linetofilledpathdata",
-      "community": 9,
+      "community": 7,
       "norm_label": "linetofilledpathdata()"
     },
     {
@@ -1270,7 +1297,7 @@
       "source_file": "src/features/three/utils/svgPreprocess.ts",
       "source_location": "L138",
       "id": "utils_svgpreprocess_resolvestyle",
-      "community": 9,
+      "community": 7,
       "norm_label": "resolvestyle()"
     },
     {
@@ -1279,7 +1306,7 @@
       "source_file": "src/features/three/utils/svgPreprocess.ts",
       "source_location": "L152",
       "id": "utils_svgpreprocess_makefilledpath",
-      "community": 9,
+      "community": 7,
       "norm_label": "makefilledpath()"
     },
     {
@@ -1288,7 +1315,7 @@
       "source_file": "src/features/three/utils/svgPreprocess.ts",
       "source_location": "L175",
       "id": "utils_svgpreprocess_preprocesssvgforthree",
-      "community": 9,
+      "community": 7,
       "norm_label": "preprocesssvgforthree()"
     },
     {
@@ -1297,7 +1324,7 @@
       "source_file": "src/features/three/components/SceneLights.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_scenelights_tsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "scenelights.tsx"
     },
     {
@@ -1306,7 +1333,7 @@
       "source_file": "src/features/three/components/SceneLights.tsx",
       "source_location": "L6",
       "id": "components_scenelights_scenelights",
-      "community": 0,
+      "community": 1,
       "norm_label": "scenelights()"
     },
     {
@@ -1315,7 +1342,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_timelineplayer_tsx",
-      "community": 7,
+      "community": 3,
       "norm_label": "timelineplayer.tsx"
     },
     {
@@ -1324,7 +1351,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L14",
       "id": "components_timelineplayer_lerp",
-      "community": 7,
+      "community": 3,
       "norm_label": "lerp()"
     },
     {
@@ -1333,7 +1360,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L18",
       "id": "components_timelineplayer_lerparray",
-      "community": 7,
+      "community": 3,
       "norm_label": "lerparray()"
     },
     {
@@ -1342,7 +1369,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L32",
       "id": "components_timelineplayer_cubiceaseinout",
-      "community": 7,
+      "community": 3,
       "norm_label": "cubiceaseinout()"
     },
     {
@@ -1351,7 +1378,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L37",
       "id": "components_timelineplayer_q1",
-      "community": 7,
+      "community": 3,
       "norm_label": "_q1"
     },
     {
@@ -1360,7 +1387,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L38",
       "id": "components_timelineplayer_q2",
-      "community": 7,
+      "community": 3,
       "norm_label": "_q2"
     },
     {
@@ -1369,7 +1396,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L39",
       "id": "components_timelineplayer_qinterp",
-      "community": 7,
+      "community": 3,
       "norm_label": "_qinterp"
     },
     {
@@ -1378,7 +1405,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L40",
       "id": "components_timelineplayer_qshape",
-      "community": 7,
+      "community": 3,
       "norm_label": "_qshape"
     },
     {
@@ -1387,7 +1414,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L41",
       "id": "components_timelineplayer_qbindlocal",
-      "community": 7,
+      "community": 3,
       "norm_label": "_qbindlocal"
     },
     {
@@ -1396,7 +1423,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L42",
       "id": "components_timelineplayer_qfinallocal",
-      "community": 7,
+      "community": 3,
       "norm_label": "_qfinallocal"
     },
     {
@@ -1405,7 +1432,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L43",
       "id": "components_timelineplayer_eulshape",
-      "community": 7,
+      "community": 3,
       "norm_label": "_eulshape"
     },
     {
@@ -1414,7 +1441,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L44",
       "id": "components_timelineplayer_voffsetbind",
-      "community": 7,
+      "community": 3,
       "norm_label": "_voffsetbind"
     },
     {
@@ -1423,7 +1450,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L45",
       "id": "components_timelineplayer_vrotated",
-      "community": 7,
+      "community": 3,
       "norm_label": "_vrotated"
     },
     {
@@ -1432,7 +1459,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L47",
       "id": "components_timelineplayer_sharegroupcontext",
-      "community": 7,
+      "community": 3,
       "norm_label": "sharegroupcontext()"
     },
     {
@@ -1441,7 +1468,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L58",
       "id": "components_timelineplayer_safediv",
-      "community": 7,
+      "community": 3,
       "norm_label": "safediv()"
     },
     {
@@ -1450,7 +1477,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L62",
       "id": "components_timelineplayer_applygroupinterpolation",
-      "community": 7,
+      "community": 3,
       "norm_label": "applygroupinterpolation()"
     },
     {
@@ -1459,7 +1486,7 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L152",
       "id": "components_timelineplayer_timelineplayer",
-      "community": 0,
+      "community": 3,
       "norm_label": "timelineplayer()"
     },
     {
@@ -1468,7 +1495,7 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_canvas3d_tsx",
-      "community": 0,
+      "community": 3,
       "norm_label": "canvas3d.tsx"
     },
     {
@@ -1477,7 +1504,7 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L42",
       "id": "components_canvas3d_transformtracker",
-      "community": 0,
+      "community": 3,
       "norm_label": "transformtracker()"
     },
     {
@@ -1486,7 +1513,7 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L55",
       "id": "components_canvas3d_canvasrefscapture",
-      "community": 0,
+      "community": 3,
       "norm_label": "canvasrefscapture()"
     },
     {
@@ -1495,7 +1522,7 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L72",
       "id": "components_canvas3d_fitcameraonload",
-      "community": 0,
+      "community": 3,
       "norm_label": "fitcameraonload()"
     },
     {
@@ -1504,7 +1531,7 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L145",
       "id": "components_canvas3d_cameracontroller",
-      "community": 0,
+      "community": 3,
       "norm_label": "cameracontroller()"
     },
     {
@@ -1513,7 +1540,7 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L210",
       "id": "components_canvas3d_canvas3d",
-      "community": 0,
+      "community": 3,
       "norm_label": "canvas3d()"
     },
     {
@@ -1522,7 +1549,7 @@
       "source_file": "src/features/three/components/UndoRedoToolbar.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_undoredotoolbar_tsx",
-      "community": 4,
+      "community": 9,
       "norm_label": "undoredotoolbar.tsx"
     },
     {
@@ -1531,7 +1558,7 @@
       "source_file": "src/features/three/components/UndoRedoToolbar.tsx",
       "source_location": "L11",
       "id": "components_undoredotoolbar_usehistoryavailability",
-      "community": 4,
+      "community": 9,
       "norm_label": "usehistoryavailability()"
     },
     {
@@ -1540,7 +1567,7 @@
       "source_file": "src/features/three/components/UndoRedoToolbar.tsx",
       "source_location": "L24",
       "id": "components_undoredotoolbar_undoredotoolbar",
-      "community": 4,
+      "community": 9,
       "norm_label": "undoredotoolbar()"
     },
     {
@@ -1549,7 +1576,7 @@
       "source_file": "src/features/three/components/TransformLog.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_transformlog_tsx",
-      "community": 8,
+      "community": 3,
       "norm_label": "transformlog.tsx"
     },
     {
@@ -1558,7 +1585,7 @@
       "source_file": "src/features/three/components/TransformLog.tsx",
       "source_location": "L7",
       "id": "components_transformlog_fmt",
-      "community": 8,
+      "community": 3,
       "norm_label": "fmt()"
     },
     {
@@ -1567,7 +1594,7 @@
       "source_file": "src/features/three/components/TransformLog.tsx",
       "source_location": "L11",
       "id": "components_transformlog_fmtrow",
-      "community": 8,
+      "community": 3,
       "norm_label": "fmtrow()"
     },
     {
@@ -1576,7 +1603,7 @@
       "source_file": "src/features/three/components/TransformLog.tsx",
       "source_location": "L15",
       "id": "components_transformlog_transformlog",
-      "community": 8,
+      "community": 3,
       "norm_label": "transformlog()"
     },
     {
@@ -1585,7 +1612,7 @@
       "source_file": "src/features/three/components/GroupManager.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_groupmanager_tsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "groupmanager.tsx"
     },
     {
@@ -1594,7 +1621,7 @@
       "source_file": "src/features/three/components/GroupManager.tsx",
       "source_location": "L16",
       "id": "components_groupmanager_panel_style",
-      "community": 0,
+      "community": 1,
       "norm_label": "panel_style"
     },
     {
@@ -1603,7 +1630,7 @@
       "source_file": "src/features/three/components/GroupManager.tsx",
       "source_location": "L23",
       "id": "components_groupmanager_groupmanager",
-      "community": 0,
+      "community": 1,
       "norm_label": "groupmanager()"
     },
     {
@@ -1612,7 +1639,7 @@
       "source_file": "src/features/three/components/TransformLogCanvas.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_transformlogcanvas_tsx",
-      "community": 8,
+      "community": 3,
       "norm_label": "transformlogcanvas.tsx"
     },
     {
@@ -1621,7 +1648,7 @@
       "source_file": "src/features/three/components/TransformLogCanvas.tsx",
       "source_location": "L8",
       "id": "components_transformlogcanvas_f",
-      "community": 8,
+      "community": 3,
       "norm_label": "f()"
     },
     {
@@ -1630,7 +1657,7 @@
       "source_file": "src/features/three/components/TransformLogCanvas.tsx",
       "source_location": "L9",
       "id": "components_transformlogcanvas_row",
-      "community": 8,
+      "community": 3,
       "norm_label": "row()"
     },
     {
@@ -1639,7 +1666,7 @@
       "source_file": "src/features/three/components/TransformLogCanvas.tsx",
       "source_location": "L11",
       "id": "components_transformlogcanvas_transformlogcanvas",
-      "community": 8,
+      "community": 3,
       "norm_label": "transformlogcanvas()"
     },
     {
@@ -1648,7 +1675,7 @@
       "source_file": "src/features/three/components/SelectionHint.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_selectionhint_tsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "selectionhint.tsx"
     },
     {
@@ -1657,7 +1684,7 @@
       "source_file": "src/features/three/components/SelectionHint.tsx",
       "source_location": "L9",
       "id": "components_selectionhint_hintrow",
-      "community": 0,
+      "community": 1,
       "norm_label": "hintrow"
     },
     {
@@ -1666,7 +1693,7 @@
       "source_file": "src/features/three/components/SelectionHint.tsx",
       "source_location": "L14",
       "id": "components_selectionhint_hints",
-      "community": 0,
+      "community": 1,
       "norm_label": "hints"
     },
     {
@@ -1675,7 +1702,7 @@
       "source_file": "src/features/three/components/SelectionHint.tsx",
       "source_location": "L25",
       "id": "components_selectionhint_kbd",
-      "community": 0,
+      "community": 1,
       "norm_label": "kbd()"
     },
     {
@@ -1684,7 +1711,7 @@
       "source_file": "src/features/three/components/SelectionHint.tsx",
       "source_location": "L33",
       "id": "components_selectionhint_panel_style",
-      "community": 0,
+      "community": 1,
       "norm_label": "panel_style"
     },
     {
@@ -1693,7 +1720,7 @@
       "source_file": "src/features/three/components/SelectionHint.tsx",
       "source_location": "L41",
       "id": "components_selectionhint_selectionhint",
-      "community": 0,
+      "community": 1,
       "norm_label": "selectionhint()"
     },
     {
@@ -1702,7 +1729,7 @@
       "source_file": "src/features/three/components/RotationLockToolbar.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_rotationlocktoolbar_tsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "rotationlocktoolbar.tsx"
     },
     {
@@ -1711,7 +1738,7 @@
       "source_file": "src/features/three/components/RotationLockToolbar.tsx",
       "source_location": "L8",
       "id": "components_rotationlocktoolbar_rotationlocktoolbar",
-      "community": 0,
+      "community": 1,
       "norm_label": "rotationlocktoolbar()"
     },
     {
@@ -1720,7 +1747,7 @@
       "source_file": "src/features/three/components/SceneTransformToolbar.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_scenetransformtoolbar_tsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "scenetransformtoolbar.tsx"
     },
     {
@@ -1729,7 +1756,7 @@
       "source_file": "src/features/three/components/SceneTransformToolbar.tsx",
       "source_location": "L8",
       "id": "components_scenetransformtoolbar_scenetransformtoolbar",
-      "community": 0,
+      "community": 1,
       "norm_label": "scenetransformtoolbar()"
     },
     {
@@ -1738,7 +1765,7 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_svgeditor_tsx",
-      "community": 9,
+      "community": 7,
       "norm_label": "svgeditor.tsx"
     },
     {
@@ -1747,7 +1774,7 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L13",
       "id": "components_svgeditor_selectionprops",
-      "community": 9,
+      "community": 7,
       "norm_label": "selectionprops"
     },
     {
@@ -1756,7 +1783,7 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L19",
       "id": "components_svgeditor_tohex",
-      "community": 9,
+      "community": 7,
       "norm_label": "tohex()"
     },
     {
@@ -1765,7 +1792,7 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L31",
       "id": "components_svgeditor_svgeditor",
-      "community": 9,
+      "community": 7,
       "norm_label": "svgeditor()"
     },
     {
@@ -1891,7 +1918,7 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L309",
       "id": "components_extrudedsvg_extrudedsvg",
-      "community": 0,
+      "community": 5,
       "norm_label": "extrudedsvg()"
     },
     {
@@ -1900,7 +1927,7 @@
       "source_file": "src/features/three/components/BoxSelectOverlay.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_boxselectoverlay_tsx",
-      "community": 0,
+      "community": 3,
       "norm_label": "boxselectoverlay.tsx"
     },
     {
@@ -1909,7 +1936,7 @@
       "source_file": "src/features/three/components/BoxSelectOverlay.tsx",
       "source_location": "L16",
       "id": "components_boxselectoverlay_rect",
-      "community": 0,
+      "community": 3,
       "norm_label": "rect"
     },
     {
@@ -1918,7 +1945,7 @@
       "source_file": "src/features/three/components/BoxSelectOverlay.tsx",
       "source_location": "L18",
       "id": "components_boxselectoverlay_computerect",
-      "community": 0,
+      "community": 3,
       "norm_label": "computerect()"
     },
     {
@@ -1927,7 +1954,7 @@
       "source_file": "src/features/three/components/BoxSelectOverlay.tsx",
       "source_location": "L30",
       "id": "components_boxselectoverlay_boxselectoverlay",
-      "community": 0,
+      "community": 3,
       "norm_label": "boxselectoverlay()"
     },
     {
@@ -1936,7 +1963,7 @@
       "source_file": "src/features/three/components/TransformTracker.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_transformtracker_tsx",
-      "community": 8,
+      "community": 3,
       "norm_label": "transformtracker.tsx"
     },
     {
@@ -1945,7 +1972,7 @@
       "source_file": "src/features/three/components/TransformTracker.tsx",
       "source_location": "L7",
       "id": "components_transformtracker_transformtracker",
-      "community": 8,
+      "community": 3,
       "norm_label": "transformtracker()"
     },
     {
@@ -1954,7 +1981,7 @@
       "source_file": "src/features/three/components/OrbitControlsLockToolbar.tsx",
       "source_location": "L1",
       "id": "src_features_three_components_orbitcontrolslocktoolbar_tsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "orbitcontrolslocktoolbar.tsx"
     },
     {
@@ -1963,7 +1990,7 @@
       "source_file": "src/features/three/components/OrbitControlsLockToolbar.tsx",
       "source_location": "L11",
       "id": "components_orbitcontrolslocktoolbar_orbitcontrolslocktoolbar",
-      "community": 0,
+      "community": 1,
       "norm_label": "orbitcontrolslocktoolbar()"
     },
     {
@@ -1972,7 +1999,7 @@
       "source_file": "src/components/MobileBlocker.tsx",
       "source_location": "L1",
       "id": "src_components_mobileblocker_tsx",
-      "community": 4,
+      "community": 8,
       "norm_label": "mobileblocker.tsx"
     },
     {
@@ -1981,7 +2008,7 @@
       "source_file": "src/components/MobileBlocker.tsx",
       "source_location": "L5",
       "id": "components_mobileblocker_mobileblocker",
-      "community": 4,
+      "community": 8,
       "norm_label": "mobileblocker()"
     },
     {
@@ -1990,7 +2017,7 @@
       "source_file": "src/components/ParticleBackground.tsx",
       "source_location": "L1",
       "id": "src_components_particlebackground_tsx",
-      "community": 10,
+      "community": 0,
       "norm_label": "particlebackground.tsx"
     },
     {
@@ -1999,7 +2026,7 @@
       "source_file": "src/components/ParticleBackground.tsx",
       "source_location": "L7",
       "id": "components_particlebackground_particlebackground",
-      "community": 10,
+      "community": 0,
       "norm_label": "particlebackground()"
     },
     {
@@ -2008,7 +2035,7 @@
       "source_file": "src/components/ui/tabs.tsx",
       "source_location": "L1",
       "id": "src_components_ui_tabs_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "tabs.tsx"
     },
     {
@@ -2017,7 +2044,7 @@
       "source_file": "src/components/ui/tabs.tsx",
       "source_location": "L8",
       "id": "ui_tabs_tabslist",
-      "community": 2,
+      "community": 0,
       "norm_label": "tabslist"
     },
     {
@@ -2026,7 +2053,7 @@
       "source_file": "src/components/ui/tabs.tsx",
       "source_location": "L23",
       "id": "ui_tabs_tabstrigger",
-      "community": 2,
+      "community": 0,
       "norm_label": "tabstrigger"
     },
     {
@@ -2035,7 +2062,7 @@
       "source_file": "src/components/ui/tabs.tsx",
       "source_location": "L38",
       "id": "ui_tabs_tabscontent",
-      "community": 2,
+      "community": 0,
       "norm_label": "tabscontent"
     },
     {
@@ -2044,7 +2071,7 @@
       "source_file": "src/components/ui/card.tsx",
       "source_location": "L1",
       "id": "src_components_ui_card_tsx",
-      "community": 11,
+      "community": 10,
       "norm_label": "card.tsx"
     },
     {
@@ -2053,7 +2080,7 @@
       "source_file": "src/components/ui/card.tsx",
       "source_location": "L5",
       "id": "ui_card_card",
-      "community": 11,
+      "community": 10,
       "norm_label": "card"
     },
     {
@@ -2062,7 +2089,7 @@
       "source_file": "src/components/ui/card.tsx",
       "source_location": "L20",
       "id": "ui_card_cardheader",
-      "community": 11,
+      "community": 10,
       "norm_label": "cardheader"
     },
     {
@@ -2071,7 +2098,7 @@
       "source_file": "src/components/ui/card.tsx",
       "source_location": "L32",
       "id": "ui_card_cardtitle",
-      "community": 11,
+      "community": 10,
       "norm_label": "cardtitle"
     },
     {
@@ -2080,7 +2107,7 @@
       "source_file": "src/components/ui/card.tsx",
       "source_location": "L47",
       "id": "ui_card_carddescription",
-      "community": 11,
+      "community": 10,
       "norm_label": "carddescription"
     },
     {
@@ -2089,7 +2116,7 @@
       "source_file": "src/components/ui/card.tsx",
       "source_location": "L59",
       "id": "ui_card_cardcontent",
-      "community": 11,
+      "community": 10,
       "norm_label": "cardcontent"
     },
     {
@@ -2098,7 +2125,7 @@
       "source_file": "src/components/ui/card.tsx",
       "source_location": "L67",
       "id": "ui_card_cardfooter",
-      "community": 11,
+      "community": 10,
       "norm_label": "cardfooter"
     },
     {
@@ -2107,7 +2134,7 @@
       "source_file": "src/components/ui/slider.tsx",
       "source_location": "L1",
       "id": "src_components_ui_slider_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "slider.tsx"
     },
     {
@@ -2116,7 +2143,7 @@
       "source_file": "src/components/ui/slider.tsx",
       "source_location": "L6",
       "id": "ui_slider_slider",
-      "community": 2,
+      "community": 0,
       "norm_label": "slider"
     },
     {
@@ -2125,7 +2152,7 @@
       "source_file": "src/components/ui/resizable.tsx",
       "source_location": "L1",
       "id": "src_components_ui_resizable_tsx",
-      "community": 10,
+      "community": 0,
       "norm_label": "resizable.tsx"
     },
     {
@@ -2134,7 +2161,7 @@
       "source_file": "src/components/ui/resizable.tsx",
       "source_location": "L8",
       "id": "ui_resizable_resizablepanelgroup",
-      "community": 10,
+      "community": 0,
       "norm_label": "resizablepanelgroup()"
     },
     {
@@ -2143,7 +2170,7 @@
       "source_file": "src/components/ui/resizable.tsx",
       "source_location": "L24",
       "id": "ui_resizable_resizablehandle",
-      "community": 10,
+      "community": 0,
       "norm_label": "resizablehandle()"
     },
     {
@@ -2152,7 +2179,7 @@
       "source_file": "src/components/ui/label.tsx",
       "source_location": "L1",
       "id": "src_components_ui_label_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "label.tsx"
     },
     {
@@ -2161,7 +2188,7 @@
       "source_file": "src/components/ui/label.tsx",
       "source_location": "L7",
       "id": "ui_label_labelvariants",
-      "community": 2,
+      "community": 0,
       "norm_label": "labelvariants"
     },
     {
@@ -2170,7 +2197,7 @@
       "source_file": "src/components/ui/label.tsx",
       "source_location": "L11",
       "id": "ui_label_label",
-      "community": 2,
+      "community": 0,
       "norm_label": "label"
     },
     {
@@ -2179,7 +2206,7 @@
       "source_file": "src/components/ui/switch.tsx",
       "source_location": "L1",
       "id": "src_components_ui_switch_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "switch.tsx"
     },
     {
@@ -2188,7 +2215,7 @@
       "source_file": "src/components/ui/switch.tsx",
       "source_location": "L7",
       "id": "ui_switch_switch",
-      "community": 2,
+      "community": 0,
       "norm_label": "switch()"
     },
     {
@@ -2197,7 +2224,7 @@
       "source_file": "src/components/ui/slider-with-input.tsx",
       "source_location": "L1",
       "id": "src_components_ui_slider_with_input_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "slider-with-input.tsx"
     },
     {
@@ -2206,7 +2233,7 @@
       "source_file": "src/components/ui/slider-with-input.tsx",
       "source_location": "L8",
       "id": "ui_slider_with_input_sliderwithinputprops",
-      "community": 2,
+      "community": 0,
       "norm_label": "sliderwithinputprops"
     },
     {
@@ -2215,7 +2242,7 @@
       "source_file": "src/components/ui/slider-with-input.tsx",
       "source_location": "L19",
       "id": "ui_slider_with_input_sliderwithinput",
-      "community": 2,
+      "community": 0,
       "norm_label": "sliderwithinput()"
     },
     {
@@ -2224,7 +2251,7 @@
       "source_file": "src/components/ui/separator.tsx",
       "source_location": "L1",
       "id": "src_components_ui_separator_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "separator.tsx"
     },
     {
@@ -2233,7 +2260,7 @@
       "source_file": "src/components/ui/separator.tsx",
       "source_location": "L6",
       "id": "ui_separator_separator",
-      "community": 2,
+      "community": 0,
       "norm_label": "separator"
     },
     {
@@ -2242,7 +2269,7 @@
       "source_file": "src/components/ui/button.tsx",
       "source_location": "L1",
       "id": "src_components_ui_button_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "button.tsx"
     },
     {
@@ -2251,7 +2278,7 @@
       "source_file": "src/components/ui/button.tsx",
       "source_location": "L7",
       "id": "ui_button_buttonvariants",
-      "community": 2,
+      "community": 0,
       "norm_label": "buttonvariants"
     },
     {
@@ -2260,7 +2287,7 @@
       "source_file": "src/components/ui/button.tsx",
       "source_location": "L36",
       "id": "ui_button_buttonprops",
-      "community": 2,
+      "community": 0,
       "norm_label": "buttonprops"
     },
     {
@@ -2269,7 +2296,7 @@
       "source_file": "src/components/ui/button.tsx",
       "source_location": "L42",
       "id": "ui_button_button",
-      "community": 2,
+      "community": 0,
       "norm_label": "button"
     },
     {
@@ -2278,7 +2305,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L1",
       "id": "src_components_ui_select_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "select.tsx"
     },
     {
@@ -2287,7 +2314,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L11",
       "id": "ui_select_selectgroup",
-      "community": 2,
+      "community": 0,
       "norm_label": "selectgroup()"
     },
     {
@@ -2296,7 +2323,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L21",
       "id": "ui_select_selectvalue",
-      "community": 2,
+      "community": 0,
       "norm_label": "selectvalue()"
     },
     {
@@ -2305,7 +2332,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L31",
       "id": "ui_select_selecttrigger",
-      "community": 2,
+      "community": 0,
       "norm_label": "selecttrigger()"
     },
     {
@@ -2314,7 +2341,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L59",
       "id": "ui_select_selectcontent",
-      "community": 2,
+      "community": 0,
       "norm_label": "selectcontent()"
     },
     {
@@ -2323,7 +2350,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L98",
       "id": "ui_select_selectlabel",
-      "community": 2,
+      "community": 0,
       "norm_label": "selectlabel()"
     },
     {
@@ -2332,7 +2359,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L111",
       "id": "ui_select_selectitem",
-      "community": 2,
+      "community": 0,
       "norm_label": "selectitem()"
     },
     {
@@ -2341,7 +2368,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L139",
       "id": "ui_select_selectseparator",
-      "community": 2,
+      "community": 0,
       "norm_label": "selectseparator()"
     },
     {
@@ -2350,7 +2377,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L152",
       "id": "ui_select_selectscrollupbutton",
-      "community": 2,
+      "community": 0,
       "norm_label": "selectscrollupbutton()"
     },
     {
@@ -2359,7 +2386,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L171",
       "id": "ui_select_selectscrolldownbutton",
-      "community": 2,
+      "community": 0,
       "norm_label": "selectscrolldownbutton()"
     },
     {
@@ -2368,7 +2395,7 @@
       "source_file": "src/components/ui/input.tsx",
       "source_location": "L1",
       "id": "src_components_ui_input_tsx",
-      "community": 2,
+      "community": 0,
       "norm_label": "input.tsx"
     },
     {
@@ -2377,7 +2404,7 @@
       "source_file": "src/components/ui/input.tsx",
       "source_location": "L5",
       "id": "ui_input_input",
-      "community": 2,
+      "community": 0,
       "norm_label": "input"
     },
     {
@@ -2386,7 +2413,7 @@
       "source_file": "src/lib/utils.ts",
       "source_location": "L1",
       "id": "src_lib_utils_ts",
-      "community": 2,
+      "community": 0,
       "norm_label": "utils.ts"
     },
     {
@@ -2395,7 +2422,7 @@
       "source_file": "src/lib/utils.ts",
       "source_location": "L4",
       "id": "lib_utils_cn",
-      "community": 2,
+      "community": 0,
       "norm_label": "cn()"
     },
     {
@@ -2404,7 +2431,7 @@
       "source_file": "src/lib/suppressWarnings.ts",
       "source_location": "L1",
       "id": "src_lib_suppresswarnings_ts",
-      "community": 4,
+      "community": 8,
       "norm_label": "suppresswarnings.ts"
     },
     {
@@ -2413,7 +2440,7 @@
       "source_file": "src/lib/suppressWarnings.ts",
       "source_location": "L1",
       "id": "lib_suppresswarnings_suppresswarnings",
-      "community": 4,
+      "community": 8,
       "norm_label": "suppresswarnings()"
     },
     {
@@ -2422,7 +2449,7 @@
       "source_file": "src/store/persistConfig.ts",
       "source_location": "L1",
       "id": "src_store_persistconfig_ts",
-      "community": 4,
+      "community": 1,
       "norm_label": "persistconfig.ts"
     },
     {
@@ -2431,7 +2458,7 @@
       "source_file": "src/store/persistConfig.ts",
       "source_location": "L4",
       "id": "store_persistconfig_persistconfig",
-      "community": 4,
+      "community": 1,
       "norm_label": "persistconfig"
     },
     {
@@ -2440,7 +2467,7 @@
       "source_file": "src/store/index.ts",
       "source_location": "L1",
       "id": "src_store_index_ts",
-      "community": 4,
+      "community": 1,
       "norm_label": "index.ts"
     },
     {
@@ -2449,7 +2476,7 @@
       "source_file": "src/store/index.ts",
       "source_location": "L15",
       "id": "store_index_persistedreducer",
-      "community": 4,
+      "community": 1,
       "norm_label": "persistedreducer"
     },
     {
@@ -2458,7 +2485,7 @@
       "source_file": "src/store/index.ts",
       "source_location": "L17",
       "id": "store_index_store",
-      "community": 4,
+      "community": 8,
       "norm_label": "store"
     },
     {
@@ -2467,7 +2494,7 @@
       "source_file": "src/store/index.ts",
       "source_location": "L29",
       "id": "store_index_persistor",
-      "community": 4,
+      "community": 8,
       "norm_label": "persistor"
     },
     {
@@ -2476,7 +2503,7 @@
       "source_file": "src/store/index.ts",
       "source_location": "L31",
       "id": "store_index_rootstate",
-      "community": 4,
+      "community": 1,
       "norm_label": "rootstate"
     },
     {
@@ -2485,7 +2512,7 @@
       "source_file": "src/store/index.ts",
       "source_location": "L32",
       "id": "store_index_appdispatch",
-      "community": 4,
+      "community": 1,
       "norm_label": "appdispatch"
     },
     {
@@ -2494,7 +2521,7 @@
       "source_file": "src/store/hooks.ts",
       "source_location": "L1",
       "id": "src_store_hooks_ts",
-      "community": 0,
+      "community": 1,
       "norm_label": "hooks.ts"
     },
     {
@@ -2503,7 +2530,7 @@
       "source_file": "src/store/hooks.ts",
       "source_location": "L4",
       "id": "store_hooks_useappdispatch",
-      "community": 0,
+      "community": 1,
       "norm_label": "useappdispatch"
     },
     {
@@ -2512,7 +2539,7 @@
       "source_file": "src/store/hooks.ts",
       "source_location": "L5",
       "id": "store_hooks_useappselector",
-      "community": 0,
+      "community": 1,
       "norm_label": "useappselector"
     },
     {
@@ -2521,7 +2548,7 @@
       "source_file": "src/store/historyMiddleware.ts",
       "source_location": "L1",
       "id": "src_store_historymiddleware_ts",
-      "community": 4,
+      "community": 9,
       "norm_label": "historymiddleware.ts"
     },
     {
@@ -2530,7 +2557,7 @@
       "source_file": "src/store/historyMiddleware.ts",
       "source_location": "L6",
       "id": "store_historymiddleware_undoable_actions",
-      "community": 4,
+      "community": 9,
       "norm_label": "undoable_actions"
     },
     {
@@ -2539,7 +2566,7 @@
       "source_file": "src/store/historyMiddleware.ts",
       "source_location": "L49",
       "id": "store_historymiddleware_past",
-      "community": 4,
+      "community": 9,
       "norm_label": "past"
     },
     {
@@ -2548,7 +2575,7 @@
       "source_file": "src/store/historyMiddleware.ts",
       "source_location": "L50",
       "id": "store_historymiddleware_future",
-      "community": 4,
+      "community": 9,
       "norm_label": "future"
     },
     {
@@ -2557,7 +2584,7 @@
       "source_file": "src/store/historyMiddleware.ts",
       "source_location": "L52",
       "id": "store_historymiddleware_getsnapshot",
-      "community": 4,
+      "community": 9,
       "norm_label": "getsnapshot()"
     },
     {
@@ -2566,7 +2593,7 @@
       "source_file": "src/store/historyMiddleware.ts",
       "source_location": "L72",
       "id": "store_historymiddleware_historymiddleware",
-      "community": 4,
+      "community": 9,
       "norm_label": "historymiddleware()"
     },
     {
@@ -2575,7 +2602,7 @@
       "source_file": "src/store/historyMiddleware.ts",
       "source_location": "L100",
       "id": "store_historymiddleware_canundo",
-      "community": 4,
+      "community": 9,
       "norm_label": "canundo()"
     },
     {
@@ -2584,7 +2611,7 @@
       "source_file": "src/store/historyMiddleware.ts",
       "source_location": "L104",
       "id": "store_historymiddleware_canredo",
-      "community": 4,
+      "community": 9,
       "norm_label": "canredo()"
     },
     {
@@ -2593,7 +2620,7 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L1",
       "id": "src_store_slices_sceneslice_ts",
-      "community": 1,
+      "community": 2,
       "norm_label": "sceneslice.ts"
     },
     {
@@ -2602,7 +2629,7 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L22",
       "id": "slices_sceneslice_historysnapshot",
-      "community": 1,
+      "community": 2,
       "norm_label": "historysnapshot"
     },
     {
@@ -2611,7 +2638,7 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L40",
       "id": "slices_sceneslice_initialstate",
-      "community": 1,
+      "community": 2,
       "norm_label": "initialstate"
     },
     {
@@ -2620,34 +2647,34 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L154",
       "id": "slices_sceneslice_sceneslice",
-      "community": 1,
+      "community": 2,
       "norm_label": "sceneslice"
     },
     {
       "label": "selectSceneState()",
       "file_type": "code",
       "source_file": "src/store/slices/sceneSlice.ts",
-      "source_location": "L1042",
+      "source_location": "L1044",
       "id": "slices_sceneslice_selectscenestate",
-      "community": 1,
+      "community": 2,
       "norm_label": "selectscenestate()"
     },
     {
       "label": "selectVisibleShapes",
       "file_type": "code",
       "source_file": "src/store/slices/sceneSlice.ts",
-      "source_location": "L1044",
+      "source_location": "L1046",
       "id": "slices_sceneslice_selectvisibleshapes",
-      "community": 1,
+      "community": 2,
       "norm_label": "selectvisibleshapes"
     },
     {
       "label": "selectActiveShape",
       "file_type": "code",
       "source_file": "src/store/slices/sceneSlice.ts",
-      "source_location": "L1048",
+      "source_location": "L1050",
       "id": "slices_sceneslice_selectactiveshape",
-      "community": 1,
+      "community": 2,
       "norm_label": "selectactiveshape"
     },
     {
@@ -2656,7 +2683,7 @@
       "source_file": "README.md",
       "source_location": "L1",
       "id": "readme_md",
-      "community": 12,
+      "community": 11,
       "norm_label": "readme.md"
     },
     {
@@ -2665,7 +2692,7 @@
       "source_file": "README.md",
       "source_location": "L1",
       "id": "lumix3d_readme_lumix3d",
-      "community": 12,
+      "community": 11,
       "norm_label": "lumix3d"
     },
     {
@@ -2674,7 +2701,7 @@
       "source_file": "README.md",
       "source_location": "L5",
       "id": "lumix3d_readme_features",
-      "community": 12,
+      "community": 11,
       "norm_label": "features"
     },
     {
@@ -2683,7 +2710,7 @@
       "source_file": "README.md",
       "source_location": "L7",
       "id": "lumix3d_readme_3d_object_selection_transformation",
-      "community": 12,
+      "community": 11,
       "norm_label": "3d object selection & transformation"
     },
     {
@@ -2692,7 +2719,7 @@
       "source_file": "README.md",
       "source_location": "L22",
       "id": "lumix3d_readme_object_grouping",
-      "community": 12,
+      "community": 11,
       "norm_label": "object grouping"
     },
     {
@@ -2701,7 +2728,7 @@
       "source_file": "README.md",
       "source_location": "L30",
       "id": "lumix3d_readme_getting_started",
-      "community": 12,
+      "community": 11,
       "norm_label": "getting started"
     },
     {
@@ -2710,7 +2737,7 @@
       "source_file": "README.md",
       "source_location": "L34",
       "id": "lumix3d_readme_codeblock_1",
-      "community": 12,
+      "community": 11,
       "norm_label": "code:bash (npm run dev)"
     },
     {
@@ -2719,7 +2746,7 @@
       "source_file": "README.md",
       "source_location": "L50",
       "id": "lumix3d_readme_learn_more",
-      "community": 12,
+      "community": 11,
       "norm_label": "learn more"
     },
     {
@@ -2728,7 +2755,7 @@
       "source_file": "README.md",
       "source_location": "L59",
       "id": "lumix3d_readme_deploy_on_vercel",
-      "community": 12,
+      "community": 11,
       "norm_label": "deploy on vercel"
     },
     {
@@ -2737,7 +2764,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L1",
       "id": "agents_md",
-      "community": 21,
+      "community": 20,
       "norm_label": "agents.md"
     },
     {
@@ -2746,7 +2773,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L2",
       "id": "lumix3d_agents_this_is_not_the_next_js_you_know",
-      "community": 21,
+      "community": 20,
       "norm_label": "this is not the next.js you know"
     },
     {
@@ -2755,7 +2782,7 @@
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "id": "claude_md",
-      "community": 22,
+      "community": 21,
       "norm_label": "claude.md"
     },
     {
@@ -2764,7 +2791,7 @@
       "source_file": "CLAUDE.md",
       "source_location": "L3",
       "id": "lumix3d_claude_graphify",
-      "community": 22,
+      "community": 21,
       "norm_label": "graphify"
     },
     {
@@ -2773,7 +2800,7 @@
       "source_file": "docs/OPTIMIZATION_FOLDER.md",
       "source_location": "L1",
       "id": "docs_optimization_folder_md",
-      "community": 26,
+      "community": 25,
       "norm_label": "optimization_folder.md"
     },
     {
@@ -2782,7 +2809,7 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L1",
       "id": "docs_optimizations_checklist_1_1_md",
-      "community": 13,
+      "community": 12,
       "norm_label": "optimizations_checklist_1_1.md"
     },
     {
@@ -2791,7 +2818,7 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L1",
       "id": "docs_optimizations_checklist_1_1_lumix3d_optimization_checklist",
-      "community": 13,
+      "community": 12,
       "norm_label": "lumix3d optimization checklist"
     },
     {
@@ -2800,7 +2827,7 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L5",
       "id": "docs_optimizations_checklist_1_1_1_three_js_react_three_fiber_r3f_optimizations",
-      "community": 13,
+      "community": 12,
       "norm_label": "1. three.js & react three fiber (r3f) optimizations"
     },
     {
@@ -2809,7 +2836,7 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L12",
       "id": "docs_optimizations_checklist_1_1_2_redux_state_management_optimizations",
-      "community": 13,
+      "community": 12,
       "norm_label": "2. redux & state management optimizations"
     },
     {
@@ -2818,7 +2845,7 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L18",
       "id": "docs_optimizations_checklist_1_1_3_next_js_react_optimizations",
-      "community": 13,
+      "community": 12,
       "norm_label": "3. next.js & react optimizations"
     },
     {
@@ -2827,7 +2854,7 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L23",
       "id": "docs_optimizations_checklist_1_1_4_asset_network_optimizations",
-      "community": 13,
+      "community": 12,
       "norm_label": "4. asset & network optimizations"
     },
     {
@@ -2836,7 +2863,7 @@
       "source_file": "docs/OPTIMIZATION_STORE.md",
       "source_location": "L1",
       "id": "docs_optimization_store_md",
-      "community": 27,
+      "community": 26,
       "norm_label": "optimization_store.md"
     },
     {
@@ -2848,7 +2875,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "lumix3d",
       "id": "readme_lumix3d"
     },
@@ -2861,7 +2888,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "next.js",
       "id": "readme_nextjs"
     },
@@ -2874,7 +2901,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "three.js",
       "id": "readme_threejs"
     },
@@ -2887,7 +2914,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "react three fiber",
       "id": "readme_react_three_fiber"
     },
@@ -2900,7 +2927,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "3d svg extrusion tool",
       "id": "readme_3d_svg_extrusion"
     },
@@ -2913,7 +2940,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "3d object selection & transformation",
       "id": "readme_object_selection"
     },
@@ -2926,7 +2953,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "object grouping",
       "id": "readme_object_grouping"
     },
@@ -2939,7 +2966,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "keyboard shortcuts (g/r/s/esc)",
       "id": "readme_keyboard_shortcuts"
     },
@@ -2952,7 +2979,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "next.js agent rules",
       "id": "agents_nextjs_rules"
     },
@@ -2965,7 +2992,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "next.js breaking changes warning",
       "id": "agents_nextjs_breaking_changes"
     },
@@ -2978,7 +3005,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 15,
+      "community": 14,
       "norm_label": "pnpm workspace config",
       "id": "pnpm_workspace"
     },
@@ -2991,7 +3018,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 15,
+      "community": 14,
       "norm_label": "sharp (ignored built dependency)",
       "id": "pnpm_ignored_sharp"
     },
@@ -3004,7 +3031,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 15,
+      "community": 14,
       "norm_label": "unrs-resolver (ignored built dependency)",
       "id": "pnpm_ignored_unrs_resolver"
     },
@@ -3017,7 +3044,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "feature-based folder structure optimization",
       "id": "optfolder_feature_structure"
     },
@@ -3030,7 +3057,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "shared components (src/components/)",
       "id": "optfolder_shared_components"
     },
@@ -3043,7 +3070,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "shared hooks (src/hooks/)",
       "id": "optfolder_shared_hooks"
     },
@@ -3056,7 +3083,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "feature scoping rule (no cross-feature imports)",
       "id": "optfolder_feature_scoping"
     },
@@ -3069,7 +3096,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "sidebar feature",
       "id": "optfolder_sidebar_feature"
     },
@@ -3082,7 +3109,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "three feature",
       "id": "optfolder_three_feature"
     },
@@ -3095,7 +3122,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "canvas feature",
       "id": "optfolder_canvas_feature"
     },
@@ -3108,7 +3135,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "renderer feature",
       "id": "optfolder_renderer_feature"
     },
@@ -3121,7 +3148,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "import-export feature",
       "id": "optfolder_importexport_feature"
     },
@@ -3134,7 +3161,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "react three fiber optimizations",
       "id": "optcheck_r3f_optimizations"
     },
@@ -3147,7 +3174,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "on-demand rendering (frameloop=demand)",
       "id": "optcheck_frameloop_demand"
     },
@@ -3160,7 +3187,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "device pixel ratio clamping (dpr=[1,2])",
       "id": "optcheck_dpr_clamping"
     },
@@ -3173,7 +3200,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "geometry lod & segments (svg extrusion)",
       "id": "optcheck_geometry_lod"
     },
@@ -3186,7 +3213,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "shadow map resolution optimization",
       "id": "optcheck_shadow_map"
     },
@@ -3199,7 +3226,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "post-processing performance toggle (effectcomposer/bloom)",
       "id": "optcheck_postprocessing_toggle"
     },
@@ -3212,7 +3239,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "normalize redux state shape (svgshapes/lights as dicts)",
       "id": "optcheck_normalize_state"
     },
@@ -3225,7 +3252,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "memoized selectors (reselect/createselector)",
       "id": "optcheck_memoized_selectors"
     },
@@ -3238,7 +3265,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "debounce redux dispatches",
       "id": "optcheck_debounce_dispatch"
     },
@@ -3251,7 +3278,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "redux persist pruning (avoid persisting base64/svg strings)",
       "id": "optcheck_persist_pruning"
     },
@@ -3264,7 +3291,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "lazy loading canvas3d (next/dynamic, ssr:false)",
       "id": "optcheck_lazy_canvas3d"
     },
@@ -3277,7 +3304,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "web workers for svgo/k-means processing",
       "id": "optcheck_web_workers"
     },
@@ -3290,7 +3317,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "component memoization (react.memo)",
       "id": "optcheck_component_memo"
     },
@@ -3303,7 +3330,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "texture compression (ktx2/basis)",
       "id": "optcheck_texture_compression"
     },
@@ -3316,7 +3343,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "bundle analysis (@next/bundle-analyzer)",
       "id": "optcheck_bundle_analysis"
     },
@@ -3329,7 +3356,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "sceneslice.ts (redux slice for scene state)",
       "id": "optcheck_sceneslice"
     },
@@ -3342,7 +3369,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "svgo (svg optimizer library)",
       "id": "optcheck_svgo"
     },
@@ -3355,7 +3382,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "fabric.js",
       "id": "optcheck_fabric"
     },
@@ -3368,7 +3395,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "redux toolkit",
       "id": "optcheck_redux_toolkit"
     },
@@ -3381,7 +3408,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "redux store architecture constraints",
       "id": "optstore_redux_architecture"
     },
@@ -3394,7 +3421,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "no local component state (usestate/usereducer banned)",
       "id": "optstore_no_local_state"
     },
@@ -3407,7 +3434,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "centralized redux store (/store directory)",
       "id": "optstore_centralized_store"
     },
@@ -3420,7 +3447,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "slices in /store (not /features)",
       "id": "optstore_slices_in_store"
     },
@@ -3433,7 +3460,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "async logic via createasyncthunk",
       "id": "optstore_async_thunk"
     },
@@ -3446,7 +3473,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "no prop drilling (redux state replaces it)",
       "id": "optstore_no_prop_drilling"
     },
@@ -3459,7 +3486,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 4,
       "norm_label": "lumix3d app logo (svg - extruded l-shape 3d wireframe)",
       "id": "logo_lumix3d_svg"
     },
@@ -3468,7 +3495,7 @@
       "file_type": "code",
       "source_file": "types/index.ts",
       "source_location": "L1",
-      "community": 1,
+      "community": 2,
       "norm_label": "index.ts",
       "id": "types_index_ts"
     },
@@ -3477,7 +3504,7 @@
       "file_type": "code",
       "source_file": "features/sidebar/components/QuickScenes.tsx",
       "source_location": "L1",
-      "community": 1,
+      "community": 2,
       "norm_label": "quickscenes.tsx",
       "id": "features_sidebar_components_quickscenes_tsx"
     },
@@ -3486,7 +3513,7 @@
       "file_type": "code",
       "source_file": "features/sidebar/components/SVGUploader.tsx",
       "source_location": "L1",
-      "community": 1,
+      "community": 2,
       "norm_label": "svguploader.tsx",
       "id": "features_sidebar_components_svguploader_tsx"
     },
@@ -3495,7 +3522,7 @@
       "file_type": "code",
       "source_file": "features/three/components/Canvas3D.tsx",
       "source_location": "L1",
-      "community": 0,
+      "community": 3,
       "norm_label": "canvas3d.tsx",
       "id": "features_three_components_canvas3d_tsx"
     },
@@ -3504,7 +3531,7 @@
       "file_type": "code",
       "source_file": "features/three/components/SVGEditor.tsx",
       "source_location": "L1",
-      "community": 9,
+      "community": 7,
       "norm_label": "svgeditor.tsx",
       "id": "features_three_components_svgeditor_tsx"
     },
@@ -3522,7 +3549,7 @@
       "file_type": "code",
       "source_file": "store/slices/sceneSlice.ts",
       "source_location": "L1",
-      "community": 1,
+      "community": 2,
       "norm_label": "sceneslice.ts",
       "id": "store_slices_sceneslice_ts"
     },
@@ -3561,7 +3588,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "appstate type",
       "id": "index_appstate"
     },
@@ -3600,7 +3627,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 13,
       "norm_label": "keyframe type",
       "id": "index_keyframe"
     },
@@ -3613,7 +3640,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 13,
       "norm_label": "savedanimation type",
       "id": "index_savedanimation"
     },
@@ -3626,7 +3653,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 13,
       "norm_label": "timelinestate type",
       "id": "index_timelinestate"
     },
@@ -3639,7 +3666,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 28,
+      "community": 27,
       "norm_label": "quickscenes component",
       "id": "quickscenes_quickscenes"
     },
@@ -3730,7 +3757,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 28,
       "norm_label": "transformtracker",
       "id": "canvas3d_transformtracker"
     },
@@ -3743,7 +3770,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 30,
+      "community": 29,
       "norm_label": "canvasrefscapture",
       "id": "canvas3d_canvasrefscapture"
     },
@@ -3769,7 +3796,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 31,
+      "community": 30,
       "norm_label": "cameracontroller",
       "id": "canvas3d_cameracontroller"
     },
@@ -3782,7 +3809,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "svgeditor component",
       "id": "svgeditor_svgeditor"
     },
@@ -3821,7 +3848,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "svgeditor.readselection",
       "id": "svgeditor_readselection"
     },
@@ -3860,7 +3887,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "sceneslice",
       "id": "sceneslice_sceneslice"
     },
@@ -3925,7 +3952,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 13,
       "norm_label": "saveanimation reducer",
       "id": "sceneslice_saveanimation"
     },
@@ -3938,7 +3965,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 13,
       "norm_label": "applyanimation reducer",
       "id": "sceneslice_applyanimation"
     },
@@ -4016,7 +4043,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 15,
       "norm_label": "historysnapshot type",
       "id": "sceneslice_historysnapshot"
     },
@@ -4029,7 +4056,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 24,
+      "community": 23,
       "norm_label": "setextrusiondepth reducer",
       "id": "sceneslice_setextrusiondepth"
     },
@@ -4055,7 +4082,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 24,
+      "community": 23,
       "norm_label": "global-wins extrusion override policy",
       "id": "global_wins_extrusion_rationale"
     },
@@ -4068,7 +4095,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 13,
       "norm_label": "saved animations index by selection order, not shape id",
       "id": "saved_animation_index_mapping_rationale"
     }
@@ -4120,9 +4147,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_texturesettings",
-      "confidence_score": 1.0
+      "target": "types_index_texturesettings"
     },
     {
       "relation": "contains",
@@ -4130,9 +4157,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_materialpreset",
-      "confidence_score": 1.0
+      "target": "types_index_materialpreset"
     },
     {
       "relation": "contains",
@@ -4140,9 +4167,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_materialsettings",
-      "confidence_score": 1.0
+      "target": "types_index_materialsettings"
     },
     {
       "relation": "contains",
@@ -4150,9 +4177,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_svgshape",
-      "confidence_score": 1.0
+      "target": "types_index_svgshape"
     },
     {
       "relation": "contains",
@@ -4160,9 +4187,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_importedsvg",
-      "confidence_score": 1.0
+      "target": "types_index_importedsvg"
     },
     {
       "relation": "contains",
@@ -4170,9 +4197,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_lighttype",
-      "confidence_score": 1.0
+      "target": "types_index_lighttype"
     },
     {
       "relation": "contains",
@@ -4180,9 +4207,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_light",
-      "confidence_score": 1.0
+      "target": "types_index_light"
     },
     {
       "relation": "contains",
@@ -4190,9 +4217,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L71",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_lightingpreset",
-      "confidence_score": 1.0
+      "target": "types_index_lightingpreset"
     },
     {
       "relation": "contains",
@@ -4200,9 +4227,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_backgroundtype",
-      "confidence_score": 1.0
+      "target": "types_index_backgroundtype"
     },
     {
       "relation": "contains",
@@ -4210,9 +4237,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_background",
-      "confidence_score": 1.0
+      "target": "types_index_background"
     },
     {
       "relation": "contains",
@@ -4220,9 +4247,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L100",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_extrusionsettings",
-      "confidence_score": 1.0
+      "target": "types_index_extrusionsettings"
     },
     {
       "relation": "contains",
@@ -4230,9 +4257,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L109",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_svgselectioninfo",
-      "confidence_score": 1.0
+      "target": "types_index_svgselectioninfo"
     },
     {
       "relation": "contains",
@@ -4240,9 +4267,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L117",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_globaltransform",
-      "confidence_score": 1.0
+      "target": "types_index_globaltransform"
     },
     {
       "relation": "contains",
@@ -4250,9 +4277,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L123",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_groundsettings",
-      "confidence_score": 1.0
+      "target": "types_index_groundsettings"
     },
     {
       "relation": "contains",
@@ -4260,9 +4287,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L131",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_bloomsettings",
-      "confidence_score": 1.0
+      "target": "types_index_bloomsettings"
     },
     {
       "relation": "contains",
@@ -4270,9 +4297,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L138",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_rotationlock",
-      "confidence_score": 1.0
+      "target": "types_index_rotationlock"
     },
     {
       "relation": "contains",
@@ -4280,9 +4307,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L144",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_orbitcontrolslock",
-      "confidence_score": 1.0
+      "target": "types_index_orbitcontrolslock"
     },
     {
       "relation": "contains",
@@ -4290,9 +4317,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L153",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_objectgroup",
-      "confidence_score": 1.0
+      "target": "types_index_objectgroup"
     },
     {
       "relation": "contains",
@@ -4300,9 +4327,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L163",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_camerastate",
-      "confidence_score": 1.0
+      "target": "types_index_camerastate"
     },
     {
       "relation": "contains",
@@ -4310,9 +4337,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L169",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_embedcontrols",
-      "confidence_score": 1.0
+      "target": "types_index_embedcontrols"
     },
     {
       "relation": "contains",
@@ -4320,9 +4347,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L178",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_viewmode",
-      "confidence_score": 1.0
+      "target": "types_index_viewmode"
     },
     {
       "relation": "contains",
@@ -4330,9 +4357,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L180",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_keyframeproperty",
-      "confidence_score": 1.0
+      "target": "types_index_keyframeproperty"
     },
     {
       "relation": "contains",
@@ -4340,9 +4367,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L182",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_keyframe",
-      "confidence_score": 1.0
+      "target": "types_index_keyframe"
     },
     {
       "relation": "contains",
@@ -4350,9 +4377,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L198",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_animationtrack",
-      "confidence_score": 1.0
+      "target": "types_index_animationtrack"
     },
     {
       "relation": "contains",
@@ -4360,9 +4387,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L209",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_savedanimation",
-      "confidence_score": 1.0
+      "target": "types_index_savedanimation"
     },
     {
       "relation": "contains",
@@ -4370,9 +4397,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L216",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_timelinestate",
-      "confidence_score": 1.0
+      "target": "types_index_timelinestate"
     },
     {
       "relation": "contains",
@@ -4380,9 +4407,9 @@
       "source_file": "src/types/index.ts",
       "source_location": "L225",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_types_index_ts",
-      "target": "types_index_appstate",
-      "confidence_score": 1.0
+      "target": "types_index_appstate"
     },
     {
       "relation": "imports_from",
@@ -4391,9 +4418,9 @@
       "source_file": "src/app/page.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_page_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4402,9 +4429,9 @@
       "source_file": "src/app/embed/page.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_embed_page_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4413,9 +4440,9 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_constants_demoscenes_ts",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4424,9 +4451,9 @@
       "source_file": "src/features/sidebar/constants/lightingPresets.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_constants_lightingpresets_ts",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4435,9 +4462,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4446,9 +4473,9 @@
       "source_file": "src/features/sidebar/components/ShapeInspector.tsx",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_shapeinspector_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4457,9 +4484,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4468,9 +4495,9 @@
       "source_file": "src/features/sidebar/components/EffectControls.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_effectcontrols_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4479,9 +4506,9 @@
       "source_file": "src/features/sidebar/components/BackgroundControls.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_backgroundcontrols_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4490,9 +4517,9 @@
       "source_file": "src/features/sidebar/components/ObjectsList.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_objectslist_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4501,9 +4528,9 @@
       "source_file": "src/features/sidebar/components/TextureControls.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_texturecontrols_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4512,9 +4539,9 @@
       "source_file": "src/features/sidebar/components/LightingControls.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_lightingcontrols_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4523,9 +4550,9 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_timelineplayer_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4534,9 +4561,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4545,9 +4572,9 @@
       "source_file": "src/features/three/components/TimelinePanel.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_timelinepanel_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4556,9 +4583,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports_from",
@@ -4567,9 +4594,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "src_types_index_ts",
-      "confidence_score": 1.0
+      "target": "src_types_index_ts"
     },
     {
       "relation": "imports",
@@ -4578,9 +4605,9 @@
       "source_file": "src/features/sidebar/components/TextureControls.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_texturecontrols_tsx",
-      "target": "types_index_texturesettings",
-      "confidence_score": 1.0
+      "target": "types_index_texturesettings"
     },
     {
       "relation": "imports",
@@ -4589,9 +4616,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_texturesettings",
-      "confidence_score": 1.0
+      "target": "types_index_texturesettings"
     },
     {
       "relation": "contains",
@@ -4621,9 +4648,9 @@
       "source_file": "src/features/sidebar/components/ShapeInspector.tsx",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_shapeinspector_tsx",
-      "target": "types_index_materialpreset",
-      "confidence_score": 1.0
+      "target": "types_index_materialpreset"
     },
     {
       "relation": "contains",
@@ -4642,9 +4669,9 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_constants_demoscenes_ts",
-      "target": "types_index_materialsettings",
-      "confidence_score": 1.0
+      "target": "types_index_materialsettings"
     },
     {
       "relation": "imports",
@@ -4653,9 +4680,9 @@
       "source_file": "src/features/sidebar/components/ShapeInspector.tsx",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_shapeinspector_tsx",
-      "target": "types_index_materialsettings",
-      "confidence_score": 1.0
+      "target": "types_index_materialsettings"
     },
     {
       "relation": "imports",
@@ -4664,9 +4691,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "types_index_materialsettings",
-      "confidence_score": 1.0
+      "target": "types_index_materialsettings"
     },
     {
       "relation": "imports",
@@ -4675,9 +4702,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_materialsettings",
-      "confidence_score": 1.0
+      "target": "types_index_materialsettings"
     },
     {
       "relation": "contains",
@@ -4718,9 +4745,9 @@
       "source_file": "src/app/page.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_page_tsx",
-      "target": "types_index_svgshape",
-      "confidence_score": 1.0
+      "target": "types_index_svgshape"
     },
     {
       "relation": "imports",
@@ -4729,9 +4756,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "types_index_svgshape",
-      "confidence_score": 1.0
+      "target": "types_index_svgshape"
     },
     {
       "relation": "imports",
@@ -4740,9 +4767,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "types_index_svgshape",
-      "confidence_score": 1.0
+      "target": "types_index_svgshape"
     },
     {
       "relation": "imports",
@@ -4751,9 +4778,9 @@
       "source_file": "src/features/sidebar/components/ObjectsList.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_objectslist_tsx",
-      "target": "types_index_svgshape",
-      "confidence_score": 1.0
+      "target": "types_index_svgshape"
     },
     {
       "relation": "imports",
@@ -4762,9 +4789,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "types_index_svgshape",
-      "confidence_score": 1.0
+      "target": "types_index_svgshape"
     },
     {
       "relation": "imports",
@@ -4773,9 +4800,9 @@
       "source_file": "src/features/three/components/TimelinePanel.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_timelinepanel_tsx",
-      "target": "types_index_svgshape",
-      "confidence_score": 1.0
+      "target": "types_index_svgshape"
     },
     {
       "relation": "imports",
@@ -4784,9 +4811,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "types_index_svgshape",
-      "confidence_score": 1.0
+      "target": "types_index_svgshape"
     },
     {
       "relation": "imports",
@@ -4795,9 +4822,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_svgshape",
-      "confidence_score": 1.0
+      "target": "types_index_svgshape"
     },
     {
       "relation": "contains",
@@ -4871,9 +4898,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "types_index_importedsvg",
-      "confidence_score": 1.0
+      "target": "types_index_importedsvg"
     },
     {
       "relation": "imports",
@@ -4882,9 +4909,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "types_index_importedsvg",
-      "confidence_score": 1.0
+      "target": "types_index_importedsvg"
     },
     {
       "relation": "imports",
@@ -4893,9 +4920,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_importedsvg",
-      "confidence_score": 1.0
+      "target": "types_index_importedsvg"
     },
     {
       "relation": "contains",
@@ -4957,9 +4984,9 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_constants_demoscenes_ts",
-      "target": "types_index_light",
-      "confidence_score": 1.0
+      "target": "types_index_light"
     },
     {
       "relation": "imports",
@@ -4968,9 +4995,9 @@
       "source_file": "src/features/sidebar/constants/lightingPresets.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_constants_lightingpresets_ts",
-      "target": "types_index_light",
-      "confidence_score": 1.0
+      "target": "types_index_light"
     },
     {
       "relation": "imports",
@@ -4979,9 +5006,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_light",
-      "confidence_score": 1.0
+      "target": "types_index_light"
     },
     {
       "relation": "contains",
@@ -5011,9 +5038,9 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_constants_demoscenes_ts",
-      "target": "types_index_lightingpreset",
-      "confidence_score": 1.0
+      "target": "types_index_lightingpreset"
     },
     {
       "relation": "imports",
@@ -5022,9 +5049,9 @@
       "source_file": "src/features/sidebar/constants/lightingPresets.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_constants_lightingpresets_ts",
-      "target": "types_index_lightingpreset",
-      "confidence_score": 1.0
+      "target": "types_index_lightingpreset"
     },
     {
       "relation": "imports",
@@ -5033,9 +5060,9 @@
       "source_file": "src/features/sidebar/components/LightingControls.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_lightingcontrols_tsx",
-      "target": "types_index_lightingpreset",
-      "confidence_score": 1.0
+      "target": "types_index_lightingpreset"
     },
     {
       "relation": "imports",
@@ -5044,9 +5071,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_lightingpreset",
-      "confidence_score": 1.0
+      "target": "types_index_lightingpreset"
     },
     {
       "relation": "contains",
@@ -5076,9 +5103,9 @@
       "source_file": "src/features/sidebar/components/BackgroundControls.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_backgroundcontrols_tsx",
-      "target": "types_index_backgroundtype",
-      "confidence_score": 1.0
+      "target": "types_index_backgroundtype"
     },
     {
       "relation": "contains",
@@ -5097,9 +5124,9 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_constants_demoscenes_ts",
-      "target": "types_index_background",
-      "confidence_score": 1.0
+      "target": "types_index_background"
     },
     {
       "relation": "imports",
@@ -5108,9 +5135,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_background",
-      "confidence_score": 1.0
+      "target": "types_index_background"
     },
     {
       "relation": "contains",
@@ -5140,9 +5167,9 @@
       "source_file": "src/features/sidebar/constants/demoScenes.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_constants_demoscenes_ts",
-      "target": "types_index_extrusionsettings",
-      "confidence_score": 1.0
+      "target": "types_index_extrusionsettings"
     },
     {
       "relation": "imports",
@@ -5151,9 +5178,9 @@
       "source_file": "src/features/sidebar/components/ShapeInspector.tsx",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_shapeinspector_tsx",
-      "target": "types_index_extrusionsettings",
-      "confidence_score": 1.0
+      "target": "types_index_extrusionsettings"
     },
     {
       "relation": "imports",
@@ -5162,9 +5189,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "types_index_extrusionsettings",
-      "confidence_score": 1.0
+      "target": "types_index_extrusionsettings"
     },
     {
       "relation": "imports",
@@ -5173,9 +5200,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_extrusionsettings",
-      "confidence_score": 1.0
+      "target": "types_index_extrusionsettings"
     },
     {
       "relation": "contains",
@@ -5216,9 +5243,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_svgselectioninfo",
-      "confidence_score": 1.0
+      "target": "types_index_svgselectioninfo"
     },
     {
       "relation": "contains",
@@ -5258,9 +5285,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_groundsettings",
-      "confidence_score": 1.0
+      "target": "types_index_groundsettings"
     },
     {
       "relation": "contains",
@@ -5290,9 +5317,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_bloomsettings",
-      "confidence_score": 1.0
+      "target": "types_index_bloomsettings"
     },
     {
       "relation": "contains",
@@ -5339,12 +5366,23 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/features/sidebar/components/ObjectsList.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "src_features_sidebar_components_objectslist_tsx",
+      "target": "types_index_objectgroup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_objectgroup",
-      "confidence_score": 1.0
+      "target": "types_index_objectgroup"
     },
     {
       "relation": "contains",
@@ -5374,9 +5412,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_camerastate",
-      "confidence_score": 1.0
+      "target": "types_index_camerastate"
     },
     {
       "relation": "contains",
@@ -5416,9 +5454,9 @@
       "source_file": "src/features/sidebar/components/EffectControls.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_effectcontrols_tsx",
-      "target": "types_index_viewmode",
-      "confidence_score": 1.0
+      "target": "types_index_viewmode"
     },
     {
       "relation": "imports",
@@ -5427,9 +5465,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "types_index_viewmode",
-      "confidence_score": 1.0
+      "target": "types_index_viewmode"
     },
     {
       "relation": "imports",
@@ -5438,9 +5476,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_viewmode",
-      "confidence_score": 1.0
+      "target": "types_index_viewmode"
     },
     {
       "relation": "contains",
@@ -5491,9 +5529,9 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_timelineplayer_tsx",
-      "target": "types_index_keyframe",
-      "confidence_score": 1.0
+      "target": "types_index_keyframe"
     },
     {
       "relation": "imports",
@@ -5502,9 +5540,9 @@
       "source_file": "src/features/three/components/TimelinePanel.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_timelinepanel_tsx",
-      "target": "types_index_keyframe",
-      "confidence_score": 1.0
+      "target": "types_index_keyframe"
     },
     {
       "relation": "imports",
@@ -5513,9 +5551,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_keyframe",
-      "confidence_score": 1.0
+      "target": "types_index_keyframe"
     },
     {
       "relation": "contains",
@@ -5555,9 +5593,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_savedanimation",
-      "confidence_score": 1.0
+      "target": "types_index_savedanimation"
     },
     {
       "relation": "contains",
@@ -5597,9 +5635,9 @@
       "source_file": "src/app/embed/page.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_embed_page_tsx",
-      "target": "types_index_appstate",
-      "confidence_score": 1.0
+      "target": "types_index_appstate"
     },
     {
       "relation": "imports",
@@ -5608,9 +5646,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "types_index_appstate",
-      "confidence_score": 1.0
+      "target": "types_index_appstate"
     },
     {
       "relation": "contains",
@@ -5812,9 +5850,9 @@
       "source_file": "src/app/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_page_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -6082,9 +6120,9 @@
       "source_file": "src/app/embed/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_embed_page_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -6225,9 +6263,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "src_features_sidebar_constants_demoscenes_ts",
-      "confidence_score": 1.0
+      "target": "src_features_sidebar_constants_demoscenes_ts"
     },
     {
       "relation": "imports",
@@ -6236,9 +6274,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "constants_demoscenes_demoscene",
-      "confidence_score": 1.0
+      "target": "constants_demoscenes_demoscene"
     },
     {
       "relation": "imports",
@@ -6247,9 +6285,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "constants_demoscenes_sidebar_demo_scenes",
-      "confidence_score": 1.0
+      "target": "constants_demoscenes_sidebar_demo_scenes"
     },
     {
       "relation": "contains",
@@ -6388,9 +6426,9 @@
       "source_file": "src/features/sidebar/components/ProjectActions.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_projectactions_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -6453,9 +6491,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "src_features_sidebar_components_collapsiblecard_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_sidebar_components_collapsiblecard_tsx"
     },
     {
       "relation": "imports",
@@ -6464,9 +6502,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "components_collapsiblecard_collapsiblecard",
-      "confidence_score": 1.0
+      "target": "components_collapsiblecard_collapsiblecard"
     },
     {
       "relation": "imports_from",
@@ -6475,9 +6513,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "src_store_hooks_ts",
-      "confidence_score": 1.0
+      "target": "src_store_hooks_ts"
     },
     {
       "relation": "imports",
@@ -6486,9 +6524,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "store_hooks_useappdispatch",
-      "confidence_score": 1.0
+      "target": "store_hooks_useappdispatch"
     },
     {
       "relation": "imports_from",
@@ -6497,9 +6535,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -6507,9 +6545,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "components_quickscenes_scene_icons",
-      "confidence_score": 1.0
+      "target": "components_quickscenes_scene_icons"
     },
     {
       "relation": "contains",
@@ -6517,9 +6555,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "components_quickscenes_builddemosvgshapes",
-      "confidence_score": 1.0
+      "target": "components_quickscenes_builddemosvgshapes"
     },
     {
       "relation": "contains",
@@ -6527,9 +6565,9 @@
       "source_file": "src/features/sidebar/components/QuickScenes.tsx",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_quickscenes_tsx",
-      "target": "components_quickscenes_quickscenes",
-      "confidence_score": 1.0
+      "target": "components_quickscenes_quickscenes"
     },
     {
       "relation": "imports_from",
@@ -6538,9 +6576,9 @@
       "source_file": "src/features/sidebar/components/Sidebar.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_sidebar_tsx",
-      "target": "src_features_sidebar_components_quickscenes_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_sidebar_components_quickscenes_tsx"
     },
     {
       "relation": "contains",
@@ -6569,9 +6607,9 @@
       "source_file": "src/features/sidebar/components/Sidebar.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_sidebar_tsx",
-      "target": "components_quickscenes_quickscenes",
-      "confidence_score": 1.0
+      "target": "components_quickscenes_quickscenes"
     },
     {
       "relation": "calls",
@@ -6766,9 +6804,9 @@
       "source_file": "src/features/sidebar/components/ShapeInspector.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_shapeinspector_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -7027,9 +7065,9 @@
       "source_file": "src/features/sidebar/components/ExtrusionControls.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_extrusioncontrols_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -7102,9 +7140,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "src_features_sidebar_components_collapsiblecard_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_sidebar_components_collapsiblecard_tsx"
     },
     {
       "relation": "imports",
@@ -7113,9 +7151,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "components_collapsiblecard_collapsiblecard",
-      "confidence_score": 1.0
+      "target": "components_collapsiblecard_collapsiblecard"
     },
     {
       "relation": "imports_from",
@@ -7124,9 +7162,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "src_store_hooks_ts",
-      "confidence_score": 1.0
+      "target": "src_store_hooks_ts"
     },
     {
       "relation": "imports",
@@ -7135,9 +7173,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "store_hooks_useappdispatch",
-      "confidence_score": 1.0
+      "target": "store_hooks_useappdispatch"
     },
     {
       "relation": "imports",
@@ -7146,9 +7184,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "store_hooks_useappselector",
-      "confidence_score": 1.0
+      "target": "store_hooks_useappselector"
     },
     {
       "relation": "imports_from",
@@ -7157,9 +7195,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -7167,9 +7205,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "components_svguploader_parsesvgshapes",
-      "confidence_score": 1.0
+      "target": "components_svguploader_parsesvgshapes"
     },
     {
       "relation": "contains",
@@ -7177,9 +7215,9 @@
       "source_file": "src/features/sidebar/components/SVGUploader.tsx",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_svguploader_tsx",
-      "target": "components_svguploader_svguploader",
-      "confidence_score": 1.0
+      "target": "components_svguploader_svguploader"
     },
     {
       "relation": "imports_from",
@@ -7188,9 +7226,9 @@
       "source_file": "src/features/sidebar/components/Sidebar.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_sidebar_tsx",
-      "target": "src_features_sidebar_components_svguploader_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_sidebar_components_svguploader_tsx"
     },
     {
       "relation": "contains",
@@ -7209,9 +7247,9 @@
       "source_file": "src/features/sidebar/components/Sidebar.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_sidebar_tsx",
-      "target": "components_svguploader_svguploader",
-      "confidence_score": 1.0
+      "target": "components_svguploader_svguploader"
     },
     {
       "relation": "calls",
@@ -7395,9 +7433,9 @@
       "source_file": "src/features/sidebar/components/EffectControls.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_effectcontrols_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -7688,9 +7726,9 @@
       "source_file": "src/features/sidebar/components/BackgroundControls.tsx",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_backgroundcontrols_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -7808,8 +7846,18 @@
       "source_file": "src/features/sidebar/components/ObjectsList.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_objectslist_tsx",
-      "target": "src_store_slices_sceneslice_ts",
+      "target": "src_store_slices_sceneslice_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/features/sidebar/components/ObjectsList.tsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "src_features_sidebar_components_objectslist_tsx",
+      "target": "components_objectslist_listmode",
       "confidence_score": 1.0
     },
     {
@@ -7831,6 +7879,26 @@
       "confidence_score": 1.0,
       "source": "src_features_sidebar_components_objectslist_tsx",
       "target": "components_objectslist_objectlistitem"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/features/sidebar/components/ObjectsList.tsx",
+      "source_location": "L110",
+      "weight": 1.0,
+      "source": "src_features_sidebar_components_objectslist_tsx",
+      "target": "components_objectslist_grouprowprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/features/sidebar/components/ObjectsList.tsx",
+      "source_location": "L121",
+      "weight": 1.0,
+      "source": "src_features_sidebar_components_objectslist_tsx",
+      "target": "components_objectslist_grouprow",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8077,9 +8145,9 @@
       "source_file": "src/features/sidebar/components/TimelineEditor.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_timelineeditor_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -8174,9 +8242,9 @@
       "source_file": "src/features/sidebar/components/TextureControls.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_texturecontrols_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -8346,9 +8414,9 @@
       "source_file": "src/features/sidebar/components/CollapsibleCard.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_collapsiblecard_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -8607,9 +8675,9 @@
       "source_file": "src/features/sidebar/components/LightingControls.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_sidebar_components_lightingcontrols_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -8660,9 +8728,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_livetransform_ts",
-      "confidence_score": 1.0
+      "target": "src_features_three_livetransform_ts"
     },
     {
       "relation": "imports_from",
@@ -8693,9 +8761,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "three_livetransform_livetransform",
-      "confidence_score": 1.0
+      "target": "three_livetransform_livetransform"
     },
     {
       "relation": "imports",
@@ -8847,9 +8915,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "src_features_three_multiselectanim_ts",
-      "confidence_score": 1.0
+      "target": "src_features_three_multiselectanim_ts"
     },
     {
       "relation": "imports",
@@ -8946,9 +9014,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "three_multiselectanim_ensurebound",
-      "confidence_score": 1.0
+      "target": "three_multiselectanim_ensurebound"
     },
     {
       "relation": "imports",
@@ -8968,9 +9036,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "three_multiselectanim_applydeltaquat",
-      "confidence_score": 1.0
+      "target": "three_multiselectanim_applydeltaquat"
     },
     {
       "relation": "imports",
@@ -8979,9 +9047,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "three_multiselectanim_applydeltascale",
-      "confidence_score": 1.0
+      "target": "three_multiselectanim_applydeltascale"
     },
     {
       "relation": "imports",
@@ -8990,9 +9058,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "three_multiselectanim_resetmultiselectanim",
-      "confidence_score": 1.0
+      "target": "three_multiselectanim_resetmultiselectanim"
     },
     {
       "relation": "contains",
@@ -9011,9 +9079,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_globalgroupref_ts",
-      "confidence_score": 1.0
+      "target": "src_features_three_globalgroupref_ts"
     },
     {
       "relation": "imports_from",
@@ -9033,9 +9101,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "src_features_three_globalgroupref_ts",
-      "confidence_score": 1.0
+      "target": "src_features_three_globalgroupref_ts"
     },
     {
       "relation": "imports_from",
@@ -9055,9 +9123,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "three_globalgroupref_globalgroupref",
-      "confidence_score": 1.0
+      "target": "three_globalgroupref_globalgroupref"
     },
     {
       "relation": "imports",
@@ -9077,9 +9145,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "three_globalgroupref_globalgroupref",
-      "confidence_score": 1.0
+      "target": "three_globalgroupref_globalgroupref"
     },
     {
       "relation": "imports",
@@ -9140,9 +9208,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_shapeobjectregistry_ts",
-      "confidence_score": 1.0
+      "target": "src_features_three_shapeobjectregistry_ts"
     },
     {
       "relation": "imports_from",
@@ -9151,9 +9219,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "src_features_three_shapeobjectregistry_ts",
-      "confidence_score": 1.0
+      "target": "src_features_three_shapeobjectregistry_ts"
     },
     {
       "relation": "imports_from",
@@ -9184,9 +9252,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "three_shapeobjectregistry_shapeobjectregistry",
-      "confidence_score": 1.0
+      "target": "three_shapeobjectregistry_shapeobjectregistry"
     },
     {
       "relation": "imports",
@@ -9195,9 +9263,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "three_shapeobjectregistry_shapeobjectregistry",
-      "confidence_score": 1.0
+      "target": "three_shapeobjectregistry_shapeobjectregistry"
     },
     {
       "relation": "imports",
@@ -9217,9 +9285,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "three_shapeobjectregistry_cameraref",
-      "confidence_score": 1.0
+      "target": "three_shapeobjectregistry_cameraref"
     },
     {
       "relation": "imports",
@@ -9239,9 +9307,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "three_shapeobjectregistry_canvaselementref",
-      "confidence_score": 1.0
+      "target": "three_shapeobjectregistry_canvaselementref"
     },
     {
       "relation": "imports",
@@ -9331,9 +9399,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "src_features_three_utils_svgpreprocess_ts",
-      "confidence_score": 1.0
+      "target": "src_features_three_utils_svgpreprocess_ts"
     },
     {
       "relation": "imports_from",
@@ -9342,9 +9410,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "src_features_three_utils_svgpreprocess_ts",
-      "confidence_score": 1.0
+      "target": "src_features_three_utils_svgpreprocess_ts"
     },
     {
       "relation": "calls",
@@ -9408,9 +9476,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "utils_svgpreprocess_preprocesssvgforthree",
-      "confidence_score": 1.0
+      "target": "utils_svgpreprocess_preprocesssvgforthree"
     },
     {
       "relation": "imports",
@@ -9419,9 +9487,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "utils_svgpreprocess_preprocesssvgforthree",
-      "confidence_score": 1.0
+      "target": "utils_svgpreprocess_preprocesssvgforthree"
     },
     {
       "relation": "imports_from",
@@ -9462,9 +9530,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_components_scenelights_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_three_components_scenelights_tsx"
     },
     {
       "relation": "imports",
@@ -9473,9 +9541,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_scenelights_scenelights",
-      "confidence_score": 1.0
+      "target": "components_scenelights_scenelights"
     },
     {
       "relation": "calls",
@@ -9528,9 +9596,9 @@
       "source_file": "src/features/three/components/TimelinePlayer.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_timelineplayer_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -9699,9 +9767,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_components_timelineplayer_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_three_components_timelineplayer_tsx"
     },
     {
       "relation": "calls",
@@ -9743,9 +9811,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_timelineplayer_timelineplayer",
-      "confidence_score": 1.0
+      "target": "components_timelineplayer_timelineplayer"
     },
     {
       "relation": "calls",
@@ -9776,9 +9844,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_store_hooks_ts",
-      "confidence_score": 1.0
+      "target": "src_store_hooks_ts"
     },
     {
       "relation": "imports",
@@ -9787,9 +9855,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "store_hooks_useappselector",
-      "confidence_score": 1.0
+      "target": "store_hooks_useappselector"
     },
     {
       "relation": "imports",
@@ -9798,9 +9866,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "store_hooks_useappdispatch",
-      "confidence_score": 1.0
+      "target": "store_hooks_useappdispatch"
     },
     {
       "relation": "imports_from",
@@ -9809,9 +9877,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -9820,9 +9888,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_components_extrudedsvg_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_three_components_extrudedsvg_tsx"
     },
     {
       "relation": "imports",
@@ -9831,9 +9899,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_extrudedsvg_extrudedsvg",
-      "confidence_score": 1.0
+      "target": "components_extrudedsvg_extrudedsvg"
     },
     {
       "relation": "imports_from",
@@ -9842,9 +9910,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_components_rotationlocktoolbar_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_three_components_rotationlocktoolbar_tsx"
     },
     {
       "relation": "imports",
@@ -9853,9 +9921,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_rotationlocktoolbar_rotationlocktoolbar",
-      "confidence_score": 1.0
+      "target": "components_rotationlocktoolbar_rotationlocktoolbar"
     },
     {
       "relation": "imports_from",
@@ -9864,9 +9932,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_components_orbitcontrolslocktoolbar_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_three_components_orbitcontrolslocktoolbar_tsx"
     },
     {
       "relation": "imports",
@@ -9875,9 +9943,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_orbitcontrolslocktoolbar_orbitcontrolslocktoolbar",
-      "confidence_score": 1.0
+      "target": "components_orbitcontrolslocktoolbar_orbitcontrolslocktoolbar"
     },
     {
       "relation": "imports_from",
@@ -9886,9 +9954,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_components_selectionhint_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_three_components_selectionhint_tsx"
     },
     {
       "relation": "imports",
@@ -9897,9 +9965,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_selectionhint_selectionhint",
-      "confidence_score": 1.0
+      "target": "components_selectionhint_selectionhint"
     },
     {
       "relation": "imports_from",
@@ -9908,9 +9976,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_components_groupmanager_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_three_components_groupmanager_tsx"
     },
     {
       "relation": "imports",
@@ -9919,9 +9987,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_groupmanager_groupmanager",
-      "confidence_score": 1.0
+      "target": "components_groupmanager_groupmanager"
     },
     {
       "relation": "imports_from",
@@ -9930,9 +9998,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "src_features_three_components_boxselectoverlay_tsx",
-      "confidence_score": 1.0
+      "target": "src_features_three_components_boxselectoverlay_tsx"
     },
     {
       "relation": "imports",
@@ -9941,9 +10009,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_boxselectoverlay_boxselectoverlay",
-      "confidence_score": 1.0
+      "target": "components_boxselectoverlay_boxselectoverlay"
     },
     {
       "relation": "contains",
@@ -9951,9 +10019,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_canvas3d_transformtracker",
-      "confidence_score": 1.0
+      "target": "components_canvas3d_transformtracker"
     },
     {
       "relation": "contains",
@@ -9961,9 +10029,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L55",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_canvas3d_canvasrefscapture",
-      "confidence_score": 1.0
+      "target": "components_canvas3d_canvasrefscapture"
     },
     {
       "relation": "contains",
@@ -9971,9 +10039,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L72",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_canvas3d_fitcameraonload",
-      "confidence_score": 1.0
+      "target": "components_canvas3d_fitcameraonload"
     },
     {
       "relation": "contains",
@@ -9981,9 +10049,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L145",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_canvas3d_cameracontroller",
-      "confidence_score": 1.0
+      "target": "components_canvas3d_cameracontroller"
     },
     {
       "relation": "contains",
@@ -9991,9 +10059,9 @@
       "source_file": "src/features/three/components/Canvas3D.tsx",
       "source_location": "L210",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_canvas3d_tsx",
-      "target": "components_canvas3d_canvas3d",
-      "confidence_score": 1.0
+      "target": "components_canvas3d_canvas3d"
     },
     {
       "relation": "contains",
@@ -10107,9 +10175,9 @@
       "source_file": "src/features/three/components/UndoRedoToolbar.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_undoredotoolbar_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -10333,9 +10401,9 @@
       "source_file": "src/features/three/components/GroupManager.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_groupmanager_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -10493,9 +10561,9 @@
       "source_file": "src/features/three/components/SelectionHint.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_selectionhint_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -10631,9 +10699,9 @@
       "source_file": "src/features/three/components/RotationLockToolbar.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_rotationlocktoolbar_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -10729,9 +10797,9 @@
       "source_file": "src/features/three/components/SceneTransformToolbar.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_scenetransformtoolbar_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -10794,9 +10862,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "src_store_hooks_ts",
-      "confidence_score": 1.0
+      "target": "src_store_hooks_ts"
     },
     {
       "relation": "imports",
@@ -10805,9 +10873,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "store_hooks_useappdispatch",
-      "confidence_score": 1.0
+      "target": "store_hooks_useappdispatch"
     },
     {
       "relation": "imports",
@@ -10816,9 +10884,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "store_hooks_useappselector",
-      "confidence_score": 1.0
+      "target": "store_hooks_useappselector"
     },
     {
       "relation": "imports_from",
@@ -10827,9 +10895,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -10838,9 +10906,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "src_components_ui_button_tsx",
-      "confidence_score": 1.0
+      "target": "src_components_ui_button_tsx"
     },
     {
       "relation": "imports",
@@ -10849,9 +10917,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "ui_button_button",
-      "confidence_score": 1.0
+      "target": "ui_button_button"
     },
     {
       "relation": "contains",
@@ -10859,9 +10927,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "components_svgeditor_selectionprops",
-      "confidence_score": 1.0
+      "target": "components_svgeditor_selectionprops"
     },
     {
       "relation": "contains",
@@ -10869,9 +10937,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "components_svgeditor_tohex",
-      "confidence_score": 1.0
+      "target": "components_svgeditor_tohex"
     },
     {
       "relation": "contains",
@@ -10879,9 +10947,9 @@
       "source_file": "src/features/three/components/SVGEditor.tsx",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_svgeditor_tsx",
-      "target": "components_svgeditor_svgeditor",
-      "confidence_score": 1.0
+      "target": "components_svgeditor_svgeditor"
     },
     {
       "relation": "contains",
@@ -10975,9 +11043,9 @@
       "source_file": "src/features/three/components/TimelinePanel.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_timelinepanel_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -11079,9 +11147,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "src_store_hooks_ts",
-      "confidence_score": 1.0
+      "target": "src_store_hooks_ts"
     },
     {
       "relation": "imports",
@@ -11090,9 +11158,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "store_hooks_useappdispatch",
-      "confidence_score": 1.0
+      "target": "store_hooks_useappdispatch"
     },
     {
       "relation": "imports",
@@ -11101,9 +11169,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "store_hooks_useappselector",
-      "confidence_score": 1.0
+      "target": "store_hooks_useappselector"
     },
     {
       "relation": "imports_from",
@@ -11112,9 +11180,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -11122,9 +11190,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "components_extrudedsvg_loadedtextures",
-      "confidence_score": 1.0
+      "target": "components_extrudedsvg_loadedtextures"
     },
     {
       "relation": "contains",
@@ -11132,9 +11200,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "components_extrudedsvg_null_textures",
-      "confidence_score": 1.0
+      "target": "components_extrudedsvg_null_textures"
     },
     {
       "relation": "contains",
@@ -11142,9 +11210,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "components_extrudedsvg_shapemeshesprops",
-      "confidence_score": 1.0
+      "target": "components_extrudedsvg_shapemeshesprops"
     },
     {
       "relation": "contains",
@@ -11152,9 +11220,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L68",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "components_extrudedsvg_shapemeshes",
-      "confidence_score": 1.0
+      "target": "components_extrudedsvg_shapemeshes"
     },
     {
       "relation": "contains",
@@ -11162,9 +11230,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L300",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "components_extrudedsvg_parsedsvggroup",
-      "confidence_score": 1.0
+      "target": "components_extrudedsvg_parsedsvggroup"
     },
     {
       "relation": "contains",
@@ -11172,9 +11240,9 @@
       "source_file": "src/features/three/components/ExtrudedSVG.tsx",
       "source_location": "L309",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_extrudedsvg_tsx",
-      "target": "components_extrudedsvg_extrudedsvg",
-      "confidence_score": 1.0
+      "target": "components_extrudedsvg_extrudedsvg"
     },
     {
       "relation": "contains",
@@ -11320,9 +11388,9 @@
       "source_file": "src/features/three/components/BoxSelectOverlay.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_boxselectoverlay_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "contains",
@@ -11426,9 +11494,9 @@
       "source_file": "src/features/three/components/OrbitControlsLockToolbar.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_features_three_components_orbitcontrolslocktoolbar_tsx",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -12302,9 +12370,9 @@
       "source_file": "src/store/index.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_index_ts",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports_from",
@@ -12449,9 +12517,9 @@
       "source_file": "src/store/historyMiddleware.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_historymiddleware_ts",
-      "target": "src_store_slices_sceneslice_ts",
-      "confidence_score": 1.0
+      "target": "src_store_slices_sceneslice_ts"
     },
     {
       "relation": "imports",
@@ -12460,9 +12528,9 @@
       "source_file": "src/store/historyMiddleware.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_historymiddleware_ts",
-      "target": "slices_sceneslice_historysnapshot",
-      "confidence_score": 1.0
+      "target": "slices_sceneslice_historysnapshot"
     },
     {
       "relation": "contains",
@@ -12540,9 +12608,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "slices_sceneslice_historysnapshot",
-      "confidence_score": 1.0
+      "target": "slices_sceneslice_historysnapshot"
     },
     {
       "relation": "contains",
@@ -12550,9 +12618,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "slices_sceneslice_initialstate",
-      "confidence_score": 1.0
+      "target": "slices_sceneslice_initialstate"
     },
     {
       "relation": "contains",
@@ -12560,9 +12628,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L154",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "slices_sceneslice_sceneslice",
-      "confidence_score": 1.0
+      "target": "slices_sceneslice_sceneslice"
     },
     {
       "relation": "contains",
@@ -12570,9 +12638,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L1042",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "slices_sceneslice_selectscenestate",
-      "confidence_score": 1.0
+      "target": "slices_sceneslice_selectscenestate"
     },
     {
       "relation": "contains",
@@ -12580,9 +12648,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L1044",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "slices_sceneslice_selectvisibleshapes",
-      "confidence_score": 1.0
+      "target": "slices_sceneslice_selectvisibleshapes"
     },
     {
       "relation": "contains",
@@ -12590,9 +12658,9 @@
       "source_file": "src/store/slices/sceneSlice.ts",
       "source_location": "L1048",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_store_slices_sceneslice_ts",
-      "target": "slices_sceneslice_selectactiveshape",
-      "confidence_score": 1.0
+      "target": "slices_sceneslice_selectactiveshape"
     },
     {
       "relation": "contains",
@@ -12660,9 +12728,9 @@
       "source_file": "README.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "readme_md",
-      "target": "lumix3d_readme_lumix3d",
-      "confidence_score": 1.0
+      "target": "lumix3d_readme_lumix3d"
     },
     {
       "relation": "contains",
@@ -12670,9 +12738,9 @@
       "source_file": "README.md",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lumix3d_readme_lumix3d",
-      "target": "lumix3d_readme_features",
-      "confidence_score": 1.0
+      "target": "lumix3d_readme_features"
     },
     {
       "relation": "contains",
@@ -12680,9 +12748,9 @@
       "source_file": "README.md",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lumix3d_readme_lumix3d",
-      "target": "lumix3d_readme_getting_started",
-      "confidence_score": 1.0
+      "target": "lumix3d_readme_getting_started"
     },
     {
       "relation": "contains",
@@ -12690,9 +12758,9 @@
       "source_file": "README.md",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lumix3d_readme_lumix3d",
-      "target": "lumix3d_readme_learn_more",
-      "confidence_score": 1.0
+      "target": "lumix3d_readme_learn_more"
     },
     {
       "relation": "contains",
@@ -12700,9 +12768,9 @@
       "source_file": "README.md",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lumix3d_readme_lumix3d",
-      "target": "lumix3d_readme_deploy_on_vercel",
-      "confidence_score": 1.0
+      "target": "lumix3d_readme_deploy_on_vercel"
     },
     {
       "relation": "contains",
@@ -12710,9 +12778,9 @@
       "source_file": "README.md",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lumix3d_readme_features",
-      "target": "lumix3d_readme_3d_object_selection_transformation",
-      "confidence_score": 1.0
+      "target": "lumix3d_readme_3d_object_selection_transformation"
     },
     {
       "relation": "contains",
@@ -12720,9 +12788,9 @@
       "source_file": "README.md",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lumix3d_readme_features",
-      "target": "lumix3d_readme_object_grouping",
-      "confidence_score": 1.0
+      "target": "lumix3d_readme_object_grouping"
     },
     {
       "relation": "contains",
@@ -12730,9 +12798,9 @@
       "source_file": "README.md",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lumix3d_readme_getting_started",
-      "target": "lumix3d_readme_codeblock_1",
-      "confidence_score": 1.0
+      "target": "lumix3d_readme_codeblock_1"
     },
     {
       "relation": "contains",
@@ -12740,9 +12808,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agents_md",
-      "target": "lumix3d_agents_this_is_not_the_next_js_you_know",
-      "confidence_score": 1.0
+      "target": "lumix3d_agents_this_is_not_the_next_js_you_know"
     },
     {
       "relation": "contains",
@@ -12750,9 +12818,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_md",
-      "target": "lumix3d_claude_graphify",
-      "confidence_score": 1.0
+      "target": "lumix3d_claude_graphify"
     },
     {
       "relation": "contains",
@@ -12760,9 +12828,9 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_optimizations_checklist_1_1_md",
-      "target": "docs_optimizations_checklist_1_1_lumix3d_optimization_checklist",
-      "confidence_score": 1.0
+      "target": "docs_optimizations_checklist_1_1_lumix3d_optimization_checklist"
     },
     {
       "relation": "contains",
@@ -12770,9 +12838,9 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_optimizations_checklist_1_1_lumix3d_optimization_checklist",
-      "target": "docs_optimizations_checklist_1_1_1_three_js_react_three_fiber_r3f_optimizations",
-      "confidence_score": 1.0
+      "target": "docs_optimizations_checklist_1_1_1_three_js_react_three_fiber_r3f_optimizations"
     },
     {
       "relation": "contains",
@@ -12780,9 +12848,9 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_optimizations_checklist_1_1_lumix3d_optimization_checklist",
-      "target": "docs_optimizations_checklist_1_1_2_redux_state_management_optimizations",
-      "confidence_score": 1.0
+      "target": "docs_optimizations_checklist_1_1_2_redux_state_management_optimizations"
     },
     {
       "relation": "contains",
@@ -12790,9 +12858,9 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_optimizations_checklist_1_1_lumix3d_optimization_checklist",
-      "target": "docs_optimizations_checklist_1_1_3_next_js_react_optimizations",
-      "confidence_score": 1.0
+      "target": "docs_optimizations_checklist_1_1_3_next_js_react_optimizations"
     },
     {
       "relation": "contains",
@@ -12800,9 +12868,9 @@
       "source_file": "docs/optimizations_checklist_1_1.md",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_optimizations_checklist_1_1_lumix3d_optimization_checklist",
-      "target": "docs_optimizations_checklist_1_1_4_asset_network_optimizations",
-      "confidence_score": 1.0
+      "target": "docs_optimizations_checklist_1_1_4_asset_network_optimizations"
     },
     {
       "relation": "references",
@@ -13871,5 +13939,5 @@
       "source_file": "src/store/slices/sceneSlice.ts"
     }
   ],
-  "built_at_commit": "fe2b10cbb8b491404e136d9d0a87e3ce5965bac4"
+  "built_at_commit": "999416e45d65d2290d0240e860160322e761dffe"
 }

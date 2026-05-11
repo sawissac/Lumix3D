@@ -1,8 +1,14 @@
 "use client";
 
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setGlobalTexture, clearTextureChannel } from "@/store/slices/sceneSlice";
+import {
+  setGlobalTexture,
+  clearTextureChannel,
+  updateShapesTexture,
+  clearShapesTextureChannel,
+  resetShapesTexture,
+} from "@/store/slices/sceneSlice";
 import { TextureSettings } from "@/types";
 import { SliderWithInput } from "@/components/ui/slider-with-input";
 import { CollapsibleCard } from "./CollapsibleCard";
@@ -38,12 +44,33 @@ const CHANNELS: TextureChannel[] = [
 
 const SUPPORTED = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/bmp", "image/avif"];
 
-
 export function TextureControls() {
   const dispatch = useAppDispatch();
   const globalTexture = useAppSelector((s) => s.scene.globalTexture);
+  const svgShapes = useAppSelector((s) => s.scene.svgShapes);
+  const selectedShapeId = useAppSelector((s) => s.scene.selectedShapeId);
+  const selectedShapeIds = useAppSelector((s) => s.scene.selectedShapeIds);
   const is3DMode = useAppSelector((s) => s.scene.is3DMode);
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  const targetIds = useMemo(() => {
+    if (selectedShapeIds.length > 0) return selectedShapeIds;
+    if (selectedShapeId && selectedShapeId !== "global") return [selectedShapeId];
+    return [];
+  }, [selectedShapeId, selectedShapeIds]);
+
+  const isLocalMode = targetIds.length > 0;
+
+  // In local mode, surface the first selected shape's texture (UI reference).
+  // Writes propagate to all selected shapes.
+  const primaryShape = useMemo(
+    () => (isLocalMode ? svgShapes.find((s) => s.id === targetIds[0]) : undefined),
+    [isLocalMode, targetIds, svgShapes],
+  );
+
+  const displayTexture: Partial<TextureSettings> = isLocalMode
+    ? primaryShape?.texture ?? {}
+    : globalTexture;
 
   if (!is3DMode) return null;
 
@@ -54,44 +81,101 @@ export function TextureControls() {
     }
     const reader = new FileReader();
     reader.onload = (e) => {
-      dispatch(setGlobalTexture({ [key]: e.target?.result as string }));
+      const dataUrl = e.target?.result as string;
+      if (isLocalMode) {
+        dispatch(updateShapesTexture({ ids: targetIds, texture: { [key]: dataUrl } }));
+      } else {
+        dispatch(setGlobalTexture({ [key]: dataUrl }));
+      }
     };
     reader.readAsDataURL(file);
   };
 
-  const hasAny = CHANNELS.some((c) => !!globalTexture[c.key]);
+  const setParam = (patch: Partial<TextureSettings>) => {
+    if (isLocalMode) {
+      dispatch(updateShapesTexture({ ids: targetIds, texture: patch }));
+    } else {
+      dispatch(setGlobalTexture(patch));
+    }
+  };
+
+  const clearChannel = (key: keyof TextureSettings) => {
+    if (isLocalMode) {
+      dispatch(clearShapesTextureChannel({ ids: targetIds, key }));
+    } else {
+      dispatch(clearTextureChannel(key));
+    }
+  };
+
+  const resetToGlobal = () => {
+    dispatch(resetShapesTexture(targetIds));
+  };
+
+  const clearAllChannels = () => {
+    const empty: Partial<TextureSettings> = {
+      map: null, normalMap: null, roughnessMap: null,
+      metalnessMap: null, displacementMap: null, aoMap: null,
+      emissiveMap: null, alphaMap: null, lightMap: null,
+    };
+    if (isLocalMode) {
+      dispatch(updateShapesTexture({ ids: targetIds, texture: empty }));
+    } else {
+      dispatch(setGlobalTexture(empty));
+    }
+  };
+
+  const hasAny = CHANNELS.some((c) => !!displayTexture[c.key]);
+
+  const cardBorder = isLocalMode ? "border-emerald-500/25" : "border-blue-500/20";
+  const titleClass = isLocalMode ? "text-emerald-300" : "text-blue-400";
+  const accentSlider = isLocalMode
+    ? "**:[[role=slider]]:bg-emerald-400 **:[[role=slider]]:border-emerald-400"
+    : "**:[[role=slider]]:bg-blue-400 **:[[role=slider]]:border-blue-400";
+  const accentInput = isLocalMode
+    ? "focus-visible:ring-emerald-500/50 text-emerald-200"
+    : "focus-visible:ring-blue-500/50 text-blue-300";
+  const accentBtn = isLocalMode
+    ? "bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300/80 hover:text-emerald-200 border border-emerald-500/15"
+    : "bg-blue-500/10 hover:bg-blue-500/20 text-blue-300/70 hover:text-blue-300 border border-blue-500/10";
+
+  const description = isLocalMode
+    ? `Local override for ${targetIds.length} shape${targetIds.length > 1 ? "s" : ""} — global maps ignored`
+    : "Applies to all objects in the scene";
 
   return (
     <CollapsibleCard
       id="textures"
-      cardClassName="border-blue-500/20"
-      title="Textures"
-      titleClassName="text-blue-400"
-      description="Applies to all objects in the scene"
+      cardClassName={cardBorder}
+      title={isLocalMode ? "Textures (Local)" : "Textures"}
+      titleClassName={titleClass}
+      description={description}
       headerExtra={
-        hasAny ? (
-          <button
-            onClick={() =>
-              dispatch(
-                setGlobalTexture({
-                  map: null, normalMap: null, roughnessMap: null,
-                  metalnessMap: null, displacementMap: null, aoMap: null,
-                  emissiveMap: null, alphaMap: null, lightMap: null,
-                }),
-              )
-            }
-            className="text-[10px] text-red-400/60 hover:text-red-400 transition-colors shrink-0"
-          >
-            Clear all
-          </button>
-        ) : null
+        <div className="flex items-center gap-2 shrink-0">
+          {isLocalMode && (
+            <button
+              onClick={resetToGlobal}
+              className="text-[10px] text-emerald-300/70 hover:text-emerald-200 transition-colors"
+              title="Remove local overrides and use global textures"
+            >
+              Reset to global
+            </button>
+          )}
+          {hasAny && (
+            <button
+              onClick={clearAllChannels}
+              className="text-[10px] text-red-400/60 hover:text-red-400 transition-colors"
+            >
+              Clear all
+            </button>
+          )}
+        </div>
       }
       contentClassName="pt-3 space-y-3"
     >
         {/* Texture channels */}
         <div className="space-y-1.5">
           {CHANNELS.map(({ key, label, hint }) => {
-            const url = globalTexture[key] as string | null | undefined;
+            const url = displayTexture[key] as string | null | undefined;
             return (
               <div
                 key={key}
@@ -129,13 +213,13 @@ export function TextureControls() {
                 <div className="flex items-center gap-1 shrink-0">
                   <button
                     onClick={() => fileRefs.current[key]?.click()}
-                    className="text-[10px] px-2 py-1 rounded bg-blue-500/10 hover:bg-blue-500/20 text-blue-300/70 hover:text-blue-300 border border-blue-500/10 transition-colors"
+                    className={`text-[10px] px-2 py-1 rounded transition-colors ${accentBtn}`}
                   >
                     {url ? "Change" : "Upload"}
                   </button>
                   {url && (
                     <button
-                      onClick={() => dispatch(clearTextureChannel(key))}
+                      onClick={() => clearChannel(key)}
                       className="w-6 h-6 flex items-center justify-center rounded bg-red-500/10 hover:bg-red-500/20 text-red-400/60 hover:text-red-400 transition-colors text-xs"
                     >
                       ✕
@@ -169,58 +253,58 @@ export function TextureControls() {
                 <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">Tiling repeat — smaller values zoom in, larger zoom out</p>
               </div>
               <SliderWithInput
-                value={globalTexture.repeat ?? 1}
+                value={displayTexture.repeat ?? 1}
                 min={0.01} max={100} step={0.01}
-                onChange={(v) => dispatch(setGlobalTexture({ repeat: v }))}
-                sliderClassName="**:[[role=slider]]:bg-blue-400 **:[[role=slider]]:border-blue-400"
-                inputClassName="focus-visible:ring-blue-500/50 text-blue-300"
+                onChange={(v) => setParam({ repeat: v })}
+                sliderClassName={accentSlider}
+                inputClassName={accentInput}
               />
             </div>
 
-            {globalTexture.normalMap && (
+            {displayTexture.normalMap && (
               <div className="space-y-1.5">
                 <div>
                   <p className="text-[10px] text-white/70 font-medium">Normal Strength</p>
                   <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">How pronounced the surface bump detail appears</p>
                 </div>
                 <SliderWithInput
-                  value={globalTexture.normalScale ?? 1}
+                  value={displayTexture.normalScale ?? 1}
                   min={0} max={3} step={0.01}
-                  onChange={(v) => dispatch(setGlobalTexture({ normalScale: v }))}
-                  sliderClassName="**:[[role=slider]]:bg-blue-400 **:[[role=slider]]:border-blue-400"
-                  inputClassName="focus-visible:ring-blue-500/50 text-blue-300"
+                  onChange={(v) => setParam({ normalScale: v })}
+                  sliderClassName={accentSlider}
+                  inputClassName={accentInput}
                 />
               </div>
             )}
 
-            {globalTexture.displacementMap && (
+            {displayTexture.displacementMap && (
               <div className="space-y-1.5">
                 <div>
                   <p className="text-[10px] text-white/70 font-medium">Displacement Scale</p>
                   <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">How far vertices are pushed by the displacement map</p>
                 </div>
                 <SliderWithInput
-                  value={globalTexture.displacementScale ?? 0.1}
+                  value={displayTexture.displacementScale ?? 0.1}
                   min={0} max={2} step={0.01}
-                  onChange={(v) => dispatch(setGlobalTexture({ displacementScale: v }))}
-                  sliderClassName="**:[[role=slider]]:bg-blue-400 **:[[role=slider]]:border-blue-400"
-                  inputClassName="focus-visible:ring-blue-500/50 text-blue-300"
+                  onChange={(v) => setParam({ displacementScale: v })}
+                  sliderClassName={accentSlider}
+                  inputClassName={accentInput}
                 />
               </div>
             )}
 
-            {globalTexture.aoMap && (
+            {displayTexture.aoMap && (
               <div className="space-y-1.5">
                 <div>
                   <p className="text-[10px] text-white/70 font-medium">AO Intensity</p>
                   <p className="text-[10px] text-muted-foreground/45 leading-tight mt-0.5">Strength of ambient occlusion / contact shadows</p>
                 </div>
                 <SliderWithInput
-                  value={globalTexture.aoMapIntensity ?? 1}
+                  value={displayTexture.aoMapIntensity ?? 1}
                   min={0} max={2} step={0.01}
-                  onChange={(v) => dispatch(setGlobalTexture({ aoMapIntensity: v }))}
-                  sliderClassName="**:[[role=slider]]:bg-blue-400 **:[[role=slider]]:border-blue-400"
-                  inputClassName="focus-visible:ring-blue-500/50 text-blue-300"
+                  onChange={(v) => setParam({ aoMapIntensity: v })}
+                  sliderClassName={accentSlider}
+                  inputClassName={accentInput}
                 />
               </div>
             )}

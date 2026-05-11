@@ -1,16 +1,16 @@
 # Graph Report - Lumix3D  (2026-05-11)
 
 ## Corpus Check
-- 72 files · ~35,457 words
+- 72 files · ~35,900 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 407 nodes · 921 edges · 32 communities (20 shown, 12 thin omitted)
+- 410 nodes · 925 edges · 31 communities (19 shown, 12 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.89)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `fe2b10cb`
+- Built from commit: `999416e4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -39,11 +39,10 @@
 - [[_COMMUNITY_Next Env Types|Next Env Types]]
 - [[_COMMUNITY_Quick Scenes|Quick Scenes]]
 - [[_COMMUNITY_Transform Tracker|Transform Tracker]]
-- [[_COMMUNITY_Canvas Refs Capture|Canvas Refs Capture]]
+- [[_COMMUNITY_Community 27|Community 27]]
 - [[_COMMUNITY_Community 28|Community 28]]
 - [[_COMMUNITY_Community 29|Community 29]]
 - [[_COMMUNITY_Community 30|Community 30]]
-- [[_COMMUNITY_Community 31|Community 31]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `useAppSelector` - 56 edges
@@ -74,95 +73,91 @@
 - **Shape registry collaboration for transform/box-select/camera-fit** — extrudedsvg_shapemeshes, canvas3d_fitcameraonload, canvas3d_canvas3d, shape_object_registry_concept [INFERRED 0.85]
 - **Undo/redo history snapshot flow** — canvas3d_canvas3d, sceneslice_recordsnapshot, sceneslice_undo, sceneslice_redo, sceneslice_historysnapshot [INFERRED 0.85]
 
-## Communities (32 total, 12 thin omitted)
+## Communities (31 total, 12 thin omitted)
 
 ### Community 0 - "3D Canvas & SVG Extrusion"
 Cohesion: 0.08
-Nodes (44): Home(), BackgroundControls(), BoxSelectOverlay(), Rect, CameraController(), Canvas3D(), CanvasRefsCapture(), FitCameraOnLoad() (+36 more)
+Nodes (43): Canvas3D, Home(), SceneTransformToolbar, SVGEditor, BackgroundControls(), EffectControls(), MODE_COLORS, VIEW_MODES (+35 more)
 
 ### Community 1 - "UI Controls & Presets"
-Cohesion: 0.1
-Nodes (46): buildDemoSvgShapes(), QuickScenes(), SCENE_ICONS, parseSvgShapes(), DemoScene, SIDEBAR_APP_ICON_EXTRUSION, SIDEBAR_APP_ICON_LIGHTS, SIDEBAR_APP_ICON_MATERIAL (+38 more)
+Cohesion: 0.08
+Nodes (36): CollapsibleCard(), CollapsibleCardProps, SECTION_ICONS, ExtrusionControls(), GroupManager(), PANEL_STYLE, GroupRow, GroupRowProps (+28 more)
 
 ### Community 2 - "Optimization & Architecture Docs"
-Cohesion: 0.11
-Nodes (32): CollapsibleCard(), CollapsibleCardProps, SECTION_ICONS, MODE_COLORS, VIEW_MODES, SVGInspector(), SIDEBAR_LIGHTING_PRESETS, SIDEBAR_PRESET_DESCRIPTIONS (+24 more)
+Cohesion: 0.1
+Nodes (45): buildDemoSvgShapes(), QuickScenes(), SCENE_ICONS, DemoScene, SIDEBAR_APP_ICON_EXTRUSION, SIDEBAR_APP_ICON_LIGHTS, SIDEBAR_APP_ICON_MATERIAL, SIDEBAR_APP_ICON_ROTATION (+37 more)
 
 ### Community 3 - "Sidebar Control Panels"
+Cohesion: 0.07
+Nodes (31): BoxSelectOverlay(), Rect, CameraController(), Canvas3D(), CanvasRefsCapture(), FitCameraOnLoad(), TransformTracker(), applyGroupInterpolation() (+23 more)
+
+### Community 4 - "App Shell & Undo/Redo"
 Cohesion: 0.05
 Nodes (45): Next.js Breaking Changes Warning, Next.js Agent Rules, Lumix3D App Logo (SVG - extruded L-shape 3D wireframe), Bundle Analysis (@next/bundle-analyzer), Component Memoization (React.memo), Debounce Redux Dispatches, Device Pixel Ratio Clamping (dpr=[1,2]), Fabric.js (+37 more)
 
-### Community 4 - "App Shell & Undo/Redo"
-Cohesion: 0.09
-Nodes (21): geist, inter, metadata, RootLayout(), Providers(), MobileBlocker(), UndoRedoToolbar(), useHistoryAvailability() (+13 more)
-
 ### Community 5 - "Page Composition & Layout"
 Cohesion: 0.13
-Nodes (20): LoadedTextures, NULL_TEXTURES, ParsedSvgGroup, ShapeMeshes(), ShapeMeshesProps, formatTime(), PresetId, PRESETS (+12 more)
+Nodes (21): ExtrudedSVG(), LoadedTextures, NULL_TEXTURES, ParsedSvgGroup, ShapeMeshes(), ShapeMeshesProps, formatTime(), PresetId (+13 more)
 
 ### Community 6 - "Selection & Timeline Math"
 Cohesion: 0.09
 Nodes (25): Canvas3D Component, FitCameraOnLoad, ExtrudedSVG Component, ShapeMeshes, ExtrusionSettings Type, ImportedSvg Type, MaterialSettings Type, SvgShape Type (+17 more)
 
 ### Community 7 - "Type Definitions"
-Cohesion: 0.15
-Nodes (13): applyGroupInterpolation(), _eulShape, lerp(), lerpArray(), _q1, _q2, _qBindLocal, _qFinalLocal (+5 more)
-
-### Community 8 - "Transform Logging"
-Cohesion: 0.21
-Nodes (7): fmt(), fmtRow(), TransformLog(), f(), row(), globalGroupRef, liveTransform
-
-### Community 9 - "Demo Scenes"
 Cohesion: 0.26
 Nodes (10): SelectionProps, SVGEditor(), toHex(), lineToFilledPathData(), makeFilledPath(), preprocessSVGForThree(), ProcessedSVG, resolvePx() (+2 more)
 
-### Community 10 - "Timeline Editor"
-Cohesion: 0.27
-Nodes (7): Canvas3D, SceneTransformToolbar, SVGEditor, ParticleBackground(), Sidebar(), ResizableHandle(), ResizablePanelGroup()
+### Community 8 - "Transform Logging"
+Cohesion: 0.19
+Nodes (9): geist, inter, metadata, RootLayout(), Providers(), MobileBlocker(), suppressWarnings(), persistor (+1 more)
 
-### Community 11 - "SVG Preprocessing"
+### Community 9 - "Demo Scenes"
+Cohesion: 0.24
+Nodes (8): UndoRedoToolbar(), useHistoryAvailability(), canRedo(), canUndo(), future, historyMiddleware(), past, UNDOABLE_ACTIONS
+
+### Community 10 - "Timeline Editor"
 Cohesion: 0.31
 Nodes (8): formatTime(), TimelineEditor(), Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle
 
-### Community 12 - "Saved Animations"
+### Community 11 - "SVG Preprocessing"
 Cohesion: 0.22
 Nodes (8): 3D Object Selection & Transformation, code:bash (npm run dev), Deploy on Vercel, Features, Getting Started, Learn More, Lumix3D, Object Grouping
 
-### Community 13 - "Build Tooling (pnpm)"
+### Community 12 - "Saved Animations"
 Cohesion: 0.33
 Nodes (5): 1. Three.js & React Three Fiber (R3F) Optimizations, 2. Redux & State Management Optimizations, 3. Next.js & React Optimizations, 4. Asset & Network Optimizations, Lumix3D Optimization Checklist
 
-### Community 14 - "Scene State Slice"
+### Community 13 - "Build Tooling (pnpm)"
 Cohesion: 0.4
 Nodes (6): Keyframe Type, SavedAnimation Type, TimelineState Type, Saved animations index by selection order, not shape ID, applyAnimation reducer, saveAnimation reducer
 
-### Community 15 - "PostCSS Config"
+### Community 14 - "Scene State Slice"
 Cohesion: 0.67
 Nodes (3): sharp (ignored built dependency), unrs-resolver (ignored built dependency), pnpm Workspace Config
 
-### Community 16 - "Tailwind Config"
+### Community 15 - "PostCSS Config"
 Cohesion: 0.67
 Nodes (3): AppState Type, HistorySnapshot Type, sceneSlice
 
 ## Knowledge Gaps
-- **118 isolated node(s):** `config`, `config`, `eslintConfig`, `nextConfig`, `geist` (+113 more)
+- **121 isolated node(s):** `config`, `config`, `eslintConfig`, `nextConfig`, `geist` (+116 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useAppSelector` connect `3D Canvas & SVG Extrusion` to `UI Controls & Presets`, `Optimization & Architecture Docs`, `Page Composition & Layout`, `Type Definitions`, `Transform Logging`, `Demo Scenes`, `Timeline Editor`, `SVG Preprocessing`?**
-  _High betweenness centrality (0.063) - this node is a cross-community bridge._
-- **Why does `useAppDispatch` connect `3D Canvas & SVG Extrusion` to `UI Controls & Presets`, `Optimization & Architecture Docs`, `App Shell & Undo/Redo`, `Page Composition & Layout`, `Type Definitions`, `Demo Scenes`, `Timeline Editor`, `SVG Preprocessing`?**
-  _High betweenness centrality (0.060) - this node is a cross-community bridge._
-- **Why does `cn()` connect `Optimization & Architecture Docs` to `3D Canvas & SVG Extrusion`, `Timeline Editor`, `SVG Preprocessing`, `App Shell & Undo/Redo`?**
-  _High betweenness centrality (0.049) - this node is a cross-community bridge._
+- **Why does `useAppSelector` connect `UI Controls & Presets` to `3D Canvas & SVG Extrusion`, `Sidebar Control Panels`, `Page Composition & Layout`, `Type Definitions`, `Timeline Editor`?**
+  _High betweenness centrality (0.064) - this node is a cross-community bridge._
+- **Why does `useAppDispatch` connect `UI Controls & Presets` to `3D Canvas & SVG Extrusion`, `Optimization & Architecture Docs`, `Sidebar Control Panels`, `Page Composition & Layout`, `Type Definitions`, `Demo Scenes`, `Timeline Editor`?**
+  _High betweenness centrality (0.061) - this node is a cross-community bridge._
+- **Why does `cn()` connect `3D Canvas & SVG Extrusion` to `Transform Logging`, `UI Controls & Presets`, `Timeline Editor`, `Demo Scenes`?**
+  _High betweenness centrality (0.048) - this node is a cross-community bridge._
 - **What connects `config`, `config`, `eslintConfig` to the rest of the system?**
-  _118 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _121 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `3D Canvas & SVG Extrusion` be split into smaller, more focused modules?**
   _Cohesion score 0.08 - nodes in this community are weakly interconnected._
 - **Should `UI Controls & Presets` be split into smaller, more focused modules?**
-  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08 - nodes in this community are weakly interconnected._
 - **Should `Optimization & Architecture Docs` be split into smaller, more focused modules?**
-  _Cohesion score 0.11 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1 - nodes in this community are weakly interconnected._

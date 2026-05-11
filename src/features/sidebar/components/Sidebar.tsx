@@ -18,6 +18,7 @@ import { ShapeInspector } from "./ShapeInspector";
 import { ObjectsList } from "./ObjectsList";
 import { ProjectActions } from "./ProjectActions";
 import { TextureControls } from "./TextureControls";
+import { SavedAnimationsList } from "./SavedAnimationsList";
 
 type TabId = "design" | "scene";
 
@@ -90,6 +91,7 @@ export function Sidebar() {
             <BackgroundControls />
             <LightingControls />
             <EffectControls />
+            <SavedAnimationsList />
           </>
         )}
       </div>

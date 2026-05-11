@@ -44,6 +44,7 @@ export type SvgShape = {
   visible?: boolean;
   shapeExtrusion?: Partial<ExtrusionSettings>;
   material?: Partial<MaterialSettings>;
+  texture?: Partial<TextureSettings>;
   position?: [number, number, number];
   rotation?: [number, number, number];
   scale?: [number, number, number];

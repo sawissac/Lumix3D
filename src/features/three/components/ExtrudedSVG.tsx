@@ -12,7 +12,7 @@ import {
 import * as THREE from "three";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 import { ThreeEvent, useThree, useFrame, createPortal } from "@react-three/fiber";
-import { ExtrusionSettings, SvgShape, MaterialSettings, ViewMode } from "@/types";
+import { ExtrusionSettings, SvgShape, MaterialSettings, TextureSettings, ViewMode } from "@/types";
 import { TransformControls } from "@react-three/drei";
 import { globalGroupRef } from "../globalGroupRef";
 import { shapeObjectRegistry } from "../shapeObjectRegistry";
@@ -45,6 +45,78 @@ const NULL_TEXTURES: LoadedTextures = {
   displacementScale: 0.1, aoMapIntensity: 1, normalScale: 1,
 };
 
+const TEXTURE_KEYS: (keyof TextureSettings)[] = [
+  "map", "normalMap", "roughnessMap", "metalnessMap",
+  "displacementMap", "aoMap", "emissiveMap", "alphaMap", "lightMap",
+];
+
+function hasAnyTextureMap(t: Partial<TextureSettings> | undefined): boolean {
+  if (!t) return false;
+  return TEXTURE_KEYS.some((k) => !!t[k]);
+}
+
+function useLoadedTextures(settings: Partial<TextureSettings> | undefined): LoadedTextures {
+  const [loaded, setLoaded] = useState<LoadedTextures>(NULL_TEXTURES);
+
+  const map = settings?.map ?? null;
+  const normalMap = settings?.normalMap ?? null;
+  const roughnessMap = settings?.roughnessMap ?? null;
+  const metalnessMap = settings?.metalnessMap ?? null;
+  const displacementMap = settings?.displacementMap ?? null;
+  const aoMap = settings?.aoMap ?? null;
+  const emissiveMap = settings?.emissiveMap ?? null;
+  const alphaMap = settings?.alphaMap ?? null;
+  const lightMap = settings?.lightMap ?? null;
+  const repeat = settings?.repeat ?? 1;
+  const displacementScale = settings?.displacementScale ?? 0.1;
+  const aoMapIntensity = settings?.aoMapIntensity ?? 1;
+  const normalScale = settings?.normalScale ?? 1;
+
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    let cancelled = false;
+    const repeatVal = 1 / (repeat || 1);
+    const loadOne = (url: string | null): Promise<THREE.Texture | null> => {
+      if (!url) return Promise.resolve(null);
+      return new Promise((resolve) => {
+        loader.load(
+          url,
+          (tex) => {
+            tex.wrapS = THREE.RepeatWrapping;
+            tex.wrapT = THREE.RepeatWrapping;
+            tex.repeat.set(repeatVal, repeatVal);
+            tex.needsUpdate = true;
+            resolve(tex);
+          },
+          undefined,
+          () => resolve(null),
+        );
+      });
+    };
+    Promise.all([
+      loadOne(map), loadOne(normalMap), loadOne(roughnessMap),
+      loadOne(metalnessMap), loadOne(displacementMap), loadOne(aoMap),
+      loadOne(emissiveMap), loadOne(alphaMap), loadOne(lightMap),
+    ]).then(([m, n, r, met, d, ao, em, al, lm]) => {
+      if (cancelled) return;
+      setLoaded({
+        map: m, normalMap: n, roughnessMap: r, metalnessMap: met,
+        displacementMap: d, aoMap: ao, emissiveMap: em, alphaMap: al, lightMap: lm,
+        displacementScale, aoMapIntensity, normalScale,
+      });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    map, normalMap, roughnessMap, metalnessMap, displacementMap,
+    aoMap, emissiveMap, alphaMap, lightMap, repeat,
+    displacementScale, aoMapIntensity, normalScale,
+  ]);
+
+  return loaded;
+}
+
 type ShapeMeshesProps = {
   shapeId: string;
   singleShape: THREE.Shape;
@@ -72,7 +144,7 @@ function ShapeMeshes({
   shapeData,
   globalExtrusion,
   globalMaterial,
-  loadedTextures,
+  loadedTextures: globalLoadedTextures,
   isSelected,
   viewMode,
   transformMode,
@@ -85,6 +157,14 @@ function ShapeMeshes({
   const [groupObj, setGroupObj] = useState<THREE.Group | null>(null);
   const matRef = useRef<THREE.MeshPhysicalMaterial>(null);
   const texApplied = useRef(false);
+
+  const hasLocalTexture = hasAnyTextureMap(shapeData?.texture);
+  const localLoadedTextures = useLoadedTextures(
+    hasLocalTexture ? shapeData?.texture : undefined,
+  );
+  const loadedTextures = hasLocalTexture
+    ? localLoadedTextures
+    : globalLoadedTextures;
 
   const shapeExtrusion = shapeData?.shapeExtrusion;
   const extrusion = useMemo(
@@ -313,55 +393,7 @@ export function ExtrudedSVG() {
   const extrusion = useAppSelector((state) => state.scene.extrusion);
   const globalMaterial = useAppSelector((state) => state.scene.globalMaterial);
   const globalTexture = useAppSelector((state) => state.scene.globalTexture);
-
-  const [loadedTextures, setLoadedTextures] = useState<LoadedTextures>(NULL_TEXTURES);
-
-  useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    let cancelled = false;
-    const loadOne = (url: string | null | undefined): Promise<THREE.Texture | null> => {
-      if (!url) return Promise.resolve(null);
-      const scale = globalTexture.repeat ?? 1;
-      const repeat = 1 / scale;
-      return new Promise((resolve) => {
-        loader.load(url, (tex) => {
-          tex.wrapS = THREE.RepeatWrapping;
-          tex.wrapT = THREE.RepeatWrapping;
-          tex.repeat.set(repeat, repeat);
-          tex.needsUpdate = true;
-          resolve(tex);
-        }, undefined, () => resolve(null));
-      });
-    };
-    Promise.all([
-      loadOne(globalTexture.map),
-      loadOne(globalTexture.normalMap),
-      loadOne(globalTexture.roughnessMap),
-      loadOne(globalTexture.metalnessMap),
-      loadOne(globalTexture.displacementMap),
-      loadOne(globalTexture.aoMap),
-      loadOne(globalTexture.emissiveMap),
-      loadOne(globalTexture.alphaMap),
-      loadOne(globalTexture.lightMap),
-    ]).then(([map, normalMap, roughnessMap, metalnessMap, displacementMap, aoMap, emissiveMap, alphaMap, lightMap]) => {
-      if (!cancelled) {
-        setLoadedTextures({
-          map, normalMap, roughnessMap, metalnessMap,
-          displacementMap, aoMap, emissiveMap, alphaMap, lightMap,
-          displacementScale: globalTexture.displacementScale ?? 0.1,
-          aoMapIntensity: globalTexture.aoMapIntensity ?? 1,
-          normalScale: globalTexture.normalScale ?? 1,
-        });
-      }
-    });
-    return () => { cancelled = true; };
-  }, [
-    globalTexture.map, globalTexture.normalMap, globalTexture.roughnessMap,
-    globalTexture.metalnessMap, globalTexture.displacementMap, globalTexture.aoMap,
-    globalTexture.emissiveMap, globalTexture.alphaMap, globalTexture.lightMap,
-    globalTexture.displacementScale, globalTexture.aoMapIntensity, globalTexture.normalScale,
-    globalTexture.repeat,
-  ]);
+  const loadedTextures = useLoadedTextures(globalTexture);
   const selectedShapeId = useAppSelector(
     (state) => state.scene.selectedShapeId,
   );
