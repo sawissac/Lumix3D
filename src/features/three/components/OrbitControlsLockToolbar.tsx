@@ -39,71 +39,73 @@ export function OrbitControlsLockToolbar() {
   } as const;
 
   return (
-    <div className="absolute top-[120px] right-3 z-20 pointer-events-auto flex flex-col items-end gap-1.5">
-      {/* Camera lock — icon-only row */}
+    <div className="absolute top-[120px] right-3 z-20 pointer-events-auto">
       <div
-        className="rounded-lg p-0.5 flex gap-0.5 border border-white/8"
+        className="rounded-lg p-0.5 flex flex-col gap-0.5 border border-white/8"
         style={panelStyle}
       >
-        {controls.map(({ key, label, Icon }) => {
-          const isLocked = orbitControlsLock[key];
-          return (
-            <button
-              key={key}
-              onClick={() => dispatch(toggleOrbitControlsLock(key))}
-              title={`${isLocked ? "Unlock" : "Lock"} ${label}`}
-              className={cn(
-                "w-7 h-7 rounded-md flex items-center justify-center relative transition-colors",
-                isLocked
-                  ? "text-white/35 hover:text-white/55 hover:bg-white/6"
-                  : "text-blue-400 hover:text-blue-300 hover:bg-white/6",
-              )}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              {isLocked ? (
-                <Lock className="absolute -top-px -right-px w-2 h-2 text-white/55" />
-              ) : null}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Per-axis rotate locks — only when rotate enabled */}
-      {!orbitControlsLock.rotate && (
-        <div
-          className="rounded-lg p-0.5 flex gap-0.5 border border-white/8"
-          style={panelStyle}
-        >
-          {rotateAxes.map(({ key, label }) => {
+        {/* Camera lock — icon-only row */}
+        <div className="flex gap-0.5">
+          {controls.map(({ key, label, Icon }) => {
             const isLocked = orbitControlsLock[key];
-            const isOnlyUnlocked = !isLocked &&
-              (["rotateX", "rotateY", "rotateZ"] as const).every(
-                (a) =>
-                  a === key ||
-                  orbitControlsLock[a as keyof typeof orbitControlsLock],
-              );
             return (
               <button
                 key={key}
-                onClick={() => dispatch(setExclusiveOrbitControlsAxis(key))}
-                title={
-                  isOnlyUnlocked
-                    ? "Reset all rotation axes"
-                    : `Rotate only on ${label}`
-                }
+                onClick={() => dispatch(toggleOrbitControlsLock(key))}
+                title={`${isLocked ? "Unlock" : "Lock"} ${label}`}
                 className={cn(
-                  "w-7 h-7 rounded-md flex items-center justify-center text-[10px] font-bold uppercase transition-colors",
+                  "w-7 h-7 rounded-md flex items-center justify-center relative transition-colors",
                   isLocked
                     ? "text-white/35 hover:text-white/55 hover:bg-white/6"
                     : "text-blue-400 hover:text-blue-300 hover:bg-white/6",
                 )}
               >
-                {label}
+                <Icon className="w-3.5 h-3.5" />
+                {isLocked ? (
+                  <Lock className="absolute -top-px -right-px w-2 h-2 text-white/55" />
+                ) : null}
               </button>
             );
           })}
         </div>
-      )}
+
+        {/* Per-axis rotate locks — only when rotate enabled */}
+        {!orbitControlsLock.rotate && (
+          <>
+            <div className="h-px bg-white/8" />
+            <div className="flex gap-0.5">
+              {rotateAxes.map(({ key, label }) => {
+                const isLocked = orbitControlsLock[key];
+                const isOnlyUnlocked = !isLocked &&
+                  (["rotateX", "rotateY", "rotateZ"] as const).every(
+                    (a) =>
+                      a === key ||
+                      orbitControlsLock[a as keyof typeof orbitControlsLock],
+                  );
+                return (
+                  <button
+                    key={key}
+                    onClick={() => dispatch(setExclusiveOrbitControlsAxis(key))}
+                    title={
+                      isOnlyUnlocked
+                        ? "Reset all rotation axes"
+                        : `Rotate only on ${label}`
+                    }
+                    className={cn(
+                      "w-7 h-7 rounded-md flex items-center justify-center text-[10px] font-bold uppercase transition-colors",
+                      isLocked
+                        ? "text-white/35 hover:text-white/55 hover:bg-white/6"
+                        : "text-blue-400 hover:text-blue-300 hover:bg-white/6",
+                    )}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

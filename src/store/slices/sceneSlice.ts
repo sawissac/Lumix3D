@@ -857,6 +857,7 @@ const sceneSlice = createSlice({
         .filter((s) => !existingIds.has(s.id))
         .map((s) => ({ ...s }));
       state.svgShapes.push(...newShapes);
+      state.svgFile = svg.svgText;
       state.is3DMode = true;
       state.isEditMode = false;
     },
@@ -892,6 +893,7 @@ const sceneSlice = createSlice({
       const stillHas3D = state.importedSvgs.some((s) => s.is3D);
       if (!stillHas3D && !state.isEditMode) {
         state.is3DMode = false;
+        state.svgFile = null;
       }
     },
     setEditImportedSvg: (state, action: PayloadAction<string>) => {

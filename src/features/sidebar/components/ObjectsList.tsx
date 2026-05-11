@@ -1,7 +1,14 @@
 "use client";
 
-import { memo, useCallback } from "react";
-import { Trash2, Eye, EyeOff } from "lucide-react";
+import { memo, useCallback, useState } from "react";
+import {
+  Trash2,
+  Eye,
+  EyeOff,
+  ChevronRight,
+  ChevronDown,
+  Users,
+} from "lucide-react";
 import { CollapsibleCard } from "./CollapsibleCard";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -9,16 +16,22 @@ import {
   setSvgFocusIndex,
   removeShape,
   toggleShapeVisibility,
+  selectGroup,
+  toggleGroupVisibility,
+  deleteGroup,
 } from "@/store/slices/sceneSlice";
-import { SvgShape } from "@/types";
+import { SvgShape, ObjectGroup } from "@/types";
+
+type ListMode = "svg" | "3d" | "preview";
 
 type ObjectListItemProps = {
   shape: SvgShape;
   index: number;
-  mode: "svg" | "3d" | "preview";
+  mode: ListMode;
   selected: boolean;
   hasOverride: boolean;
   hidden: boolean;
+  indent?: boolean;
   onClick: (id: string, index: number) => void;
   onDelete: (id: string) => void;
   onToggleVisibility: (id: string) => void;
@@ -31,6 +44,7 @@ const ObjectListItem = memo(function ObjectListItem({
   selected,
   hasOverride,
   hidden,
+  indent,
   onClick,
   onDelete,
   onToggleVisibility,
@@ -39,7 +53,8 @@ const ObjectListItem = memo(function ObjectListItem({
     <li
       onClick={() => onClick(shape.id, index)}
       className={[
-        "group flex items-center gap-2 px-3 py-1.5 cursor-pointer transition-colors text-xs",
+        "group flex items-center gap-2 py-1.5 cursor-pointer transition-colors text-xs",
+        indent ? "pl-7 pr-3" : "px-3",
         selected
           ? "bg-indigo-500/20 text-white"
           : "text-white/60 hover:bg-white/5 hover:text-white/80",
@@ -92,21 +107,97 @@ const ObjectListItem = memo(function ObjectListItem({
   );
 });
 
+type GroupRowProps = {
+  group: ObjectGroup;
+  expanded: boolean;
+  selected: boolean;
+  childCount: number;
+  onToggleExpand: (id: string) => void;
+  onSelectGroup: (id: string) => void;
+  onToggleVisibility: (id: string) => void;
+  onDelete: (id: string) => void;
+};
+
+const GroupRow = memo(function GroupRow({
+  group,
+  expanded,
+  selected,
+  childCount,
+  onToggleExpand,
+  onSelectGroup,
+  onToggleVisibility,
+  onDelete,
+}: GroupRowProps) {
+  const hidden = group.visible === false;
+  return (
+    <li
+      onClick={() => onSelectGroup(group.id)}
+      className={[
+        "group flex items-center gap-1.5 px-2 py-1.5 cursor-pointer transition-colors text-xs",
+        selected
+          ? "bg-indigo-500/20 text-white"
+          : "text-white/65 hover:bg-white/5 hover:text-white/85",
+        hidden ? "opacity-40" : "",
+      ].join(" ")}
+    >
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleExpand(group.id);
+        }}
+        className="text-white/40 hover:text-white/80 p-0.5"
+        title={expanded ? "Collapse" : "Expand"}
+      >
+        {expanded ? (
+          <ChevronDown className="w-3 h-3" />
+        ) : (
+          <ChevronRight className="w-3 h-3" />
+        )}
+      </button>
+      <Users className="w-3 h-3 shrink-0 text-indigo-300/80" />
+      <span className="flex-1 truncate font-medium">{group.name}</span>
+      <span className="text-[9px] text-white/35 font-mono shrink-0">
+        {childCount}
+      </span>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleVisibility(group.id);
+        }}
+        title={hidden ? "Show group" : "Hide group"}
+        className="opacity-0 group-hover:opacity-100 transition-opacity text-white/30 hover:text-white/70 rounded p-0.5"
+      >
+        {hidden ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+      </button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(group.id);
+        }}
+        title="Delete group"
+        className="opacity-0 group-hover:opacity-100 transition-opacity text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded p-0.5"
+      >
+        <Trash2 className="w-3 h-3" />
+      </button>
+    </li>
+  );
+});
+
 export function ObjectsList() {
   const dispatch = useAppDispatch();
   const svgShapes = useAppSelector((s) => s.scene.svgShapes);
   const is3DMode = useAppSelector((s) => s.scene.is3DMode);
   const isEditMode = useAppSelector((s) => s.scene.isEditMode);
   const selectedShapeId = useAppSelector((s) => s.scene.selectedShapeId);
+  const selectedShapeIds = useAppSelector((s) => s.scene.selectedShapeIds);
   const svgSelection = useAppSelector((s) => s.scene.svgSelection);
+  const groups = useAppSelector((s) => s.scene.groups);
+
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   const visibleShapes = svgShapes.filter((s) => s.visible !== false);
 
-  const mode: "svg" | "3d" | "preview" = isEditMode
-    ? "svg"
-    : is3DMode
-      ? "3d"
-      : "preview";
+  const mode: ListMode = isEditMode ? "svg" : is3DMode ? "3d" : "preview";
 
   const handleClick = useCallback(
     (id: string, index: number) => {
@@ -133,13 +224,54 @@ export function ObjectsList() {
     [dispatch],
   );
 
-  const isSelected = (id: string, index: number): boolean => {
-    if (mode === "3d") return selectedShapeId === id;
+  const handleSelectGroup = useCallback(
+    (id: string) => {
+      dispatch(selectGroup(id));
+    },
+    [dispatch],
+  );
+
+  const handleToggleGroupVisibility = useCallback(
+    (id: string) => {
+      dispatch(toggleGroupVisibility(id));
+    },
+    [dispatch],
+  );
+
+  const handleDeleteGroup = useCallback(
+    (id: string) => {
+      dispatch(deleteGroup(id));
+    },
+    [dispatch],
+  );
+
+  const handleToggleExpand = useCallback((id: string) => {
+    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+  }, []);
+
+  const isShapeSelected = (id: string, index: number): boolean => {
+    if (mode === "3d") {
+      if (selectedShapeIds.length > 1) return selectedShapeIds.includes(id);
+      return selectedShapeId === id;
+    }
     if (mode === "svg") return svgSelection?.firstIndex === index;
     return false;
   };
 
+  const isGroupSelected = (group: ObjectGroup): boolean => {
+    if (mode !== "3d") return false;
+    if (group.shapeIds.length !== selectedShapeIds.length) return false;
+    return group.shapeIds.every((id) => selectedShapeIds.includes(id));
+  };
+
   if (svgShapes.length === 0) return null;
+
+  const shapeIndex = new Map(svgShapes.map((s, i) => [s.id, i]));
+  const groupedIds = new Set<string>();
+  for (const g of groups) for (const id of g.shapeIds) groupedIds.add(id);
+  const ungrouped = svgShapes.filter((s) => !groupedIds.has(s.id));
+
+  const showGroups = mode === "3d" && groups.length > 0;
 
   return (
     <CollapsibleCard
@@ -155,31 +287,74 @@ export function ObjectsList() {
       }
       contentClassName="p-0"
     >
-        <ul
-          className="max-h-48 overflow-y-auto divide-y divide-white/5"
-          style={{ scrollbarWidth: "thin" }}
-        >
-          {svgShapes.map((shape, index) => {
-            const selected = isSelected(shape.id, index);
-            const hasOverride = mode === "3d" && !!shape.shapeExtrusion;
-            const hidden = shape.visible === false;
-
+      <ul
+        className="max-h-64 overflow-y-auto divide-y divide-white/5"
+        style={{ scrollbarWidth: "thin" }}
+      >
+        {showGroups &&
+          groups.map((group) => {
+            const isOpen = expanded[group.id] ?? true;
             return (
-              <ObjectListItem
-                key={shape.id}
-                shape={shape}
-                index={index}
-                mode={mode}
-                selected={selected}
-                hasOverride={hasOverride}
-                hidden={hidden}
-                onClick={handleClick}
-                onDelete={handleDelete}
-                onToggleVisibility={handleToggleVisibility}
-              />
+              <li key={group.id} className="contents">
+                <GroupRow
+                  group={group}
+                  expanded={isOpen}
+                  selected={isGroupSelected(group)}
+                  childCount={group.shapeIds.length}
+                  onToggleExpand={handleToggleExpand}
+                  onSelectGroup={handleSelectGroup}
+                  onToggleVisibility={handleToggleGroupVisibility}
+                  onDelete={handleDeleteGroup}
+                />
+                {isOpen &&
+                  group.shapeIds.map((sid) => {
+                    const shape = svgShapes.find((s) => s.id === sid);
+                    if (!shape) return null;
+                    const index = shapeIndex.get(sid) ?? 0;
+                    const selected = isShapeSelected(shape.id, index);
+                    const hasOverride =
+                      mode === "3d" && !!shape.shapeExtrusion;
+                    const hidden = shape.visible === false;
+                    return (
+                      <ObjectListItem
+                        key={shape.id}
+                        shape={shape}
+                        index={index}
+                        mode={mode}
+                        selected={selected}
+                        hasOverride={hasOverride}
+                        hidden={hidden}
+                        indent
+                        onClick={handleClick}
+                        onDelete={handleDelete}
+                        onToggleVisibility={handleToggleVisibility}
+                      />
+                    );
+                  })}
+              </li>
             );
           })}
-        </ul>
+        {ungrouped.map((shape) => {
+          const index = shapeIndex.get(shape.id) ?? 0;
+          const selected = isShapeSelected(shape.id, index);
+          const hasOverride = mode === "3d" && !!shape.shapeExtrusion;
+          const hidden = shape.visible === false;
+          return (
+            <ObjectListItem
+              key={shape.id}
+              shape={shape}
+              index={index}
+              mode={mode}
+              selected={selected}
+              hasOverride={hasOverride}
+              hidden={hidden}
+              onClick={handleClick}
+              onDelete={handleDelete}
+              onToggleVisibility={handleToggleVisibility}
+            />
+          );
+        })}
+      </ul>
     </CollapsibleCard>
   );
 }

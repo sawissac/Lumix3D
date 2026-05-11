@@ -451,8 +451,8 @@ export function ExtrudedSVG() {
     useState<THREE.Group | null>(null);
 
   const multiSelectInitialStateRef = useRef<{
-    groupInverseMatrix: THREE.Matrix4;
-    shapeMatrices: Map<string, THREE.Matrix4>;
+    groupWorldInverse: THREE.Matrix4;
+    shapeWorldMatrices: Map<string, THREE.Matrix4>;
   } | null>(null);
 
   const multiSelectGestureInitialQuatRef = useRef<THREE.Quaternion | null>(null);
@@ -642,29 +642,23 @@ export function ExtrudedSVG() {
             multiSelectGestureInitialScaleRef.current =
               multiSelectGroupObj.scale.clone();
 
-            multiSelectGroupObj.updateMatrix();
-            const groupInverseMatrix = multiSelectGroupObj.matrix
+            multiSelectGroupObj.updateMatrixWorld(true);
+            const groupWorldInverse = multiSelectGroupObj.matrixWorld
               .clone()
               .invert();
 
-            const shapeMatrices = new Map<string, THREE.Matrix4>();
+            const shapeWorldMatrices = new Map<string, THREE.Matrix4>();
             selectedShapeIds.forEach((id) => {
-              const shape = svgShapes.find((s) => s.id === id);
-              if (shape) {
-                const pos = new THREE.Vector3(...(shape.position ?? [0, 0, 0]));
-                const eul = new THREE.Euler(...(shape.rotation ?? [0, 0, 0]));
-                const scl = new THREE.Vector3(...(shape.scale ?? [1, 1, 1]));
-                const quat = new THREE.Quaternion().setFromEuler(eul);
-                shapeMatrices.set(
-                  id,
-                  new THREE.Matrix4().compose(pos, quat, scl),
-                );
+              const obj = shapeObjectRegistry.get(id);
+              if (obj) {
+                obj.updateMatrixWorld(true);
+                shapeWorldMatrices.set(id, obj.matrixWorld.clone());
               }
             });
 
             multiSelectInitialStateRef.current = {
-              groupInverseMatrix,
-              shapeMatrices,
+              groupWorldInverse,
+              shapeWorldMatrices,
             };
           }}
           onObjectChange={() => {
@@ -685,32 +679,46 @@ export function ExtrudedSVG() {
               s.set(uniform, uniform, uniform);
             }
 
-            multiSelectGroupObj.updateMatrix();
+            multiSelectGroupObj.updateMatrixWorld(true);
             const initial = multiSelectInitialStateRef.current;
 
-            const delta = new THREE.Matrix4().multiplyMatrices(
-              multiSelectGroupObj.matrix,
-              initial.groupInverseMatrix,
+            const deltaWorld = new THREE.Matrix4().multiplyMatrices(
+              multiSelectGroupObj.matrixWorld,
+              initial.groupWorldInverse,
             );
 
             selectedShapeIds.forEach((id) => {
-              const initM = initial.shapeMatrices.get(id);
-              if (!initM) return;
+              const initWorld = initial.shapeWorldMatrices.get(id);
+              const groupObj = shapeObjectRegistry.get(id);
+              if (!initWorld || !groupObj) return;
 
-              const newM = new THREE.Matrix4().multiplyMatrices(delta, initM);
+              const newWorld = new THREE.Matrix4().multiplyMatrices(
+                deltaWorld,
+                initWorld,
+              );
+
+              const parent = groupObj.parent;
+              const newLocal = new THREE.Matrix4();
+              if (parent) {
+                parent.updateMatrixWorld(true);
+                newLocal
+                  .copy(parent.matrixWorld)
+                  .invert()
+                  .multiply(newWorld);
+              } else {
+                newLocal.copy(newWorld);
+              }
+
               const pos = new THREE.Vector3();
               const quat = new THREE.Quaternion();
               const scl = new THREE.Vector3();
-              newM.decompose(pos, quat, scl);
+              newLocal.decompose(pos, quat, scl);
               const eul = new THREE.Euler().setFromQuaternion(quat);
 
-              const groupObj = shapeObjectRegistry.get(id);
-              if (groupObj) {
-                groupObj.position.copy(pos);
-                groupObj.rotation.copy(eul);
-                groupObj.scale.copy(scl);
-                groupObj.updateMatrixWorld();
-              }
+              groupObj.position.copy(pos);
+              groupObj.rotation.copy(eul);
+              groupObj.scale.copy(scl);
+              groupObj.updateMatrixWorld();
             });
           }}
           onMouseUp={() => {

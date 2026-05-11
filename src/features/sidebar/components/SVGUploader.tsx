@@ -82,10 +82,10 @@ export function SVGUploader() {
 
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="w-full h-8 text-[11px] text-white/70 hover:text-white border-b border-white/10 hover:border-white/30 flex items-center justify-center gap-1.5 transition-colors"
+        className="w-full py-4 rounded-lg border border-dashed border-white/15 hover:border-indigo-400/50 bg-white/[0.02] hover:bg-indigo-500/[0.06] text-[11px] text-white/50 hover:text-indigo-300 flex flex-col items-center justify-center gap-1.5 transition-all duration-200 group"
       >
-        <Upload className="h-3 w-3" />
-        Import SVG
+        <Upload className="h-4 w-4 opacity-60 group-hover:opacity-100 transition-opacity" />
+        <span>Import SVG</span>
       </button>
 
       {importedSvgs.length > 0 && (

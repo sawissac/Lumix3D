@@ -451,15 +451,14 @@ export function Canvas3D() {
 
         {showGrid && (
           <Grid
-            position={[0, 0, -20]}
-            rotation={[Math.PI / 2, 0, 0]}
+            position={[0, 0, 0]}
             cellSize={1}
             cellThickness={0.5}
             cellColor="#6f6f6f"
-            sectionSize={5}
+            sectionSize={10}
             sectionThickness={1}
             sectionColor="#9d4b4b"
-            fadeDistance={200}
+            fadeDistance={2000}
             fadeStrength={1}
             infiniteGrid
             followCamera
