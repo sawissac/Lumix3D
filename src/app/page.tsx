@@ -16,6 +16,17 @@ import { ParticleBackground } from "@/components/ParticleBackground";
 import { UndoRedoToolbar } from "@/features/three/components/UndoRedoToolbar";
 import { TimelinePanel } from "@/features/three/components/TimelinePanel";
 import Image from "next/image";
+import {
+  Upload,
+  Boxes,
+  Sun,
+  Image as ImageIcon,
+  Film,
+  Grid2X2,
+  Code2,
+  Undo2,
+  type LucideIcon,
+} from "lucide-react";
 
 const Canvas3D = dynamic(
   () =>
@@ -194,188 +205,97 @@ export default function Home() {
                           Features
                         </p>
                         <div className="grid grid-cols-2 gap-2.5">
-                          {/* SVG Import */}
-                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
-                            <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center shrink-0">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="w-4 h-4 text-indigo-400"
+                          {(
+                            [
+                              {
+                                Icon: Upload,
+                                iconBox:
+                                  "bg-indigo-500/15 border-indigo-500/20",
+                                iconColor: "text-indigo-400",
+                                title: "SVG Import & Edit",
+                                desc: "Upload, paste, or edit SVG paths in-app",
+                              },
+                              {
+                                Icon: Boxes,
+                                iconBox:
+                                  "bg-purple-500/15 border-purple-500/20",
+                                iconColor: "text-purple-400",
+                                title: "3D Extrusion",
+                                desc: "Depth, bevel toggle, and curve smoothing",
+                              },
+                              {
+                                Icon: Sun,
+                                iconBox: "bg-amber-500/15 border-amber-500/20",
+                                iconColor: "text-amber-400",
+                                title: "Cinematic Lighting",
+                                desc: "HDRI presets, custom rigs, per-light toggle",
+                              },
+                              {
+                                Icon: ImageIcon,
+                                iconBox: "bg-blue-500/15 border-blue-500/20",
+                                iconColor: "text-blue-400",
+                                title: "PBR Textures",
+                                desc: "Global maps or local per-shape overrides",
+                              },
+                              {
+                                Icon: Film,
+                                iconBox: "bg-pink-500/15 border-pink-500/20",
+                                iconColor: "text-pink-400",
+                                title: "Animation Timeline",
+                                desc: "Keyframes, looping, and saved animations",
+                              },
+                              {
+                                Icon: Grid2X2,
+                                iconBox: "bg-rose-500/15 border-rose-500/20",
+                                iconColor: "text-rose-400",
+                                title: "Multi-Select & Groups",
+                                desc: "Batch transform, group, and box-select",
+                              },
+                              {
+                                Icon: Code2,
+                                iconBox: "bg-sky-500/15 border-sky-500/20",
+                                iconColor: "text-sky-400",
+                                title: "Embed Export",
+                                desc: "JS or React snippet with control toggles",
+                              },
+                              {
+                                Icon: Undo2,
+                                iconBox:
+                                  "bg-emerald-500/15 border-emerald-500/20",
+                                iconColor: "text-emerald-400",
+                                title: "Undo / Redo + Autosave",
+                                desc: "Full history, local persistence",
+                              },
+                            ] as {
+                              Icon: LucideIcon;
+                              iconBox: string;
+                              iconColor: string;
+                              title: string;
+                              desc: string;
+                            }[]
+                          ).map(({ Icon, iconBox, iconColor, title, desc }) => (
+                            <div
+                              key={title}
+                              className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200"
+                            >
+                              <div
+                                className={`w-8 h-8 rounded-lg border flex items-center justify-center shrink-0 ${iconBox}`}
                               >
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                <polyline points="17 8 12 3 7 8" />
-                                <line x1="12" y1="3" x2="12" y2="15" />
-                              </svg>
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-xs font-semibold text-foreground/90 leading-none">
-                                SVG Import
-                              </p>
-                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">
-                                Upload or paste any SVG file to begin
-                              </p>
-                            </div>
-                          </div>
-                          {/* Extrusion */}
-                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
-                            <div className="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/20 flex items-center justify-center shrink-0">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="w-4 h-4 text-purple-400"
-                              >
-                                <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                                <polyline points="2 17 12 22 22 17" />
-                                <polyline points="2 12 12 17 22 12" />
-                              </svg>
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-xs font-semibold text-foreground/90 leading-none">
-                                3D Extrusion
-                              </p>
-                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">
-                                Tune depth, bevel, and surface detail
-                              </p>
-                            </div>
-                          </div>
-                          {/* Lighting */}
-                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
-                            <div className="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/20 flex items-center justify-center shrink-0">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="w-4 h-4 text-amber-400"
-                              >
-                                <circle cx="12" cy="12" r="5" />
-                                <line x1="12" y1="1" x2="12" y2="3" />
-                                <line x1="12" y1="21" x2="12" y2="23" />
-                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                                <line
-                                  x1="18.36"
-                                  y1="18.36"
-                                  x2="19.78"
-                                  y2="19.78"
+                                <Icon
+                                  className={`w-4 h-4 ${iconColor}`}
+                                  strokeWidth={1.5}
                                 />
-                                <line x1="1" y1="12" x2="3" y2="12" />
-                                <line x1="21" y1="12" x2="23" y2="12" />
-                                <line
-                                  x1="4.22"
-                                  y1="19.78"
-                                  x2="5.64"
-                                  y2="18.36"
-                                />
-                                <line
-                                  x1="18.36"
-                                  y1="5.64"
-                                  x2="19.78"
-                                  y2="4.22"
-                                />
-                              </svg>
+                              </div>
+                              <div className="min-w-0">
+                                <p className="text-xs font-semibold text-foreground/90 leading-none">
+                                  {title}
+                                </p>
+                                <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">
+                                  {desc}
+                                </p>
+                              </div>
                             </div>
-                            <div className="min-w-0">
-                              <p className="text-xs font-semibold text-foreground/90 leading-none">
-                                Cinematic Lighting
-                              </p>
-                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">
-                                HDRI presets & custom light rigs
-                              </p>
-                            </div>
-                          </div>
-                          {/* Quick Scenes */}
-                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
-                            <div className="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center shrink-0">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="w-4 h-4 text-emerald-400"
-                              >
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                              </svg>
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-xs font-semibold text-foreground/90 leading-none">
-                                Quick Scenes
-                              </p>
-                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">
-                                One-click app icon demos to explore
-                              </p>
-                            </div>
-                          </div>
-                          {/* Export */}
-                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
-                            <div className="w-8 h-8 rounded-lg bg-sky-500/15 border border-sky-500/20 flex items-center justify-center shrink-0">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="w-4 h-4 text-sky-400"
-                              >
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                <polyline points="7 10 12 15 17 10" />
-                                <line x1="12" y1="15" x2="12" y2="3" />
-                              </svg>
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-xs font-semibold text-foreground/90 leading-none">
-                                Scene Export
-                              </p>
-                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">
-                                Export embed code for any website
-                              </p>
-                            </div>
-                          </div>
-                          {/* Multi-Select */}
-                          <div className="group/feat flex gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all duration-200">
-                            <div className="w-8 h-8 rounded-lg bg-rose-500/15 border border-rose-500/20 flex items-center justify-center shrink-0">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="w-4 h-4 text-rose-400"
-                              >
-                                <rect x="3" y="3" width="7" height="7" />
-                                <rect x="14" y="3" width="7" height="7" />
-                                <rect x="14" y="14" width="7" height="7" />
-                                <rect x="3" y="14" width="7" height="7" />
-                              </svg>
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-xs font-semibold text-foreground/90 leading-none">
-                                Multi-Select Edit
-                              </p>
-                              <p className="text-xs text-muted-foreground/55 mt-1 leading-snug">
-                                Batch-edit material & extrusion props
-                              </p>
-                            </div>
-                          </div>
+                          ))}
                         </div>
                       </div>
 
@@ -387,46 +307,57 @@ export default function Home() {
                             Get Started
                           </p>
                           <ol className="space-y-3">
-                            <li className="flex gap-3 items-start">
-                              <span className="w-5 h-5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
-                                1
-                              </span>
-                              <div>
-                                <p className="text-xs font-semibold text-foreground/85 leading-none">
-                                  Upload an SVG
-                                </p>
-                                <p className="text-xs text-muted-foreground/55 mt-0.5 leading-snug">
-                                  Use the sidebar uploader or paste SVG code
-                                  directly
-                                </p>
-                              </div>
-                            </li>
-                            <li className="flex gap-3 items-start">
-                              <span className="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
-                                2
-                              </span>
-                              <div>
-                                <p className="text-xs font-semibold text-foreground/85 leading-none">
-                                  Tune the 3D scene
-                                </p>
-                                <p className="text-xs text-muted-foreground/55 mt-0.5 leading-snug">
-                                  Adjust extrusion depth, materials & lighting
-                                </p>
-                              </div>
-                            </li>
-                            <li className="flex gap-3 items-start">
-                              <span className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
-                                3
-                              </span>
-                              <div>
-                                <p className="text-xs font-semibold text-foreground/85 leading-none">
-                                  Export & share
-                                </p>
-                                <p className="text-xs text-muted-foreground/55 mt-0.5 leading-snug">
-                                  Save the scene or grab an embed snippet
-                                </p>
-                              </div>
-                            </li>
+                            {(
+                              [
+                                {
+                                  badge:
+                                    "bg-indigo-500/20 border-indigo-500/30 text-indigo-400",
+                                  title: "Upload an SVG",
+                                  desc: "Sidebar uploader, paste, or open a demo scene",
+                                },
+                                {
+                                  badge:
+                                    "bg-purple-500/20 border-purple-500/30 text-purple-400",
+                                  title: "Tune the 3D scene",
+                                  desc: "Extrusion, materials, textures, lighting",
+                                },
+                                {
+                                  badge:
+                                    "bg-pink-500/20 border-pink-500/30 text-pink-400",
+                                  title: "Animate (optional)",
+                                  desc: "Add keyframes from the timeline panel",
+                                },
+                                {
+                                  badge:
+                                    "bg-emerald-500/20 border-emerald-500/30 text-emerald-400",
+                                  title: "Export & share",
+                                  desc: "Save project JSON or grab an embed snippet",
+                                },
+                              ] as {
+                                badge: string;
+                                title: string;
+                                desc: string;
+                              }[]
+                            ).map(({ badge, title, desc }, i) => (
+                              <li
+                                key={title}
+                                className="flex gap-3 items-start"
+                              >
+                                <span
+                                  className={`w-5 h-5 rounded-full border text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 ${badge}`}
+                                >
+                                  {i + 1}
+                                </span>
+                                <div>
+                                  <p className="text-xs font-semibold text-foreground/85 leading-none">
+                                    {title}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground/55 mt-0.5 leading-snug">
+                                    {desc}
+                                  </p>
+                                </div>
+                              </li>
+                            ))}
                           </ol>
                         </div>
 
@@ -446,7 +377,8 @@ export default function Home() {
                                 key: "Paste",
                                 label: "Load SVG from clipboard",
                               },
-                              { key: "Drag", label: "Orbit camera" },
+                              { key: "⌘ Click", label: "Add to selection" },
+                              { key: "Drag", label: "Orbit camera / box-select" },
                               { key: "Scroll", label: "Zoom in / out" },
                             ].map(({ key, label }) => (
                               <div

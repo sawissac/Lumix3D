@@ -423,13 +423,23 @@ const sceneSlice = createSlice({
       });
     },
     removeShape: (state, action: PayloadAction<string>) => {
-      const shape = state.svgShapes.find((s) => s.id === action.payload);
-      if (shape) {
-        shape.visible = false;
-      }
-      if (state.selectedShapeId === action.payload) {
+      const id = action.payload;
+      state.svgShapes = state.svgShapes.filter((s) => s.id !== id);
+      state.importedSvgs.forEach((svg) => {
+        svg.shapes = svg.shapes.filter((s) => s.id !== id);
+      });
+      state.selectedShapeIds = state.selectedShapeIds.filter((sid) => sid !== id);
+      if (state.selectedShapeId === id) {
         state.selectedShapeId = null;
+        state.transformMode = null;
       }
+      state.timeline.tracks = state.timeline.tracks.filter(
+        (t) => t.shapeId !== id,
+      );
+      state.groups.forEach((g) => {
+        g.shapeIds = g.shapeIds.filter((sid) => sid !== id);
+      });
+      state.groups = state.groups.filter((g) => g.shapeIds.length > 0);
     },
     toggleShapeVisibility: (state, action: PayloadAction<string>) => {
       const shape = state.svgShapes.find((s) => s.id === action.payload);

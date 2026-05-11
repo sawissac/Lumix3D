@@ -4,6 +4,17 @@ import { useRef } from "react";
 import { Download, Upload, Trash, Code, Copy, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogPopup,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { resetScene, loadScene } from "@/store/slices/sceneSlice";
 import {
@@ -251,21 +262,39 @@ export default function Lumix3DEmbed() {
         <Code className="h-4 w-4" />
       </Button>
       {hasProject && (
-        <Button
-          variant="ghost"
-          size="icon"
-          title="New project (current is auto-saved)"
-          className="h-7 w-7 text-white/50 hover:text-red-400 hover:bg-white/10"
-          onClick={() => {
-            if (
-              confirm("Are you sure you want to clear the current project?")
-            ) {
-              dispatch(resetScene());
+        <AlertDialog>
+          <AlertDialogTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon"
+                title="New project (current is auto-saved)"
+                className="h-7 w-7 text-white/50 hover:text-red-400 hover:bg-white/10"
+              >
+                <Trash className="h-4 w-4" />
+              </Button>
             }
-          }}
-        >
-          <Trash className="h-4 w-4" />
-        </Button>
+          />
+          <AlertDialogPopup>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Clear current project?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This removes all shapes, lights, materials, and timeline data.
+                The current project is auto-saved — you can re-import the JSON
+                export to restore it.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-red-500/90 text-white hover:bg-red-500"
+                onClick={() => dispatch(resetScene())}
+              >
+                Clear project
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogPopup>
+        </AlertDialog>
       )}
 
       {/* Code Modal */}
