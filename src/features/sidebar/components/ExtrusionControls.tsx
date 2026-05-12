@@ -23,8 +23,17 @@ export function ExtrusionControls() {
   const dispatch = useAppDispatch();
   const extrusion = useAppSelector((state) => state.scene.extrusion);
   const is3DMode = useAppSelector((state) => state.scene.is3DMode);
+  const svgShapesCount = useAppSelector((state) => state.scene.svgShapes.length);
+  const selectedShapeId = useAppSelector((s) => s.scene.selectedShapeId);
+  const isGlbSelected = useAppSelector((s) =>
+    selectedShapeId
+      ? s.scene.glbObjects.some((g) => g.id === selectedShapeId)
+      : false,
+  );
 
   if (!is3DMode) return null;
+  if (svgShapesCount === 0) return null;
+  if (isGlbSelected) return null;
 
   return (
     <CollapsibleCard

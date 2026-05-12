@@ -51,6 +51,11 @@ export function TextureControls() {
   const selectedShapeId = useAppSelector((s) => s.scene.selectedShapeId);
   const selectedShapeIds = useAppSelector((s) => s.scene.selectedShapeIds);
   const is3DMode = useAppSelector((s) => s.scene.is3DMode);
+  const isGlbSelected = useAppSelector((s) =>
+    s.scene.selectedShapeId
+      ? s.scene.glbObjects.some((g) => g.id === s.scene.selectedShapeId)
+      : false,
+  );
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const targetIds = useMemo(() => {
@@ -73,6 +78,8 @@ export function TextureControls() {
     : globalTexture;
 
   if (!is3DMode) return null;
+  if (svgShapes.length === 0) return null;
+  if (isGlbSelected) return null;
 
   const upload = (key: keyof TextureSettings, file: File) => {
     if (!SUPPORTED.includes(file.type)) {

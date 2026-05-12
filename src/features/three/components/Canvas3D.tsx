@@ -22,6 +22,7 @@ import {
   redo,
 } from "@/store/slices/sceneSlice";
 import { ExtrudedSVG } from "./ExtrudedSVG";
+import { GlbScene } from "./GlbScene";
 import { SceneLights } from "./SceneLights";
 import { RotationLockToolbar } from "./RotationLockToolbar";
 import { OrbitControlsLockToolbar } from "./OrbitControlsLockToolbar";
@@ -75,22 +76,33 @@ function FitCameraOnLoad() {
   const active3DCount = useAppSelector(
     (state) => state.scene.importedSvgs.filter((s) => s.is3D).length,
   );
+  const glbObjectCount = useAppSelector(
+    (state) => state.scene.glbObjects.length,
+  );
   const svgShapes = useAppSelector((state) => state.scene.svgShapes);
+  const glbObjects = useAppSelector((state) => state.scene.glbObjects);
 
   const pendingFitRef = useRef(false);
   const prevCountRef = useRef(0);
 
   useEffect(() => {
-    if (active3DCount > 0 && active3DCount !== prevCountRef.current) {
+    const total = active3DCount + glbObjectCount;
+    if (total > 0 && total !== prevCountRef.current) {
       pendingFitRef.current = true;
     }
-    prevCountRef.current = active3DCount;
-  }, [active3DCount]);
+    prevCountRef.current = total;
+  }, [active3DCount, glbObjectCount]);
 
   useFrame(() => {
     if (!pendingFitRef.current || !controls) return;
 
-    const ids = svgShapes.filter((s) => s.visible !== false).map((s) => s.id);
+    const shapeIds = svgShapes
+      .filter((s) => s.visible !== false)
+      .map((s) => s.id);
+    const glbIds = glbObjects
+      .filter((g) => g.visible !== false)
+      .map((g) => g.id);
+    const ids = [...shapeIds, ...glbIds];
     if (ids.length === 0) return;
 
     const objects = ids
@@ -222,6 +234,7 @@ export function Canvas3D() {
   );
   const isBoxSelecting = useAppSelector((state) => state.scene.isBoxSelecting);
   const svgShapes = useAppSelector((state) => state.scene.svgShapes);
+  const glbObjects = useAppSelector((state) => state.scene.glbObjects);
   const viewMode = useAppSelector((state) => state.scene.viewMode);
 
   const orbitControlsRef = useRef<any>(null);
@@ -247,7 +260,10 @@ export function Canvas3D() {
     const ids =
       selectedShapeIds.length > 0
         ? selectedShapeIds
-        : svgShapes.filter((s) => s.visible !== false).map((s) => s.id);
+        : [
+            ...svgShapes.filter((s) => s.visible !== false).map((s) => s.id),
+            ...glbObjects.filter((g) => g.visible !== false).map((g) => g.id),
+          ];
 
     if (ids.length === 0) return;
 
@@ -266,7 +282,7 @@ export function Canvas3D() {
       controls.target.copy(center);
       controls.update();
     }
-  }, [selectedShapeIds, svgShapes]);
+  }, [selectedShapeIds, svgShapes, glbObjects]);
 
   useEffect(() => {
     // Expose a way for ProjectActions to get the current camera state
@@ -317,7 +333,7 @@ export function Canvas3D() {
 
       // Selection shortcuts — available even with no current selection.
       if (key === "a") {
-        if (svgShapes.length === 0) return;
+        if (svgShapes.length === 0 && glbObjects.length === 0) return;
         e.preventDefault();
         if (e.altKey) {
           dispatch(clearSelection());
@@ -327,7 +343,7 @@ export function Canvas3D() {
         return;
       }
       if (key === "b") {
-        if (svgShapes.length === 0) return;
+        if (svgShapes.length === 0 && glbObjects.length === 0) return;
         e.preventDefault();
         dispatch(setBoxSelecting(!isBoxSelecting));
         return;
@@ -385,6 +401,7 @@ export function Canvas3D() {
     transformMode,
     isBoxSelecting,
     svgShapes.length,
+    glbObjects.length,
     isEmbedMode,
   ]);
 
@@ -440,6 +457,7 @@ export function Canvas3D() {
       >
         <SceneLights />
         <ExtrudedSVG />
+        <GlbScene />
         <TransformTracker />
         <CanvasRefsCapture />
         <CameraController

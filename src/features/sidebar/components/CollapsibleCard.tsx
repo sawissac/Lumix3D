@@ -22,9 +22,11 @@ import { setSectionCollapsed } from "@/store/slices/sceneSlice";
 const SECTION_ICONS: Record<string, LucideIcon> = {
   "quick-scenes": Wand2,
   "svg-uploader": Upload,
+  "glb-uploader": Box,
   "objects-list": Layers,
   "inspector-svg": PenLine,
   "inspector-3d": SlidersHorizontal,
+  "inspector-glb": Box,
   extrusion: Box,
   textures: ImageIcon,
   background: Mountain,

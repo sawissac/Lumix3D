@@ -138,6 +138,7 @@ export function TimelinePanel() {
   const selectedShapeId = useAppSelector((s) => s.scene.selectedShapeId);
   const selectedShapeIds = useAppSelector((s) => s.scene.selectedShapeIds);
   const svgShapes = useAppSelector((s) => s.scene.svgShapes);
+  const glbObjects = useAppSelector((s) => s.scene.glbObjects);
   const groups = useAppSelector((s) => s.scene.groups);
   const savedAnimations = useAppSelector((s) => s.scene.savedAnimations);
   const [showPresets, setShowPresets] = useState(false);
@@ -244,9 +245,28 @@ export function TimelinePanel() {
       scale: [number, number, number];
     } | null = null;
 
+    const getPosition = (id: string): [number, number, number] | undefined => {
+      const s = svgShapes.find((sh) => sh.id === id);
+      if (s) return s.position;
+      const g = glbObjects.find((gl) => gl.id === id);
+      return g?.position;
+    };
+    const getRotation = (id: string): [number, number, number] => {
+      const s = svgShapes.find((sh) => sh.id === id);
+      if (s) return s.rotation || [0, 0, 0];
+      const g = glbObjects.find((gl) => gl.id === id);
+      return g?.rotation || [0, 0, 0];
+    };
+    const getScale = (id: string): [number, number, number] => {
+      const s = svgShapes.find((sh) => sh.id === id);
+      if (s) return s.scale || [1, 1, 1];
+      const g = glbObjects.find((gl) => gl.id === id);
+      return g?.scale || [1, 1, 1];
+    };
+
     if (activeIds.length > 1) {
       const positions = activeIds
-        .map((id) => svgShapes.find((s) => s.id === id)?.position)
+        .map((id) => getPosition(id))
         .filter((p): p is [number, number, number] => !!p);
       if (positions.length > 0) {
         const pivot: [number, number, number] = [
@@ -271,17 +291,20 @@ export function TimelinePanel() {
     }
 
     activeIds.forEach((shapeId, i) => {
-      const shape = svgShapes.find((s) => s.id === shapeId);
-      if (!shape) return;
+      const pos = getPosition(shapeId);
+      const isKnown =
+        !!svgShapes.find((s) => s.id === shapeId) ||
+        !!glbObjects.find((g) => g.id === shapeId);
+      if (!isKnown) return;
       dispatch(
         addKeyframe({
           shapeId,
           keyframe: {
             id: `kf-${now}-${i}`,
             time: timeline.currentTime,
-            position: shape.position || [0, 0, 0],
-            rotation: shape.rotation || [0, 0, 0],
-            scale: shape.scale || [1, 1, 1],
+            position: pos || [0, 0, 0],
+            rotation: getRotation(shapeId),
+            scale: getScale(shapeId),
             ...(groupCtx
               ? {
                   selectionId: groupCtx.selectionId,
@@ -294,7 +317,7 @@ export function TimelinePanel() {
         }),
       );
     });
-  }, [activeIds, svgShapes, timeline.currentTime, dispatch]);
+  }, [activeIds, svgShapes, glbObjects, timeline.currentTime, dispatch]);
 
   const KF_TIME_TOLERANCE = 0.05;
 
@@ -694,13 +717,17 @@ export function TimelinePanel() {
                     </div>
                     {isExpanded && row.tracks.map((track) => {
                       const shapeIdx = svgShapes.findIndex((s) => s.id === track.shapeId);
+                      const glb = glbObjects.find((g) => g.id === track.shapeId);
+                      const label = glb
+                        ? glb.name
+                        : `Shape ${shapeIdx >= 0 ? shapeIdx + 1 : "?"}`;
                       const isSelected = activeIds.includes(track.shapeId);
                       return (
                         <div
                           key={track.shapeId}
                           className={`h-7 flex items-center px-3 border-b border-white/4 ${isSelected ? "bg-indigo-500/8" : ""}`}
                         >
-                          <span className="text-[8px] text-white/40 truncate leading-tight pl-2">Shape {shapeIdx >= 0 ? shapeIdx + 1 : "?"}</span>
+                          <span className="text-[8px] text-white/40 truncate leading-tight pl-2">{label}</span>
                         </div>
                       );
                     })}
@@ -709,13 +736,17 @@ export function TimelinePanel() {
               }
               // ungrouped shape
               const shapeIdx = svgShapes.findIndex((s) => s.id === row.track.shapeId);
+              const glb = glbObjects.find((g) => g.id === row.track.shapeId);
+              const label = glb
+                ? glb.name
+                : `Shape ${shapeIdx >= 0 ? shapeIdx + 1 : "?"}`;
               const isSelected = activeIds.includes(row.track.shapeId);
               return (
                 <div
                   key={row.track.shapeId}
                   className={`h-8 flex items-center px-2 border-b border-white/4 ${isSelected ? "bg-indigo-500/8" : ""}`}
                 >
-                  <span className="text-[9px] text-white/50 truncate leading-tight">Shape {shapeIdx >= 0 ? shapeIdx + 1 : "?"}</span>
+                  <span className="text-[9px] text-white/50 truncate leading-tight">{label}</span>
                 </div>
               );
             })}

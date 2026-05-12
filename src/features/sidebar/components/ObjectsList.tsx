@@ -8,6 +8,7 @@ import {
   ChevronRight,
   ChevronDown,
   Users,
+  Box,
 } from "lucide-react";
 import { CollapsibleCard } from "./CollapsibleCard";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -21,7 +22,7 @@ import {
   deleteGroup,
   toggleSectionCollapsed,
 } from "@/store/slices/sceneSlice";
-import { SvgShape, ObjectGroup } from "@/types";
+import { SvgShape, ObjectGroup, GlbObject } from "@/types";
 
 type ListMode = "svg" | "3d" | "preview";
 
@@ -184,9 +185,72 @@ const GroupRow = memo(function GroupRow({
   );
 });
 
+type GlbRowProps = {
+  obj: GlbObject;
+  selected: boolean;
+  hidden: boolean;
+  indent?: boolean;
+  onClick: (id: string) => void;
+  onDelete: (id: string) => void;
+  onToggleVisibility: (id: string) => void;
+};
+
+const GlbRow = memo(function GlbRow({
+  obj,
+  selected,
+  hidden,
+  indent,
+  onClick,
+  onDelete,
+  onToggleVisibility,
+}: GlbRowProps) {
+  return (
+    <li
+      onClick={() => onClick(obj.id)}
+      className={[
+        "group flex items-center gap-2 py-1.5 cursor-pointer transition-colors text-xs",
+        indent ? "pl-7 pr-3" : "px-3",
+        selected
+          ? "bg-emerald-500/20 text-white"
+          : "text-white/65 hover:bg-white/5 hover:text-white/85",
+        hidden ? "opacity-40" : "",
+      ].join(" ")}
+    >
+      <Box className="w-3 h-3 shrink-0 text-emerald-300/80" />
+      <span className="flex-1 truncate" title={obj.name}>
+        {obj.name}
+      </span>
+      {selected && !hidden && (
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+      )}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleVisibility(obj.id);
+        }}
+        title={hidden ? "Show GLB" : "Hide GLB"}
+        className="opacity-0 group-hover:opacity-100 transition-opacity text-white/30 hover:text-white/70 rounded p-0.5"
+      >
+        {hidden ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+      </button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(obj.id);
+        }}
+        title="Delete GLB"
+        className="opacity-0 group-hover:opacity-100 transition-opacity text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded p-0.5"
+      >
+        <Trash2 className="w-3 h-3" />
+      </button>
+    </li>
+  );
+});
+
 export function ObjectsList() {
   const dispatch = useAppDispatch();
   const svgShapes = useAppSelector((s) => s.scene.svgShapes);
+  const glbObjects = useAppSelector((s) => s.scene.glbObjects);
   const is3DMode = useAppSelector((s) => s.scene.is3DMode);
   const isEditMode = useAppSelector((s) => s.scene.isEditMode);
   const selectedShapeId = useAppSelector((s) => s.scene.selectedShapeId);
@@ -196,6 +260,7 @@ export function ObjectsList() {
   const collapsedSections = useAppSelector((s) => s.scene.collapsedSections);
 
   const visibleShapes = svgShapes.filter((s) => s.visible !== false);
+  const visibleGlbs = glbObjects.filter((g) => g.visible !== false);
 
   const mode: ListMode = isEditMode ? "svg" : is3DMode ? "3d" : "preview";
 
@@ -208,6 +273,13 @@ export function ObjectsList() {
       }
     },
     [dispatch, mode],
+  );
+
+  const handleGlbClick = useCallback(
+    (id: string) => {
+      dispatch(setSelectedShapeId(id));
+    },
+    [dispatch],
   );
 
   const handleDelete = useCallback(
@@ -267,7 +339,7 @@ export function ObjectsList() {
     return group.shapeIds.every((id) => selectedShapeIds.includes(id));
   };
 
-  if (svgShapes.length === 0) return null;
+  if (svgShapes.length === 0 && glbObjects.length === 0) return null;
 
   const shapeIndex = new Map(svgShapes.map((s, i) => [s.id, i]));
   const groupedIds = new Set<string>();
@@ -285,7 +357,8 @@ export function ObjectsList() {
       title={mode === "3d" ? "3D Objects" : "SVG Shapes"}
       headerExtra={
         <span className="text-[10px] text-white/30 font-mono">
-          {visibleShapes.length}/{svgShapes.length}
+          {visibleShapes.length + visibleGlbs.length}/
+          {svgShapes.length + glbObjects.length}
         </span>
       }
       contentClassName="p-0"
@@ -312,23 +385,42 @@ export function ObjectsList() {
                 {isOpen &&
                   group.shapeIds.map((sid) => {
                     const shape = svgShapes.find((s) => s.id === sid);
-                    if (!shape) return null;
-                    const index = shapeIndex.get(sid) ?? 0;
-                    const selected = isShapeSelected(shape.id, index);
-                    const hasOverride =
-                      mode === "3d" && !!shape.shapeExtrusion;
-                    const hidden = shape.visible === false;
+                    if (shape) {
+                      const index = shapeIndex.get(sid) ?? 0;
+                      const selected = isShapeSelected(shape.id, index);
+                      const hasOverride =
+                        mode === "3d" && !!shape.shapeExtrusion;
+                      const hidden = shape.visible === false;
+                      return (
+                        <ObjectListItem
+                          key={shape.id}
+                          shape={shape}
+                          index={index}
+                          mode={mode}
+                          selected={selected}
+                          hasOverride={hasOverride}
+                          hidden={hidden}
+                          indent
+                          onClick={handleClick}
+                          onDelete={handleDelete}
+                          onToggleVisibility={handleToggleVisibility}
+                        />
+                      );
+                    }
+                    const glb = glbObjects.find((g) => g.id === sid);
+                    if (!glb) return null;
+                    const glbSelected =
+                      selectedShapeIds.length > 1
+                        ? selectedShapeIds.includes(glb.id)
+                        : selectedShapeId === glb.id;
                     return (
-                      <ObjectListItem
-                        key={shape.id}
-                        shape={shape}
-                        index={index}
-                        mode={mode}
-                        selected={selected}
-                        hasOverride={hasOverride}
-                        hidden={hidden}
+                      <GlbRow
+                        key={glb.id}
+                        obj={glb}
+                        selected={glbSelected}
+                        hidden={glb.visible === false}
                         indent
-                        onClick={handleClick}
+                        onClick={handleGlbClick}
                         onDelete={handleDelete}
                         onToggleVisibility={handleToggleVisibility}
                       />
@@ -357,6 +449,26 @@ export function ObjectsList() {
             />
           );
         })}
+        {mode === "3d" &&
+          glbObjects
+            .filter((g) => !groupedIds.has(g.id))
+            .map((obj) => {
+              const selected =
+                selectedShapeIds.length > 1
+                  ? selectedShapeIds.includes(obj.id)
+                  : selectedShapeId === obj.id;
+              return (
+                <GlbRow
+                  key={obj.id}
+                  obj={obj}
+                  selected={selected}
+                  hidden={obj.visible === false}
+                  onClick={handleGlbClick}
+                  onDelete={handleDelete}
+                  onToggleVisibility={handleToggleVisibility}
+                />
+              );
+            })}
       </ul>
     </CollapsibleCard>
   );

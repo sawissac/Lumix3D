@@ -19,25 +19,45 @@
     "mtime": 1776317604.386977,
     "hash": "18216a452e21b20353c2dd74168af97f"
   },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/test-page.tsx": {
+    "mtime": 1778560047.050453,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/public/lumix-embed.js": {
+    "mtime": 1778510090.7444217,
+    "hash": "1ae36d7a129bc27422e2b527c6ba02e9"
+  },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/scripts/build-embed.mjs": {
+    "mtime": 1778509288.9893603,
+    "hash": "487d8ed515fb9c0ceaa6db5ad160ef72"
+  },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/types/index.ts": {
-    "mtime": 1778488403.08828,
-    "hash": "0aa8fe1c5d0d3862c7a99930a6c9afbd"
+    "mtime": 1778559756.1675274,
+    "hash": "255c2ea4bdafae888eab78dd655b0d2b"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/app/layout.tsx": {
-    "mtime": 1778386984.378015,
-    "hash": "c7c2c637ec74e10ab203a2c97cfc6084"
+    "mtime": 1778552397.5927405,
+    "hash": "342ada5ce58bf89fa63d905bdb94b7db"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/app/page.tsx": {
-    "mtime": 1777724058.746891,
-    "hash": "1e397baddb84df857c9fd883fb6abbf5"
+    "mtime": 1778507931.9017231,
+    "hash": "6c9127df423de28cc3f62c4f37d34d34"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/app/providers.tsx": {
     "mtime": 1778386933.742295,
     "hash": "7b1aa89e4341100c95a387973a6d5dab"
   },
-  "/Users/sawissac/Documents/GitHub/Lumix3D/src/app/embed/page.tsx": {
-    "mtime": 1776661853.7692294,
-    "hash": "b970f6f7b02c8139296196dc454263b8"
+  "/Users/sawissac/Documents/GitHub/Lumix3D/src/embed/lumix-scene.tsx": {
+    "mtime": 1778510056.8322885,
+    "hash": "6239cfa1c8d3ff181135816e54f6a5e8"
+  },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/src/embed/embedStore.ts": {
+    "mtime": 1778509167.2927384,
+    "hash": "8fb479cc12e718ab6f9664827bd734fd"
+  },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/src/embed/EmbedModeContext.ts": {
+    "mtime": 1778509109.5392818,
+    "hash": "efa7285fc1fcbc159931ea33257aa555"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/constants/demoScenes.ts": {
     "mtime": 1776620355.2855709,
@@ -48,8 +68,8 @@
     "hash": "bcdb31c379c4358f9621a24f7b59c6b9"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/ProjectActions.tsx": {
-    "mtime": 1776659334.6543758,
-    "hash": "67482280a4e68066609425efd7ed4a36"
+    "mtime": 1778509340.2690682,
+    "hash": "5c3cd266f2927d7eb437206e2a6cd5c7"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/QuickScenes.tsx": {
     "mtime": 1778488121.62582,
@@ -60,8 +80,8 @@
     "hash": "ed731b46744f7277dd3a0784b3d13c23"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/ExtrusionControls.tsx": {
-    "mtime": 1778386933.7432344,
-    "hash": "000aee8ebbcd1d4eef5cfeff9bc08111"
+    "mtime": 1778503602.7414136,
+    "hash": "bd3eb32256b6319685123e10144dfe3a"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/SVGUploader.tsx": {
     "mtime": 1778500629.837552,
@@ -71,33 +91,41 @@
     "mtime": 1777694880.5830626,
     "hash": "499dd9d79302d14b17cec3c69a6d8bcc"
   },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/SavedAnimationsList.tsx": {
+    "mtime": 1778503721.3201168,
+    "hash": "7dd36f04202087a7a9284a65c978a5c8"
+  },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/GLBUploader.tsx": {
+    "mtime": 1778559902.4407809,
+    "hash": "dfd28c3bc610d43bd60558aae8e0bd84"
+  },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/BackgroundControls.tsx": {
     "mtime": 1777694879.4216323,
     "hash": "cf95c4572e3c14544fa40363f488e980"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/ObjectsList.tsx": {
-    "mtime": 1778497929.7894707,
-    "hash": "d2808be6f7b931ee1ff19b7aa3b2ed89"
+    "mtime": 1778560081.7536628,
+    "hash": "0ceff43a7d5189eebe58bc6196e534f3"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/Sidebar.tsx": {
-    "mtime": 1778386984.379543,
-    "hash": "9a6d1dbffe1d6cd9e3df6bacab60c5f7"
+    "mtime": 1778560097.5965018,
+    "hash": "dbb8ce449ed8197f986cfab6af55486b"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/TimelineEditor.tsx": {
     "mtime": 1776911306.6341133,
     "hash": "66e4923807496aefaf36407e896b5ba7"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/TextureControls.tsx": {
-    "mtime": 1778387254.258312,
-    "hash": "88cce5ddc5820be020172c77a49da42d"
+    "mtime": 1778505423.9240744,
+    "hash": "655cf1367346142b96314f8a9651161c"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/CollapsibleCard.tsx": {
     "mtime": 1778386984.3788078,
     "hash": "b6afbedd91bc8b7800fbae575eebe464"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/sidebar/components/LightingControls.tsx": {
-    "mtime": 1778386984.3790927,
-    "hash": "84813825c62ded5f5ef1def0cbbd3b3c"
+    "mtime": 1778503650.8673449,
+    "hash": "782d5f6ade02d4fa8e1923e9357a40d4"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/three/liveTransform.ts": {
     "mtime": 1776355494.171312,
@@ -128,8 +156,8 @@
     "hash": "1ac6ff65e71dd0dfb24f1847dec9a2b7"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/three/components/Canvas3D.tsx": {
-    "mtime": 1778498161.7271972,
-    "hash": "e95ca7f1410db368574014ee4cb2f841"
+    "mtime": 1778560013.505708,
+    "hash": "4678261b6b0727394081de1c8c542006"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/three/components/UndoRedoToolbar.tsx": {
     "mtime": 1777723955.1041014,
@@ -151,6 +179,10 @@
     "mtime": 1778386933.7494462,
     "hash": "537be64fd7506fd54b3705b7947d8542"
   },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/three/components/GlbScene.tsx": {
+    "mtime": 1778560265.5883539,
+    "hash": "a1ce9ad3fc1b2f8eff61ac46b9f3c3bf"
+  },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/three/components/RotationLockToolbar.tsx": {
     "mtime": 1777723996.7809339,
     "hash": "abb2dc203921c464617c57bb420bb62c"
@@ -168,8 +200,8 @@
     "hash": "0d76f2061ad91147ab3f996c53a8a91f"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/three/components/ExtrudedSVG.tsx": {
-    "mtime": 1778497694.5229926,
-    "hash": "a332d98ff0e2f4e899a89bf1f5df4cbf"
+    "mtime": 1778552198.4142044,
+    "hash": "0b3cc556fc4ffc110736efa9ba3deb08"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/features/three/components/BoxSelectOverlay.tsx": {
     "mtime": 1776655568.6142945,
@@ -184,12 +216,16 @@
     "hash": "a78e520074852fbaf3e8fb36e8e5262b"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/components/MobileBlocker.tsx": {
-    "mtime": 1776620207.2206533,
-    "hash": "c7ddb5c223ee429e71b417db4ebdf0b6"
+    "mtime": 1778509727.2051218,
+    "hash": "d02bce653c5f55b7cadef6ad9f496b5a"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/components/ParticleBackground.tsx": {
     "mtime": 1776439379.6156886,
     "hash": "5da46b6f0c384c820feaf49ec27ab37c"
+  },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/src/components/ui/alert-dialog.tsx": {
+    "mtime": 1778507730.7752218,
+    "hash": "2bb47c0dc9cf953ffe72fcc256ada609"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/components/ui/tabs.tsx": {
     "mtime": 1776317523.3098788,
@@ -235,6 +271,10 @@
     "mtime": 1776317523.3089764,
     "hash": "c7cbc8cd45d01649277bd7107581cb36"
   },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/src/lib/embedPayload.ts": {
+    "mtime": 1778508637.2360356,
+    "hash": "e241dbb669075870633b8f4350790d09"
+  },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/lib/utils.ts": {
     "mtime": 1776326255.68238,
     "hash": "5a6fd53fdcf2be529e9cc0b718fde352"
@@ -244,8 +284,8 @@
     "hash": "baefce75c768dac9b73df5992e42fe29"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/store/persistConfig.ts": {
-    "mtime": 1778386984.3811367,
-    "hash": "bed5100c6598a61fdeb48305d06630c1"
+    "mtime": 1778559880.4481094,
+    "hash": "390b01839e4e1c8919365ee7c2a75db6"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/store/index.ts": {
     "mtime": 1776659339.910376,
@@ -256,16 +296,20 @@
     "hash": "b14433e43feac378a669a855d45c8262"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/store/historyMiddleware.ts": {
-    "mtime": 1778387254.258985,
-    "hash": "7c505faaa3ea45376bfeb743f9fc144e"
+    "mtime": 1778560212.5896971,
+    "hash": "a32fd542a820a9cc6b901252b436dea7"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/src/store/slices/sceneSlice.ts": {
-    "mtime": 1778497125.2774153,
-    "hash": "ff614f174586ff8f55de7f9c36d7ae13"
+    "mtime": 1778559869.8857667,
+    "hash": "0416d36252e22946e55e0a1418f39458"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/README.md": {
     "mtime": 1776430798.248449,
     "hash": "5c99439e0813e3fc872d806c028f6865"
+  },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/test.html": {
+    "mtime": 1778510164.1066556,
+    "hash": "e8c175e8588010d2e878301f5868da1b"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/AGENTS.md": {
     "mtime": 1776317347.1258981,
@@ -290,6 +334,10 @@
   "/Users/sawissac/Documents/GitHub/Lumix3D/docs/OPTIMIZATION_STORE.md": {
     "mtime": 1776655699.3582113,
     "hash": "3a8dfdb1ec62716d737f5e43a479e8c3"
+  },
+  "/Users/sawissac/Documents/GitHub/Lumix3D/docs/sidebar_optimization.md": {
+    "mtime": 1778503457.7863197,
+    "hash": "24f6bf38d4546e46360d8eec0e866873"
   },
   "/Users/sawissac/Documents/GitHub/Lumix3D/public/product/app_logo.svg": {
     "mtime": 1776756288.1873157,

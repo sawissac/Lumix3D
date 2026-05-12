@@ -3,6 +3,7 @@ import {
   AppState,
   SvgShape,
   ImportedSvg,
+  ImportedGlb,
   Light,
   Background,
   ExtrusionSettings,
@@ -35,12 +36,15 @@ export type HistorySnapshot = Pick<
   | "showGrid"
   | "groups"
   | "timeline"
+  | "glbObjects"
 >;
 
 const initialState: AppState = {
   svgShapes: [],
   svgFile: null,
   importedSvgs: [],
+  importedGlbs: [],
+  glbObjects: [],
   editingSvgId: null,
   extrusion: {
     depth: 10,
@@ -427,6 +431,15 @@ const sceneSlice = createSlice({
       state.importedSvgs.forEach((svg) => {
         svg.shapes = svg.shapes.filter((s) => s.id !== id);
       });
+      const removedGlb = state.glbObjects.find((g) => g.id === id);
+      if (removedGlb) {
+        state.glbObjects = state.glbObjects.filter((g) => g.id !== id);
+        const parent = state.importedGlbs.find((g) => g.id === removedGlb.glbId);
+        if (parent && parent.objectId === id) {
+          parent.is3D = false;
+          parent.objectId = undefined;
+        }
+      }
       state.selectedShapeIds = state.selectedShapeIds.filter((sid) => sid !== id);
       if (state.selectedShapeId === id) {
         state.selectedShapeId = null;
@@ -444,6 +457,11 @@ const sceneSlice = createSlice({
       const shape = state.svgShapes.find((s) => s.id === action.payload);
       if (shape) {
         shape.visible = shape.visible === false ? undefined : false;
+        return;
+      }
+      const glb = state.glbObjects.find((g) => g.id === action.payload);
+      if (glb) {
+        glb.visible = glb.visible === false ? undefined : false;
       }
     },
     setBloomSettings: (
@@ -564,6 +582,11 @@ const sceneSlice = createSlice({
         const shape = state.svgShapes.find((s) => s.id === id);
         if (shape) {
           shape.visible = willShow ? undefined : false;
+          return;
+        }
+        const glb = state.glbObjects.find((g) => g.id === id);
+        if (glb) {
+          glb.visible = willShow ? undefined : false;
         }
       });
     },
@@ -651,6 +674,7 @@ const sceneSlice = createSlice({
       state.showGrid = snap.showGrid;
       state.groups = snap.groups;
       if (snap.timeline) state.timeline = snap.timeline;
+      if (snap.glbObjects) state.glbObjects = snap.glbObjects;
     },
     // No-op: triggers a history snapshot before a drag begins
     recordSnapshot: () => {},
@@ -658,9 +682,13 @@ const sceneSlice = createSlice({
     undo: () => {},
     redo: () => {},
     selectAllShapes: (state) => {
-      state.selectedShapeIds = state.svgShapes
+      const shapeIds = state.svgShapes
         .filter((s) => s.visible !== false)
         .map((s) => s.id);
+      const glbIds = state.glbObjects
+        .filter((g) => g.visible !== false)
+        .map((g) => g.id);
+      state.selectedShapeIds = [...shapeIds, ...glbIds];
       state.selectedShapeId =
         state.selectedShapeIds.length === 1 ? state.selectedShapeIds[0] : null;
 
@@ -977,6 +1005,111 @@ const sceneSlice = createSlice({
       state.editingSvgId = null;
       state.svgFile = action.payload.svgText;
     },
+    addImportedGlb: (state, action: PayloadAction<ImportedGlb>) => {
+      state.importedGlbs.push(action.payload);
+    },
+    convertImportedGlbTo3D: (state, action: PayloadAction<string>) => {
+      const glb = state.importedGlbs.find((g) => g.id === action.payload);
+      if (!glb || glb.is3D) return;
+      const objectId = `glb-obj-${Date.now()}`;
+      glb.is3D = true;
+      glb.objectId = objectId;
+      state.glbObjects.push({
+        id: objectId,
+        glbId: glb.id,
+        name: glb.name,
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+      });
+      state.is3DMode = true;
+      state.isEditMode = false;
+    },
+    deleteImportedGlb: (state, action: PayloadAction<string>) => {
+      const glb = state.importedGlbs.find((g) => g.id === action.payload);
+      if (!glb) return;
+      if (glb.is3D && glb.objectId) {
+        const objectId = glb.objectId;
+        state.glbObjects = state.glbObjects.filter((o) => o.id !== objectId);
+        state.selectedShapeIds = state.selectedShapeIds.filter(
+          (id) => id !== objectId,
+        );
+        if (state.selectedShapeId === objectId) {
+          state.selectedShapeId = null;
+          state.transformMode = null;
+        }
+        state.timeline.tracks = state.timeline.tracks.filter(
+          (t) => t.shapeId !== objectId,
+        );
+        state.groups.forEach((g) => {
+          g.shapeIds = g.shapeIds.filter((id) => id !== objectId);
+        });
+        state.groups = state.groups.filter((g) => g.shapeIds.length > 0);
+      }
+      state.importedGlbs = state.importedGlbs.filter(
+        (g) => g.id !== action.payload,
+      );
+      const stillHas3D =
+        state.importedSvgs.some((s) => s.is3D) || state.glbObjects.length > 0;
+      if (!stillHas3D && !state.isEditMode) {
+        state.is3DMode = false;
+        state.svgFile = null;
+      }
+    },
+    updateGlbObjectTransform: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        position?: [number, number, number];
+        rotation?: [number, number, number];
+        scale?: [number, number, number];
+      }>,
+    ) => {
+      const obj = state.glbObjects.find((g) => g.id === action.payload.id);
+      if (!obj) return;
+      if (action.payload.position) obj.position = action.payload.position;
+      if (action.payload.rotation) obj.rotation = action.payload.rotation;
+      if (action.payload.scale) obj.scale = action.payload.scale;
+    },
+    renameGlbObject: (
+      state,
+      action: PayloadAction<{ id: string; name: string }>,
+    ) => {
+      const obj = state.glbObjects.find((g) => g.id === action.payload.id);
+      if (obj) obj.name = action.payload.name;
+    },
+    updateGlbObjectMaterial: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        material: Partial<MaterialSettings>;
+      }>,
+    ) => {
+      const obj = state.glbObjects.find((g) => g.id === action.payload.id);
+      if (obj) {
+        obj.material = { ...obj.material, ...action.payload.material };
+      }
+    },
+    resetGlbObjectMaterial: (state, action: PayloadAction<string>) => {
+      const obj = state.glbObjects.find((g) => g.id === action.payload);
+      if (obj) delete obj.material;
+    },
+    updateGlbObjectTexture: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        texture: Partial<TextureSettings>;
+      }>,
+    ) => {
+      const obj = state.glbObjects.find((g) => g.id === action.payload.id);
+      if (obj) {
+        obj.texture = { ...obj.texture, ...action.payload.texture };
+      }
+    },
+    resetGlbObjectTexture: (state, action: PayloadAction<string>) => {
+      const obj = state.glbObjects.find((g) => g.id === action.payload);
+      if (obj) delete obj.texture;
+    },
   },
 });
 
@@ -1076,6 +1209,15 @@ export const {
   setEditImportedSvg,
   commitEditedSvgTo3D,
   saveEditedSvg,
+  addImportedGlb,
+  convertImportedGlbTo3D,
+  deleteImportedGlb,
+  updateGlbObjectTransform,
+  renameGlbObject,
+  updateGlbObjectMaterial,
+  resetGlbObjectMaterial,
+  updateGlbObjectTexture,
+  resetGlbObjectTexture,
 } = sceneSlice.actions;
 
 // --- Selectors ---

@@ -10,6 +10,8 @@ const persistConfig = {
     "svgShapes",
     "svgFile",
     "importedSvgs",
+    "importedGlbs",
+    "glbObjects",
     "extrusion",
     "globalMaterial",
     "globalTransform",

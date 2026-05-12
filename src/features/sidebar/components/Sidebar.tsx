@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SVGUploader } from "./SVGUploader";
+import { GLBUploader } from "./GLBUploader";
 import { QuickScenes } from "./QuickScenes";
 import { ExtrusionControls } from "./ExtrusionControls";
 import { BackgroundControls } from "./BackgroundControls";
@@ -80,6 +81,7 @@ export function Sidebar() {
         {tab === "design" ? (
           <>
             <SVGUploader />
+            <GLBUploader />
             <ObjectsList />
             <ShapeInspector />
             <ExtrusionControls />

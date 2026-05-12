@@ -23,8 +23,12 @@ import {
   setGlobalMaterial,
   setGlobalTransform,
   removeShape,
+  updateGlbObjectMaterial,
+  resetGlbObjectMaterial,
+  updateGlbObjectTransform,
+  renameGlbObject,
 } from "@/store/slices/sceneSlice";
-import { ExtrusionSettings, MaterialSettings, MaterialPreset } from "@/types";
+import { ExtrusionSettings, MaterialSettings, MaterialPreset, GlbObject } from "@/types";
 import {
   Select,
   SelectContent,
@@ -85,6 +89,196 @@ function SVGInspector() {
             Click a shape in the editor to inspect it
           </p>
         )}
+    </CollapsibleCard>
+  );
+}
+
+// ─── GLB Inspector (shown when a GLB object is selected in 3D mode) ─────────
+
+function GlbInspector({ obj }: { obj: GlbObject }) {
+  const dispatch = useAppDispatch();
+  const transformMode = useAppSelector((s) => s.scene.transformMode);
+
+  const material = obj.material ?? {};
+  const hasMaterialOverride = !!obj.material;
+
+  const set = (key: keyof MaterialSettings, value: string | number) => {
+    dispatch(updateGlbObjectMaterial({ id: obj.id, material: { [key]: value } }));
+  };
+
+  const P = Math.PI;
+  const rotationPresets: { label: string; r: [number, number, number] }[] = [
+    { label: "Front", r: [0, 0, 0] },
+    { label: "Back", r: [0, P, 0] },
+    { label: "Top", r: [-P / 2, 0, 0] },
+    { label: "Bottom", r: [P / 2, 0, 0] },
+    { label: "Right", r: [0, -P / 2, 0] },
+    { label: "Left", r: [0, P / 2, 0] },
+    { label: "Iso ↗", r: [-P / 6, P / 4, 0] },
+    { label: "Iso ↙", r: [-P / 6, (-P * 3) / 4, 0] },
+  ];
+
+  return (
+    <CollapsibleCard
+      id="inspector-glb"
+      cardClassName="border-emerald-500/20 flex flex-col shrink-0"
+      title="Inspector"
+      titleClassName="text-emerald-400 text-sm"
+      description="GLB Object"
+      contentClassName="pt-3 space-y-4 text-xs"
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          <Input
+            type="text"
+            value={obj.name}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              dispatch(renameGlbObject({ id: obj.id, name: e.target.value }))
+            }
+            className="h-7 bg-black/20 border-white/10 text-xs font-medium text-white/90"
+          />
+        </div>
+        <div className="flex items-center gap-1 ml-2">
+          <button
+            onClick={() => dispatch(removeShape(obj.id))}
+            className="text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded p-0.5 transition-colors"
+            title="Delete GLB object"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={() => dispatch(setSelectedShapeId(null))}
+            className="text-white/30 hover:text-white/60 text-base leading-none"
+            title="Deselect"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+
+      {/* Transform Mode */}
+      <div className="grid grid-cols-4 gap-1 glass p-1 rounded-md">
+        {(
+          [
+            { mode: null, label: "Select", Icon: MousePointer2 },
+            { mode: "translate" as const, label: "Move", Icon: Move },
+            { mode: "rotate" as const, label: "Rotate", Icon: RotateCw },
+            { mode: "scale" as const, label: "Scale", Icon: Maximize },
+          ] as const
+        ).map(({ mode, label, Icon }) => (
+          <button
+            key={label}
+            onClick={() => dispatch(setTransformMode(mode))}
+            title={label}
+            className={cn(
+              "flex flex-col items-center gap-0.5 py-1.5 rounded transition-all text-[9px] font-medium",
+              transformMode === mode
+                ? "bg-emerald-500/30 text-emerald-300"
+                : "text-white/40 hover:text-white/80 hover:bg-white/8",
+            )}
+          >
+            <Icon className="w-3 h-3" />
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* Rotation Presets */}
+      <div className="border-t border-white/5 pt-3 space-y-2">
+        <span className="text-white/50 text-[11px] uppercase tracking-wider">
+          Rotation Preset
+        </span>
+        <div className="grid grid-cols-4 gap-1">
+          {rotationPresets.map(({ label, r }) => (
+            <button
+              key={label}
+              onClick={() =>
+                dispatch(updateGlbObjectTransform({ id: obj.id, rotation: r }))
+              }
+              className="py-1.5 rounded-md text-[10px] font-medium glass text-white/60 hover:text-white hover:bg-emerald-500/20 transition-all border border-transparent hover:border-emerald-500/30"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Material Overrides */}
+      <div className="border-t border-white/5 pt-3 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-white/50 text-[11px] uppercase tracking-wider">
+            Material Overrides
+          </span>
+          {hasMaterialOverride && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-5 text-[10px] px-2 text-white/50 border-white/10 hover:border-white/30"
+              onClick={() => dispatch(resetGlbObjectMaterial(obj.id))}
+            >
+              Reset
+            </Button>
+          )}
+        </div>
+        <p className="text-[10px] text-white/40 leading-tight">
+          Override embedded GLB material values. Reset to keep originals.
+        </p>
+
+        {[
+          { key: "roughness" as const, label: "Roughness", min: 0, max: 1, step: 0.01 },
+          { key: "metalness" as const, label: "Metalness", min: 0, max: 1, step: 0.01 },
+        ].map(({ key, label, min, max, step }) => (
+          <div key={key} className="space-y-1.5">
+            <Label className="text-white/70 text-xs">{label}</Label>
+            <SliderWithInput
+              value={(material[key] as number) ?? 0.5}
+              onChange={(v) => set(key, v)}
+              min={min}
+              max={max}
+              step={step}
+              sliderClassName="**:[[role=slider]]:bg-emerald-400 **:[[role=slider]]:border-emerald-400"
+              inputClassName="focus-visible:ring-emerald-500/50 text-emerald-300"
+            />
+          </div>
+        ))}
+
+        <div className="space-y-2">
+          <Label className="text-xs text-white/60">Emissive Color</Label>
+          <div className="flex gap-2">
+            <div className="relative w-8 h-8 rounded overflow-hidden border border-white/10 shrink-0">
+              <Input
+                type="color"
+                value={material.emissive || "#000000"}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  set("emissive", e.target.value)
+                }
+                className="absolute inset-[-10px] w-[200%] h-[200%] cursor-pointer border-0 p-0"
+              />
+            </div>
+            <Input
+              type="text"
+              value={material.emissive || "#000000"}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                set("emissive", e.target.value)
+              }
+              className="flex-1 h-8 bg-black/20 border-white/10 text-xs font-mono"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <Label className="text-xs text-white/60">Emissive Intensity</Label>
+          <SliderWithInput
+            value={material.emissiveIntensity ?? 0}
+            onChange={(v) => set("emissiveIntensity", v)}
+            min={0}
+            max={10}
+            step={0.1}
+            sliderClassName="**:[[role=slider]]:bg-emerald-400 **:[[role=slider]]:border-emerald-400"
+            inputClassName="focus-visible:ring-emerald-500/50 text-emerald-300"
+          />
+        </div>
+      </div>
     </CollapsibleCard>
   );
 }
@@ -665,9 +859,20 @@ export function ShapeInspector() {
   const is3DMode = useAppSelector((s) => s.scene.is3DMode);
   const isEditMode = useAppSelector((s) => s.scene.isEditMode);
   const svgFile = useAppSelector((s) => s.scene.svgFile);
+  const selectedShapeId = useAppSelector((s) => s.scene.selectedShapeId);
+  const glbObjects = useAppSelector((s) => s.scene.glbObjects);
 
-  if (!svgFile) return null;
-  if (isEditMode) return <SVGInspector />;
-  if (is3DMode) return <ThreeDInspector />;
+  if (isEditMode) {
+    if (!svgFile) return null;
+    return <SVGInspector />;
+  }
+  if (is3DMode) {
+    const selectedGlb = selectedShapeId
+      ? glbObjects.find((g) => g.id === selectedShapeId)
+      : undefined;
+    if (selectedGlb) return <GlbInspector obj={selectedGlb} />;
+    if (!svgFile && glbObjects.length === 0) return null;
+    return <ThreeDInspector />;
+  }
   return null;
 }

@@ -35,6 +35,14 @@ const UNDOABLE_ACTIONS = new Set([
   "scene/resetShapeMaterial",
   "scene/resetShapesMaterial",
   "scene/removeShape",
+  "scene/addImportedGlb",
+  "scene/convertImportedGlbTo3D",
+  "scene/deleteImportedGlb",
+  "scene/renameGlbObject",
+  "scene/updateGlbObjectMaterial",
+  "scene/resetGlbObjectMaterial",
+  "scene/updateGlbObjectTexture",
+  "scene/resetGlbObjectTexture",
   "scene/setBloomSettings",
   "scene/setGroundSettings",
   "scene/createGroup",
@@ -66,6 +74,7 @@ function getSnapshot(state: RootState): HistorySnapshot {
     showGrid: s.showGrid,
     groups: s.groups,
     timeline: s.timeline,
+    glbObjects: s.glbObjects,
   };
 }
 

@@ -58,6 +58,28 @@ export type ImportedSvg = {
   shapes: SvgShape[];
 };
 
+// Imported .glb / .gltf binary stored as base64 (no data: prefix).
+// is3D=true once spawned into the scene as a GlbObject.
+export type ImportedGlb = {
+  id: string;
+  name: string;
+  data: string;
+  is3D: boolean;
+  objectId?: string;
+};
+
+export type GlbObject = {
+  id: string;
+  glbId: string;
+  name: string;
+  visible?: boolean;
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+  scale?: [number, number, number];
+  material?: Partial<MaterialSettings>;
+  texture?: Partial<TextureSettings>;
+};
+
 export type LightType = "ambient" | "directional" | "point" | "spot";
 
 export type Light = {
@@ -227,6 +249,8 @@ export type AppState = {
   svgShapes: SvgShape[];
   svgFile: string | null;
   importedSvgs: ImportedSvg[];
+  importedGlbs: ImportedGlb[];
+  glbObjects: GlbObject[];
   editingSvgId: string | null;
   extrusion: ExtrusionSettings;
   globalMaterial: MaterialSettings;
