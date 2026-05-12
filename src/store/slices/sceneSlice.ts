@@ -138,7 +138,6 @@ const initialState: AppState = {
   embedRotateZ: true,
   showGroupDialog: false,
   groupName: "",
-  isEmbedLoaded: false,
   timeline: {
     tracks: [],
     duration: 5,
@@ -632,9 +631,6 @@ const sceneSlice = createSlice({
     setGroupName: (state, action: PayloadAction<string>) => {
       state.groupName = action.payload;
     },
-    setIsEmbedLoaded: (state, action: PayloadAction<boolean>) => {
-      state.isEmbedLoaded = action.payload;
-    },
     loadScene: (state, action: PayloadAction<AppState>) => {
       return { ...initialState, ...action.payload };
     },
@@ -1060,7 +1056,6 @@ export const {
   setEmbedRotateZ,
   setShowGroupDialog,
   setGroupName,
-  setIsEmbedLoaded,
   setTimelinePlaying,
   setTimelineCurrentTime,
   setTimelineDuration,

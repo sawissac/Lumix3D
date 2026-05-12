@@ -5,7 +5,7 @@ const persistConfig = {
   key: "lumix3d",
   version: 1,
   storage: localforage,
-  throttle: 5000,
+  throttle: 1000,
   whitelist: [
     "svgShapes",
     "svgFile",

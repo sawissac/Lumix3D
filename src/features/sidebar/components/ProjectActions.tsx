@@ -28,6 +28,9 @@ import {
   setEmbedRotateY,
   setEmbedRotateZ,
 } from "@/store/slices/sceneSlice";
+import { toEmbedPayload } from "@/lib/embedPayload";
+
+const EMBED_SCRIPT_PATH = "/lumix-embed.js";
 
 export function ProjectActions() {
   const dispatch = useAppDispatch();
@@ -105,15 +108,14 @@ export function ProjectActions() {
     }
   };
 
-  const generateJavaScriptCode = () => {
+  const buildPayload = () => {
     const cameraState =
       typeof window !== "undefined" && (window as any).getLumixCameraState
         ? (window as any).getLumixCameraState()
         : undefined;
-    const finalState = {
-      ...sceneState,
-      cameraState,
-      embedControls: {
+    return toEmbedPayload(
+      { ...sceneState, cameraState },
+      {
         enableRotate: embedRotate,
         enableZoom: embedZoom,
         enablePan: embedPan,
@@ -121,9 +123,13 @@ export function ProjectActions() {
         enableRotateY: embedRotateY,
         enableRotateZ: embedRotateZ,
       },
-    };
-    const stateJson = JSON.stringify(finalState);
+    );
+  };
+
+  const generateJavaScriptCode = () => {
+    const stateJson = JSON.stringify(buildPayload());
     const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const scriptUrl = `${origin}${EMBED_SCRIPT_PATH}`;
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -132,94 +138,63 @@ export function ProjectActions() {
   <title>Lumix3D Embed</title>
   <style>
     body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
-    iframe { width: 100%; height: 100%; border: none; }
+    lumix-scene { display: block; width: 100%; height: 100%; }
   </style>
+  <script src="${scriptUrl}" defer></script>
 </head>
 <body>
-  <iframe id="lumix-frame" src="${origin}/embed" allow="fullscreen"></iframe>
+  <lumix-scene id="lumix"></lumix-scene>
   <script>
-    const sceneState = ${stateJson.replace(/</g, "\\u003c")};
-    const frame = document.getElementById('lumix-frame');
-    
-    // Send data once iframe is ready
-    window.addEventListener('message', (e) => {
-      if (e.data && e.data.type === 'LUMIX_READY') {
-        frame.contentWindow.postMessage({ type: 'LUMIX_INIT', state: sceneState }, '*');
-      }
-    });
-    
-    // Fallback if iframe doesn't send ready
-    frame.onload = () => {
-      setTimeout(() => {
-        frame.contentWindow.postMessage({ type: 'LUMIX_INIT', state: sceneState }, '*');
-      }, 500);
-    };
+    const scene = ${stateJson.replace(/</g, "\\u003c")};
+    const el = document.getElementById('lumix');
+    const apply = () => { el.scene = scene; };
+    if (customElements.get('lumix-scene')) apply();
+    else customElements.whenDefined('lumix-scene').then(apply);
   </script>
 </body>
 </html>`;
   };
 
   const generateReactCode = () => {
-    const cameraState =
-      typeof window !== "undefined" && (window as any).getLumixCameraState
-        ? (window as any).getLumixCameraState()
-        : undefined;
-    const finalState = {
-      ...sceneState,
-      cameraState,
-      embedControls: {
-        enableRotate: embedRotate,
-        enableZoom: embedZoom,
-        enablePan: embedPan,
-        enableRotateX: embedRotateX,
-        enableRotateY: embedRotateY,
-        enableRotateZ: embedRotateZ,
-      },
-    };
-    const stateJson = JSON.stringify(finalState, null, 2);
+    const stateJson = JSON.stringify(buildPayload(), null, 2);
     const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const scriptUrl = `${origin}${EMBED_SCRIPT_PATH}`;
     return `import { useEffect, useRef } from 'react';
 
+const SCRIPT_URL = '${scriptUrl}';
+const scene = ${stateJson};
+
+function ensureEmbedScript() {
+  if (typeof window === 'undefined') return Promise.resolve();
+  if (customElements.get('lumix-scene')) return Promise.resolve();
+  const existing = document.querySelector('script[data-lumix-embed]');
+  if (existing) return customElements.whenDefined('lumix-scene');
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = SCRIPT_URL;
+    s.async = true;
+    s.dataset.lumixEmbed = 'true';
+    s.onload = () => customElements.whenDefined('lumix-scene').then(resolve);
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
 export default function Lumix3DEmbed() {
-  const iframeRef = useRef(null);
+  const ref = useRef(null);
 
   useEffect(() => {
-    const sceneState = ${stateJson};
-
-    const handleMessage = (e) => {
-      if (e.data && e.data.type === 'LUMIX_READY') {
-        iframeRef.current?.contentWindow?.postMessage(
-          { type: 'LUMIX_INIT', state: sceneState },
-          '*'
-        );
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-
-    const fallbackSend = setTimeout(() => {
-      iframeRef.current?.contentWindow?.postMessage(
-        { type: 'LUMIX_INIT', state: sceneState },
-        '*'
-      );
-    }, 500);
-
-    return () => {
-      window.removeEventListener('message', handleMessage);
-      clearTimeout(fallbackSend);
-    };
+    let cancelled = false;
+    ensureEmbedScript().then(() => {
+      if (!cancelled && ref.current) ref.current.scene = scene;
+    });
+    return () => { cancelled = true; };
   }, []);
 
   return (
-    <iframe
-      ref={iframeRef}
-      src="${origin}/embed"
-      allow="fullscreen"
-      style={{
-        width: '100%',
-        height: '100%',
-        border: 'none',
-      }}
+    <lumix-scene
+      ref={ref}
+      style={{ display: 'block', width: '100%', height: '100%' }}
     />
   );
 }`;
@@ -402,12 +377,36 @@ export default function Lumix3DEmbed() {
               <div className="bg-muted p-4 rounded-md space-y-3">
                 <div>
                   <h4 className="font-medium text-sm mb-2">
-                    {codeType === "js" ? "JavaScript Embed" : "React Component"}
+                    {codeType === "js"
+                      ? "HTML + Web Component"
+                      : "React Component"}
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    {codeType === "js"
-                      ? "A standalone HTML file that embeds your 3D scene in an iframe. Works on any website."
-                      : "A React component that you can import and use in your React application."}
+                    {codeType === "js" ? (
+                      <>
+                        Renders inline via{" "}
+                        <code className="px-1 rounded bg-background">
+                          &lt;lumix-scene&gt;
+                        </code>{" "}
+                        custom element. Loads{" "}
+                        <code className="px-1 rounded bg-background">
+                          {EMBED_SCRIPT_PATH}
+                        </code>{" "}
+                        from this origin. No iframe.
+                      </>
+                    ) : (
+                      <>
+                        Renders{" "}
+                        <code className="px-1 rounded bg-background">
+                          &lt;lumix-scene&gt;
+                        </code>{" "}
+                        custom element in your React tree. Loads{" "}
+                        <code className="px-1 rounded bg-background">
+                          {EMBED_SCRIPT_PATH}
+                        </code>{" "}
+                        on mount. No iframe.
+                      </>
+                    )}
                   </p>
                 </div>
 
@@ -466,11 +465,41 @@ export default function Lumix3DEmbed() {
 
                 <div className="border-t pt-3">
                   <h4 className="font-medium text-sm mb-2">Usage</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {codeType === "js"
-                      ? "Click 'Copy Code' below to copy the complete HTML file. Save it as .html and open in a browser, or paste into your website."
-                      : "Click 'Copy Code' to copy the React component. Paste it into your project and import it where needed."}
-                  </p>
+                  {codeType === "js" ? (
+                    <ul className="text-sm text-muted-foreground space-y-1 list-disc pl-5">
+                      <li>Copy snippet. Save as .html or paste in page.</li>
+                      <li>
+                        Script tag loads{" "}
+                        <code className="px-1 rounded bg-background">
+                          {EMBED_SCRIPT_PATH}
+                        </code>{" "}
+                        — must be served from this origin (CORS-safe).
+                      </li>
+                      <li>
+                        Custom element registers{" "}
+                        <code className="px-1 rounded bg-background">
+                          &lt;lumix-scene&gt;
+                        </code>
+                        ; scene JSON assigned via{" "}
+                        <code className="px-1 rounded bg-background">
+                          el.scene
+                        </code>
+                        .
+                      </li>
+                    </ul>
+                  ) : (
+                    <ul className="text-sm text-muted-foreground space-y-1 list-disc pl-5">
+                      <li>Drop component anywhere in your React tree.</li>
+                      <li>
+                        Script auto-injected on mount; custom element{" "}
+                        <code className="px-1 rounded bg-background">
+                          &lt;lumix-scene&gt;
+                        </code>{" "}
+                        receives scene via ref.
+                      </li>
+                      <li>UI-only state stripped from payload.</li>
+                    </ul>
+                  )}
                 </div>
               </div>
             </div>

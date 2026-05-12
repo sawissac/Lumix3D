@@ -264,7 +264,6 @@ export type AppState = {
   embedRotateZ: boolean;
   showGroupDialog: boolean;
   groupName: string;
-  isEmbedLoaded: boolean;
   timeline: TimelineState;
   collapsedSections: Record<string, boolean>;
   savedAnimations: SavedAnimation[];

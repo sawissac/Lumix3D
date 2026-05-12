@@ -11,8 +11,19 @@ import {
 } from "@/store/slices/sceneSlice";
 import * as THREE from "three";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
-import { ThreeEvent, useThree, useFrame, createPortal } from "@react-three/fiber";
-import { ExtrusionSettings, SvgShape, MaterialSettings, TextureSettings, ViewMode } from "@/types";
+import {
+  ThreeEvent,
+  useThree,
+  useFrame,
+  createPortal,
+} from "@react-three/fiber";
+import {
+  ExtrusionSettings,
+  SvgShape,
+  MaterialSettings,
+  TextureSettings,
+  ViewMode,
+} from "@/types";
 import { TransformControls } from "@react-three/drei";
 import { globalGroupRef } from "../globalGroupRef";
 import { shapeObjectRegistry } from "../shapeObjectRegistry";
@@ -40,14 +51,30 @@ type LoadedTextures = {
 };
 
 const NULL_TEXTURES: LoadedTextures = {
-  map: null, normalMap: null, roughnessMap: null, metalnessMap: null,
-  displacementMap: null, aoMap: null, emissiveMap: null, alphaMap: null, lightMap: null,
-  displacementScale: 0.1, aoMapIntensity: 1, normalScale: 1,
+  map: null,
+  normalMap: null,
+  roughnessMap: null,
+  metalnessMap: null,
+  displacementMap: null,
+  aoMap: null,
+  emissiveMap: null,
+  alphaMap: null,
+  lightMap: null,
+  displacementScale: 0.1,
+  aoMapIntensity: 1,
+  normalScale: 1,
 };
 
 const TEXTURE_KEYS: (keyof TextureSettings)[] = [
-  "map", "normalMap", "roughnessMap", "metalnessMap",
-  "displacementMap", "aoMap", "emissiveMap", "alphaMap", "lightMap",
+  "map",
+  "normalMap",
+  "roughnessMap",
+  "metalnessMap",
+  "displacementMap",
+  "aoMap",
+  "emissiveMap",
+  "alphaMap",
+  "lightMap",
 ];
 
 function hasAnyTextureMap(t: Partial<TextureSettings> | undefined): boolean {
@@ -55,7 +82,9 @@ function hasAnyTextureMap(t: Partial<TextureSettings> | undefined): boolean {
   return TEXTURE_KEYS.some((k) => !!t[k]);
 }
 
-function useLoadedTextures(settings: Partial<TextureSettings> | undefined): LoadedTextures {
+function useLoadedTextures(
+  settings: Partial<TextureSettings> | undefined,
+): LoadedTextures {
   const [loaded, setLoaded] = useState<LoadedTextures>(NULL_TEXTURES);
 
   const map = settings?.map ?? null;
@@ -94,24 +123,49 @@ function useLoadedTextures(settings: Partial<TextureSettings> | undefined): Load
       });
     };
     Promise.all([
-      loadOne(map), loadOne(normalMap), loadOne(roughnessMap),
-      loadOne(metalnessMap), loadOne(displacementMap), loadOne(aoMap),
-      loadOne(emissiveMap), loadOne(alphaMap), loadOne(lightMap),
+      loadOne(map),
+      loadOne(normalMap),
+      loadOne(roughnessMap),
+      loadOne(metalnessMap),
+      loadOne(displacementMap),
+      loadOne(aoMap),
+      loadOne(emissiveMap),
+      loadOne(alphaMap),
+      loadOne(lightMap),
     ]).then(([m, n, r, met, d, ao, em, al, lm]) => {
       if (cancelled) return;
       setLoaded({
-        map: m, normalMap: n, roughnessMap: r, metalnessMap: met,
-        displacementMap: d, aoMap: ao, emissiveMap: em, alphaMap: al, lightMap: lm,
-        displacementScale, aoMapIntensity, normalScale,
+        map: m,
+        normalMap: n,
+        roughnessMap: r,
+        metalnessMap: met,
+        displacementMap: d,
+        aoMap: ao,
+        emissiveMap: em,
+        alphaMap: al,
+        lightMap: lm,
+        displacementScale,
+        aoMapIntensity,
+        normalScale,
       });
     });
     return () => {
       cancelled = true;
     };
   }, [
-    map, normalMap, roughnessMap, metalnessMap, displacementMap,
-    aoMap, emissiveMap, alphaMap, lightMap, repeat,
-    displacementScale, aoMapIntensity, normalScale,
+    map,
+    normalMap,
+    roughnessMap,
+    metalnessMap,
+    displacementMap,
+    aoMap,
+    emissiveMap,
+    alphaMap,
+    lightMap,
+    repeat,
+    displacementScale,
+    aoMapIntensity,
+    normalScale,
   ]);
 
   return loaded;
@@ -210,13 +264,21 @@ function ShapeMeshes({
     } else {
       mat.map = loadedTextures.map;
       mat.normalMap = loadedTextures.normalMap;
-      if (mat.normalMap) mat.normalScale.set(loadedTextures.normalScale, loadedTextures.normalScale);
+      if (mat.normalMap)
+        mat.normalScale.set(
+          loadedTextures.normalScale,
+          loadedTextures.normalScale,
+        );
       mat.roughnessMap = loadedTextures.roughnessMap;
       mat.metalnessMap = loadedTextures.metalnessMap;
       mat.displacementMap = loadedTextures.displacementMap;
-      mat.displacementScale = loadedTextures.displacementMap ? loadedTextures.displacementScale : 0;
+      mat.displacementScale = loadedTextures.displacementMap
+        ? loadedTextures.displacementScale
+        : 0;
       mat.aoMap = loadedTextures.aoMap;
-      mat.aoMapIntensity = loadedTextures.aoMap ? loadedTextures.aoMapIntensity : 0;
+      mat.aoMapIntensity = loadedTextures.aoMap
+        ? loadedTextures.aoMapIntensity
+        : 0;
       mat.emissiveMap = loadedTextures.emissiveMap;
       mat.alphaMap = loadedTextures.alphaMap;
       mat.transparent = !!loadedTextures.alphaMap;
@@ -317,7 +379,11 @@ function ShapeMeshes({
   const content = (
     <group ref={setGroupObj} onClick={handleClick}>
       <group position={[-defaultCenter.x, -defaultCenter.y, -defaultCenter.z]}>
-        <mesh geometry={geometry} castShadow={viewMode === "normal"} receiveShadow={viewMode === "normal"}>
+        <mesh
+          geometry={geometry}
+          castShadow={viewMode === "normal"}
+          receiveShadow={viewMode === "normal"}
+        >
           <meshPhysicalMaterial
             ref={matRef}
             color={color}
@@ -325,11 +391,21 @@ function ShapeMeshes({
             wireframe={viewMode === "wireframe"}
             roughness={viewMode === "normal" ? materialSettings.roughness : 1}
             metalness={viewMode === "normal" ? materialSettings.metalness : 0}
-            transmission={viewMode === "normal" ? materialSettings.transmission : 0}
+            transmission={
+              viewMode === "normal" ? materialSettings.transmission : 0
+            }
             ior={viewMode === "normal" ? materialSettings.ior : 1.5}
             clearcoat={viewMode === "normal" ? materialSettings.clearcoat : 0}
-            emissive={viewMode === "normal" ? (materialSettings.emissive || "#000000") : "#000000"}
-            emissiveIntensity={viewMode === "normal" ? (materialSettings.emissiveIntensity || 0) : 0}
+            emissive={
+              viewMode === "normal"
+                ? materialSettings.emissive || "#000000"
+                : "#000000"
+            }
+            emissiveIntensity={
+              viewMode === "normal"
+                ? materialSettings.emissiveIntensity || 0
+                : 0
+            }
           />
         </mesh>
       </group>
@@ -352,7 +428,6 @@ function ShapeMeshes({
             onMouseDown={() => {
               dispatch(recordSnapshot());
             }}
-
             onMouseUp={() => {
               if (groupObj) {
                 onTransformChange({
@@ -413,7 +488,9 @@ export function ExtrudedSVG() {
   );
 
   // Preprocessed SVG strings keyed by svg id (strokes converted to fills)
-  const [processedById, setProcessedById] = useState<Record<string, string>>({});
+  const [processedById, setProcessedById] = useState<Record<string, string>>(
+    {},
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -487,7 +564,9 @@ export function ExtrudedSVG() {
     shapeWorldMatrices: Map<string, THREE.Matrix4>;
   } | null>(null);
 
-  const multiSelectGestureInitialQuatRef = useRef<THREE.Quaternion | null>(null);
+  const multiSelectGestureInitialQuatRef = useRef<THREE.Quaternion | null>(
+    null,
+  );
   const multiSelectGestureInitialScaleRef = useRef<THREE.Vector3 | null>(null);
 
   const selectionKey = selectedShapeIds.join(",");
@@ -555,9 +634,12 @@ export function ExtrudedSVG() {
           .map((id) => svgShapes.find((s) => s.id === id)?.position)
           .filter((p): p is [number, number, number] => p !== undefined);
         if (positions.length > 0) {
-          const avgX = positions.reduce((s, p) => s + p[0], 0) / positions.length;
-          const avgY = positions.reduce((s, p) => s + p[1], 0) / positions.length;
-          const avgZ = positions.reduce((s, p) => s + p[2], 0) / positions.length;
+          const avgX =
+            positions.reduce((s, p) => s + p[0], 0) / positions.length;
+          const avgY =
+            positions.reduce((s, p) => s + p[1], 0) / positions.length;
+          const avgZ =
+            positions.reduce((s, p) => s + p[2], 0) / positions.length;
           multiSelectGroupObj.position.set(avgX, avgY, avgZ);
           multiSelectGroupObj.rotation.set(0, 0, 0);
           multiSelectGroupObj.scale.set(1, 1, 1);
@@ -608,7 +690,7 @@ export function ExtrudedSVG() {
               {parsed.shapes.map((data, i) => {
                 const shapeId = `${parsed.svgId}-shape-${i}`;
                 const shapeData = svgShapes.find((s) => s.id === shapeId);
-                if (shapeData?.visible === false) return null;
+                if (!shapeData || shapeData.visible === false) return null;
                 const isSelected = selectedShapeIds.includes(shapeId);
                 return (
                   <ShapeMeshes
@@ -733,10 +815,7 @@ export function ExtrudedSVG() {
               const newLocal = new THREE.Matrix4();
               if (parent) {
                 parent.updateMatrixWorld(true);
-                newLocal
-                  .copy(parent.matrixWorld)
-                  .invert()
-                  .multiply(newWorld);
+                newLocal.copy(parent.matrixWorld).invert().multiply(newWorld);
               } else {
                 newLocal.copy(newWorld);
               }
@@ -771,8 +850,9 @@ export function ExtrudedSVG() {
               transformMode === "rotate"
             ) {
               const finalQuat = multiSelectGroupObj.quaternion.clone();
-              const initialInv =
-                multiSelectGestureInitialQuatRef.current.clone().invert();
+              const initialInv = multiSelectGestureInitialQuatRef.current
+                .clone()
+                .invert();
               const delta = finalQuat.multiply(initialInv);
               applyDeltaQuat(delta);
             }
@@ -799,9 +879,21 @@ export function ExtrudedSVG() {
                 dispatch(
                   updateShapeTransform({
                     id,
-                    position: [groupObj.position.x, groupObj.position.y, groupObj.position.z],
-                    rotation: [groupObj.rotation.x, groupObj.rotation.y, groupObj.rotation.z],
-                    scale: [groupObj.scale.x, groupObj.scale.y, groupObj.scale.z],
+                    position: [
+                      groupObj.position.x,
+                      groupObj.position.y,
+                      groupObj.position.z,
+                    ],
+                    rotation: [
+                      groupObj.rotation.x,
+                      groupObj.rotation.y,
+                      groupObj.rotation.z,
+                    ],
+                    scale: [
+                      groupObj.scale.x,
+                      groupObj.scale.y,
+                      groupObj.scale.z,
+                    ],
                   }),
                 );
               }
@@ -819,7 +911,6 @@ export function ExtrudedSVG() {
           onMouseDown={() => {
             dispatch(recordSnapshot());
           }}
-
           onMouseUp={() => {
             if (globalGroupObj) {
               dispatch(

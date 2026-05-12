@@ -1,4 +1,12 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const l = require\\('lucide-react'\\); console.log\\(Object.keys\\(l\\).filter\\(k => k.toLowerCase\\(\\).includes\\('svg'\\) || k === 'FileCode' || k === 'FileImage' || k === 'FileCode2'\\).join\\(', '\\)\\)\")",
+      "Bash(pnpm exec *)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(pnpm run *)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -10,11 +18,6 @@
           }
         ]
       }
-    ]
-  },
-  "permissions": {
-    "allow": [
-      "Bash(node -e \"const l = require\\('lucide-react'\\); console.log\\(Object.keys\\(l\\).filter\\(k => k.toLowerCase\\(\\).includes\\('svg'\\) || k === 'FileCode' || k === 'FileImage' || k === 'FileCode2'\\).join\\(', '\\)\\)\")"
     ]
   }
 }

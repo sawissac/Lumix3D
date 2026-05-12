@@ -1,14 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-
 export function MobileBlocker() {
-  const pathname = usePathname();
-  
-  if (pathname === "/embed") {
-    return null;
-  }
-
   return (
     <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center px-8 md:hidden bg-background">
       {/* Ambient glow */}

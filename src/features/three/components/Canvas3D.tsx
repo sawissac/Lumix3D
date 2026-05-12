@@ -17,6 +17,7 @@ import {
   clearSelection,
   selectAllShapes,
   setBoxSelecting,
+  removeShape,
   undo,
   redo,
 } from "@/store/slices/sceneSlice";
@@ -36,7 +37,7 @@ import {
 } from "../shapeObjectRegistry";
 import { BoxSelectOverlay } from "./BoxSelectOverlay";
 import { TimelinePlayer } from "./TimelinePlayer";
-import { usePathname } from "next/navigation";
+import { useEmbedMode } from "@/embed/EmbedModeContext";
 
 // Runs inside <Canvas> — writes the live group transform every frame
 function TransformTracker() {
@@ -89,9 +90,7 @@ function FitCameraOnLoad() {
   useFrame(() => {
     if (!pendingFitRef.current || !controls) return;
 
-    const ids = svgShapes
-      .filter((s) => s.visible !== false)
-      .map((s) => s.id);
+    const ids = svgShapes.filter((s) => s.visible !== false).map((s) => s.id);
     if (ids.length === 0) return;
 
     const objects = ids
@@ -229,12 +228,7 @@ export function Canvas3D() {
   const lockedAnglesRef = useRef({ polar: 0, azimuth: 0 });
   const cameraState = useAppSelector((state) => state.scene.cameraState);
   const embedControls = useAppSelector((state) => state.scene.embedControls);
-  const pathname = usePathname();
-
-  // Check if we're in embed mode (iframe or direct /embed route)
-  const isEmbedMode =
-    (typeof window !== "undefined" && window.self !== window.top) ||
-    pathname === "/embed";
+  const isEmbedMode = useEmbedMode();
 
   // Default embed controls: rotation enabled, zoom and pan disabled
   const embedRotate = embedControls?.enableRotate ?? true;
@@ -348,6 +342,15 @@ export function Canvas3D() {
         return;
       }
 
+      // Delete selected shapes
+      if (key === "delete" || key === "backspace") {
+        e.preventDefault();
+        for (const id of selectedShapeIds) {
+          dispatch(removeShape(id));
+        }
+        return;
+      }
+
       // Transform shortcuts — require a selection.
       if (selectedShapeIds.length === 0) return;
       switch (key) {
@@ -382,6 +385,7 @@ export function Canvas3D() {
     transformMode,
     isBoxSelecting,
     svgShapes.length,
+    isEmbedMode,
   ]);
 
   const getBackgroundStyle = (): React.CSSProperties => {
