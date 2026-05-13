@@ -216,6 +216,10 @@ export type Keyframe = {
   pivot?: [number, number, number];
   groupQuat?: [number, number, number, number];
   groupScale?: [number, number, number];
+  // Unwrapped Euler (XYZ order) mirroring groupQuat but with winding preserved
+  // so multi-turn rotations (e.g. 0 -> 2π) interpolate as a visible spin
+  // instead of collapsing under slerp shortest-arc.
+  groupEuler?: [number, number, number];
 };
 
 export type AnimationTrack = {

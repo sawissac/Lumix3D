@@ -12,6 +12,8 @@ import {
   removeKeyframe,
   updateKeyframe,
   clearTimelineTracks,
+  removeTrack,
+  removeTracks,
   saveAnimation,
   applyAnimation,
   deleteSavedAnimation,
@@ -243,6 +245,7 @@ export function TimelinePanel() {
       pivot: [number, number, number];
       quat: [number, number, number, number];
       scale: [number, number, number];
+      euler: [number, number, number];
     } | null = null;
 
     const getPosition = (id: string): [number, number, number] | undefined => {
@@ -285,6 +288,7 @@ export function TimelinePanel() {
             pivot: cur.pivot,
             quat: cur.quat,
             scale: cur.scale,
+            euler: cur.eulerUnwrapped,
           };
         }
       }
@@ -311,6 +315,7 @@ export function TimelinePanel() {
                   pivot: groupCtx.pivot,
                   groupQuat: groupCtx.quat,
                   groupScale: groupCtx.scale,
+                  groupEuler: groupCtx.euler,
                 }
               : {}),
           },
@@ -706,14 +711,24 @@ export function TimelinePanel() {
                 return (
                   <div key={`group-${row.group.id}`}>
                     <div
-                      className={`h-8 flex items-center gap-1 px-2 border-b border-white/4 cursor-pointer select-none ${isGroupSelected ? "bg-indigo-500/10" : "hover:bg-white/3"}`}
+                      className={`group/row h-8 flex items-center gap-1 px-2 border-b border-white/4 cursor-pointer select-none ${isGroupSelected ? "bg-indigo-500/10" : "hover:bg-white/3"}`}
                       onClick={() => toggleGroup(row.group.id)}
                     >
                       <ChevronDown className={`w-3 h-3 text-indigo-400/70 shrink-0 transition-transform ${isExpanded ? "" : "-rotate-90"}`} />
-                      <div className="flex flex-col min-w-0">
+                      <div className="flex flex-col min-w-0 flex-1">
                         <span className="text-[9px] text-indigo-300/80 truncate leading-tight font-medium">{row.group.name}</span>
                         <span className="text-[8px] text-white/30 leading-tight">{row.tracks.length} shapes</span>
                       </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          dispatch(removeTracks({ shapeIds: row.tracks.map((t) => t.shapeId) }));
+                        }}
+                        title="Delete all keyframes for this group"
+                        className="opacity-0 group-hover/row:opacity-100 transition-opacity text-white/30 hover:text-red-400 p-0.5"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
                     </div>
                     {isExpanded && row.tracks.map((track) => {
                       const shapeIdx = svgShapes.findIndex((s) => s.id === track.shapeId);
@@ -725,9 +740,19 @@ export function TimelinePanel() {
                       return (
                         <div
                           key={track.shapeId}
-                          className={`h-7 flex items-center px-3 border-b border-white/4 ${isSelected ? "bg-indigo-500/8" : ""}`}
+                          className={`group/row h-7 flex items-center px-3 border-b border-white/4 ${isSelected ? "bg-indigo-500/8" : ""}`}
                         >
-                          <span className="text-[8px] text-white/40 truncate leading-tight pl-2">{label}</span>
+                          <span className="flex-1 text-[8px] text-white/40 truncate leading-tight pl-2">{label}</span>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              dispatch(removeTrack({ shapeId: track.shapeId }));
+                            }}
+                            title="Delete keyframes for this object"
+                            className="opacity-0 group-hover/row:opacity-100 transition-opacity text-white/30 hover:text-red-400 p-0.5"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
                         </div>
                       );
                     })}
@@ -744,9 +769,19 @@ export function TimelinePanel() {
               return (
                 <div
                   key={row.track.shapeId}
-                  className={`h-8 flex items-center px-2 border-b border-white/4 ${isSelected ? "bg-indigo-500/8" : ""}`}
+                  className={`group/row h-8 flex items-center px-2 border-b border-white/4 ${isSelected ? "bg-indigo-500/8" : ""}`}
                 >
-                  <span className="text-[9px] text-white/50 truncate leading-tight">{label}</span>
+                  <span className="flex-1 text-[9px] text-white/50 truncate leading-tight">{label}</span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      dispatch(removeTrack({ shapeId: row.track.shapeId }));
+                    }}
+                    title="Delete keyframes for this object"
+                    className="opacity-0 group-hover/row:opacity-100 transition-opacity text-white/30 hover:text-red-400 p-0.5"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
                 </div>
               );
             })}

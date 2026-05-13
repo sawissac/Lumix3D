@@ -801,6 +801,17 @@ const sceneSlice = createSlice({
       state.timeline.currentTime = 0;
       state.timeline.isPlaying = false;
     },
+    removeTrack: (state, action: PayloadAction<{ shapeId: string }>) => {
+      state.timeline.tracks = state.timeline.tracks.filter(
+        (t) => t.shapeId !== action.payload.shapeId,
+      );
+    },
+    removeTracks: (state, action: PayloadAction<{ shapeIds: string[] }>) => {
+      const ids = new Set(action.payload.shapeIds);
+      state.timeline.tracks = state.timeline.tracks.filter(
+        (t) => !ids.has(t.shapeId),
+      );
+    },
 
     // Save the current keyframe tracks for the given shape IDs (in order)
     // as a named, reusable animation. Saved tracks index by selection order,
@@ -829,6 +840,7 @@ const sceneSlice = createSlice({
               if (k.pivot !== undefined) stripped.pivot = k.pivot;
               if (k.groupQuat !== undefined) stripped.groupQuat = k.groupQuat;
               if (k.groupScale !== undefined) stripped.groupScale = k.groupScale;
+              if (k.groupEuler !== undefined) stripped.groupEuler = k.groupEuler;
               return stripped;
             }),
           };
@@ -848,6 +860,13 @@ const sceneSlice = createSlice({
 
     // Apply a saved animation to the given target shape IDs (selection
     // order). The i-th saved track maps to the i-th target shape.
+    //
+    // Keyframes are stored as absolute world transforms at save time. On
+    // apply, rebase each keyframe so the first keyframe's transform aligns
+    // with the target's current pose, and subsequent keyframes carry the
+    // *delta* from the first keyframe. This way the animation plays out
+    // from wherever the target currently sits, instead of teleporting to
+    // the original recorded position.
     applyAnimation: (
       state,
       action: PayloadAction<{ animationId: string; targetIds: string[] }>,
@@ -856,25 +875,65 @@ const sceneSlice = createSlice({
       const saved = state.savedAnimations.find((a) => a.id === animationId);
       if (!saved) return;
 
-      // Rewrite group selectionId to match the new target so playback
-      // group-interpolation still recognises a coherent selection.
-      const newSelectionId = [...targetIds].sort().join("|");
       const now = Date.now();
+
+      const safeDiv = (n: number) => (Math.abs(n) < 1e-8 ? 1 : n);
 
       saved.tracks.forEach((src) => {
         const targetId = targetIds[src.index];
         if (!targetId) return;
+        if (src.keyframes.length === 0) return;
+
+        // Look up target's current transform from scene state.
+        const svg = state.svgShapes.find((s) => s.id === targetId);
+        const glb = state.glbObjects.find((g) => g.id === targetId);
+        const targetPos = (svg?.position ?? glb?.position ?? [0, 0, 0]) as [number, number, number];
+        const targetRot = (svg?.rotation ?? glb?.rotation ?? [0, 0, 0]) as [number, number, number];
+        const targetScl = (svg?.scale ?? glb?.scale ?? [1, 1, 1]) as [number, number, number];
+
+        const kf0 = src.keyframes[0];
+        const kf0Pos = kf0.position ?? [0, 0, 0];
+        const kf0Rot = kf0.rotation ?? [0, 0, 0];
+        const kf0Scl = kf0.scale ?? [1, 1, 1];
 
         // Replace any existing track for this target.
         state.timeline.tracks = state.timeline.tracks.filter(
           (t) => t.shapeId !== targetId,
         );
 
-        const newKeyframes: Keyframe[] = src.keyframes.map((k, i) => ({
-          ...k,
-          id: `kf-${now}-${targetId}-${i}`,
-          ...(k.selectionId !== undefined ? { selectionId: newSelectionId } : {}),
-        }));
+        const newKeyframes: Keyframe[] = src.keyframes.map((k, i) => {
+          const kPos = k.position ?? [0, 0, 0];
+          const kRot = k.rotation ?? [0, 0, 0];
+          const kScl = k.scale ?? [1, 1, 1];
+
+          const rebasedPos: [number, number, number] = [
+            targetPos[0] + (kPos[0] - kf0Pos[0]),
+            targetPos[1] + (kPos[1] - kf0Pos[1]),
+            targetPos[2] + (kPos[2] - kf0Pos[2]),
+          ];
+          const rebasedRot: [number, number, number] = [
+            targetRot[0] + (kRot[0] - kf0Rot[0]),
+            targetRot[1] + (kRot[1] - kf0Rot[1]),
+            targetRot[2] + (kRot[2] - kf0Rot[2]),
+          ];
+          const rebasedScl: [number, number, number] = [
+            targetScl[0] * (kScl[0] / safeDiv(kf0Scl[0])),
+            targetScl[1] * (kScl[1] / safeDiv(kf0Scl[1])),
+            targetScl[2] * (kScl[2] / safeDiv(kf0Scl[2])),
+          ];
+
+          // Group context fields (selectionId/pivot/groupQuat/groupEuler/groupScale)
+          // describe the original selection's world-space gesture; they no
+          // longer match a different target. Strip them so the player falls
+          // back to the per-shape (non-group) interpolation path.
+          return {
+            time: k.time,
+            id: `kf-${now}-${targetId}-${i}`,
+            position: rebasedPos,
+            rotation: rebasedRot,
+            scale: rebasedScl,
+          };
+        });
 
         state.timeline.tracks.push({
           shapeId: targetId,
@@ -1197,6 +1256,8 @@ export const {
   removeKeyframe,
   updateKeyframe,
   clearTimelineTracks,
+  removeTrack,
+  removeTracks,
   saveAnimation,
   applyAnimation,
   deleteSavedAnimation,

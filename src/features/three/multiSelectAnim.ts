@@ -5,6 +5,11 @@ export type MultiSelectAnimState = {
   pivot: [number, number, number];
   quat: [number, number, number, number];
   scale: [number, number, number];
+  // Unwrapped Euler (XYZ) mirroring `quat` with winding preserved.
+  // applyDeltaQuat updates this by deriving Euler from the new quat and
+  // unwrapping each component relative to the previous value, so multi-turn
+  // gestures (>180° per axis) survive into keyframes for proper lerp playback.
+  eulerUnwrapped: [number, number, number];
 };
 
 export const multiSelectAnimRef: { current: MultiSelectAnimState | null } = {
@@ -32,6 +37,7 @@ export function bindMultiSelect(
     pivot: pivotToTuple(pivot),
     quat: [0, 0, 0, 1],
     scale: [1, 1, 1],
+    eulerUnwrapped: [0, 0, 0],
   };
 }
 
@@ -56,6 +62,15 @@ export function updatePivot(ids: readonly string[], pivot: PivotInput): void {
   }
 }
 
+const _scratchEuler = new THREE.Euler(0, 0, 0, "XYZ");
+
+function unwrapAngle(prev: number, next: number): number {
+  let diff = next - prev;
+  while (diff > Math.PI) diff -= 2 * Math.PI;
+  while (diff < -Math.PI) diff += 2 * Math.PI;
+  return prev + diff;
+}
+
 export function applyDeltaQuat(delta: THREE.Quaternion): void {
   const cur = multiSelectAnimRef.current;
   if (!cur) return;
@@ -63,6 +78,12 @@ export function applyDeltaQuat(delta: THREE.Quaternion): void {
   accum.premultiply(delta);
   accum.normalize();
   cur.quat = [accum.x, accum.y, accum.z, accum.w];
+  _scratchEuler.setFromQuaternion(accum, "XYZ");
+  cur.eulerUnwrapped = [
+    unwrapAngle(cur.eulerUnwrapped[0], _scratchEuler.x),
+    unwrapAngle(cur.eulerUnwrapped[1], _scratchEuler.y),
+    unwrapAngle(cur.eulerUnwrapped[2], _scratchEuler.z),
+  ];
 }
 
 // Multiplicative per-axis scale accumulation. delta = currentGroupScale / initialGroupScale.

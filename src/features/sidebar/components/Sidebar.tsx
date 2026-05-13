@@ -16,10 +16,13 @@ import { BackgroundControls } from "./BackgroundControls";
 import { EffectControls } from "./EffectControls";
 import { LightingControls } from "./LightingControls";
 import { ShapeInspector } from "./ShapeInspector";
+import { ObjectTransformInspector } from "./ObjectTransformInspector";
+import { CameraInspector } from "./CameraInspector";
 import { ObjectsList } from "./ObjectsList";
 import { ProjectActions } from "./ProjectActions";
 import { TextureControls } from "./TextureControls";
 import { SavedAnimationsList } from "./SavedAnimationsList";
+import { TimelineLog } from "@/features/three/components/TimelineLog";
 
 type TabId = "design" | "scene";
 
@@ -84,6 +87,8 @@ export function Sidebar() {
             <GLBUploader />
             <ObjectsList />
             <ShapeInspector />
+            <ObjectTransformInspector />
+            <CameraInspector />
             <ExtrusionControls />
             <TextureControls />
           </>
@@ -94,6 +99,7 @@ export function Sidebar() {
             <LightingControls />
             <EffectControls />
             <SavedAnimationsList />
+            <TimelineLog />
           </>
         )}
       </div>

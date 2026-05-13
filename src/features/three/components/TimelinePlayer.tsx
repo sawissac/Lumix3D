@@ -41,6 +41,7 @@ const _qShape = new THREE.Quaternion();
 const _qBindLocal = new THREE.Quaternion();
 const _qFinalLocal = new THREE.Quaternion();
 const _eulShape = new THREE.Euler();
+const _eulGroup = new THREE.Euler(0, 0, 0, "XYZ");
 const _vOffsetBind = new THREE.Vector3();
 const _vRotated = new THREE.Vector3();
 
@@ -79,7 +80,23 @@ function applyGroupInterpolation(
 
   _q1.set(gq1[0], gq1[1], gq1[2], gq1[3]);
   _q2.set(gq2[0], gq2[1], gq2[2], gq2[3]);
-  _qInterp.copy(_q1).slerp(_q2, ratio);
+
+  // Prefer Euler lerp on `groupEuler` (winding preserved) so multi-turn
+  // gestures animate as a visible spin. Slerp on quat would collapse a 360°
+  // rotation to no rotation because q ≡ -q under shortest-arc.
+  const ge1 = prev.groupEuler;
+  const ge2 = next.groupEuler;
+  if (ge1 && ge2) {
+    _eulGroup.set(
+      lerp(ge1[0], ge2[0], ratio),
+      lerp(ge1[1], ge2[1], ratio),
+      lerp(ge1[2], ge2[2], ratio),
+      "XYZ",
+    );
+    _qInterp.setFromEuler(_eulGroup);
+  } else {
+    _qInterp.copy(_q1).slerp(_q2, ratio);
+  }
 
   const pivot: [number, number, number] = [
     lerp(p1[0], p2[0], ratio),
@@ -162,6 +179,14 @@ export function TimelinePlayer() {
     if (timeline.isPlaying) invalidate();
   }, [timeline.isPlaying, invalidate]);
 
+  // Canvas3D uses frameloop="demand"; scrubbing the playhead (ruler click,
+  // keyframe drag, current-time input) needs an explicit invalidate so the
+  // useFrame body runs and snaps each tracked object to the interpolated
+  // state at the new currentTime.
+  useEffect(() => {
+    invalidate();
+  }, [timeline.currentTime, invalidate]);
+
   useFrame(() => {
     if (!is3DMode) return;
 
@@ -221,7 +246,6 @@ export function TimelinePlayer() {
       }
 
       let pos: [number, number, number];
-      let rot: [number, number, number];
       let scl: [number, number, number];
 
       if (shareGroupContext(prev, next)) {
@@ -233,16 +257,25 @@ export function TimelinePlayer() {
           prev.scale || [1, 1, 1],
         );
         pos = interp.position;
-        rot = interp.rotation;
         scl = interp.scale;
+        obj.rotation.set(interp.rotation[0], interp.rotation[1], interp.rotation[2]);
       } else {
         pos = lerpArray(prev.position, next.position, ratio);
-        rot = lerpArray(prev.rotation, next.rotation, ratio);
         scl = lerpArray(prev.scale, next.scale, ratio);
+
+        // Slerp quaternions so single-axis rotations don't get corrupted
+        // by linear interpolation of gimbal-flipped Euler components.
+        const pr = prev.rotation || [0, 0, 0];
+        const nr = next.rotation || [0, 0, 0];
+        _eulShape.set(pr[0], pr[1], pr[2], "XYZ");
+        _q1.setFromEuler(_eulShape);
+        _eulShape.set(nr[0], nr[1], nr[2], "XYZ");
+        _q2.setFromEuler(_eulShape);
+        _qInterp.copy(_q1).slerp(_q2, ratio);
+        obj.quaternion.copy(_qInterp);
       }
 
       obj.position.set(pos[0], pos[1], pos[2]);
-      obj.rotation.set(rot[0], rot[1], rot[2]);
       obj.scale.set(scl[0], scl[1], scl[2]);
     }
   });

@@ -13,6 +13,10 @@ import {
   Mountain,
   Sparkles,
   Lightbulb,
+  Move3d,
+  Camera,
+  Film,
+  ScrollText,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,6 +31,10 @@ const SECTION_ICONS: Record<string, LucideIcon> = {
   "inspector-svg": PenLine,
   "inspector-3d": SlidersHorizontal,
   "inspector-glb": Box,
+  "inspector-transform": Move3d,
+  "inspector-camera": Camera,
+  "saved-animations": Film,
+  "animation-log": ScrollText,
   extrusion: Box,
   textures: ImageIcon,
   background: Mountain,
